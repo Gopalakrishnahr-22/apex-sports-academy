@@ -211,17 +211,17 @@ function selectCoachingTier(tierId, price) {
     finalTierName = 'ASA Cup Tournament Entry';
     finalPrice = 1200;
   } else if (tierId === 'weekday-1') {
-    finalTierName = 'Weekday Coaching (Batch 1 - 1 Month(s))';
+    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 1 Month)';
+    finalPrice = 1600;
+    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹1,600';
+  } else if (tierId === 'weekday-2') {
+    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 2 Month)';
     finalPrice = 2500;
     if (weekdayPriceTag) weekdayPriceTag.innerText = '₹2,500';
-  } else if (tierId === 'weekday-2') {
-    finalTierName = 'Weekday Coaching (Batch 1 - 2 Month(s))';
-    finalPrice = 4500;
-    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹4,500';
   } else if (tierId === 'weekday-3') {
-    finalTierName = 'Weekday Coaching (Batch 1 - 3 Month(s))';
-    finalPrice = 7000;
-    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹7,000';
+    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 3 Month)';
+    finalPrice = 4000;
+    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹4,000';
   } else if (tierId === 'weekend-1') {
     finalTierName = 'Weekend Coaching (Batch 2 - 1 Month(s))';
     finalPrice = 1600;
