@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Apex Sports Academy (ASA) - Push your limit to know your limits. Elite volleyball coaching programs, tournaments, and team registrations in Bangalore.">
+  <title>Apex Sports Academy | Volleyball Coaching & Tournaments Bangalore</title>
+  <!-- SEO & Social Sharing Metadata -->
+  <meta property="og:title" content="Apex Sports Academy - Volleyball Coaching & Tournaments">
+  <meta property="og:description"
+    content="Join Bangalore's premier volleyball academy. Registration open for coaching programs and the ASA Cup Season 1 tournament.">
+  <meta property="og:image" content="Logo.jpeg">
+  <meta property="og:type" content="website">
+  <!-- Google Fonts Preconnect & Stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=28.0">
+  <!-- Razorpay and html2pdf CDN integration (deferred for non-blocking render) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+
+<body>
+
+  <!-- --- Sticky Navigation Bar --- -->
+  <header id="header">
+    <div class="container nav-container">
+      <a href="#hero" class="logo-wrapper">
+        <img src="Logo.jpeg" alt="Apex Sports Academy Logo" class="logo-img">
+        <span class="logo-text">Apex <span>Sports</span></span>
+      </a>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#venue-booking" class="nav-venue-btn">Book a Venue</a></li>
+          <li><a href="#programs">Coaching</a></li>
+          <li><a href="#tournament">Tournaments</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="javascript:void(0)" class="nav-login-link" id="nav-auth-link"
+              onclick="handleNavAuthClick()">Login</a></li>
+          <li><button class="nav-btn" onclick="scrollToRegister('tournament')">Register Now</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- --- Hero Section --- -->
+  <section id="hero">
+    <div class="hero-bg-grid">
+      <div class="hero-grid-item"><img src="photos/ball-hitting-net.jpg" alt="Volleyball Player Spike"></div>
+      <div class="hero-grid-item"><img src="photos/caglar-oskay-pYHFDv6vI-o-unsplash.jpg"
+          alt="Volleyball Training Camp"></div>
+      <div class="hero-grid-item"><img src="photos/dmitry-lee-v5GLMK38Zqk-unsplash.jpg" alt="Match Play Net Setup">
+      </div>
+      <div class="hero-grid-item"><img src="photos/file_000000005cc482309ae0c391503d3375.png"
+          alt="Apex Training Session"></div>
+      <div class="hero-grid-item"><img src="photos/frank-huang-v22HQ78Xc9o-unsplash.jpg" alt="Agility Drills Activity">
+      </div>
+      <div class="hero-grid-item"><img src="photos/horserat-FcuE1a_pOA0-unsplash.jpg" alt="Team Volleyball Practice">
+      </div>
+      <div class="hero-grid-item"><img src="photos/jannes-glas-0NaQQsLWLkA-unsplash.jpg" alt="Serve Form Training">
+      </div>
+      <div class="hero-grid-item"><img src="photos/miguel-teirlinck-VDkRsT649C0-unsplash.jpg"
+          alt="Volleyball Passing drills"></div>
+      <div class="hero-grid-item"><img src="photos/pan-xiaozhen-fHJ8MN6KO5s-unsplash.jpg" alt="Elite Academy Match">
+      </div>
+      <div class="hero-grid-item"><img src="photos/pexels-renan-braz-1732586-28207837.jpg"
+          alt="Tournament Server spike"></div>
+      <!-- Repeat to populate the grid -->
+      <div class="hero-grid-item"><img src="photos/ball-hitting-net.jpg" alt="Volleyball Spike Net"></div>
+      <div class="hero-grid-item"><img src="photos/dmitry-lee-v5GLMK38Zqk-unsplash.jpg"
+          alt="Volleyball Tournament Play"></div>
+      <div class="hero-grid-item"><img src="photos/horserat-FcuE1a_pOA0-unsplash.jpg" alt="Academy Team Workout"></div>
+      <div class="hero-grid-item"><img src="photos/ball-hitting-net.jpg" alt="Volleyball Set Lesson"></div>
+      <div class="hero-grid-item"><img src="photos/file_000000005cc482309ae0c391503d3375.png"
+          alt="Championship Serve Match"></div>
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content-centered">
+      <div class="hero-headline-wrap">
+        <h1 class="hero-title-large">PUSH YOUR LIMITS</h1>
+        <h1 class="hero-title-accent text-gradient-primary">TO KNOW YOUR LIMITS</h1>
+      </div>
+
+      <p class="hero-subtext">Volleyball • Football • Box Cricket Arena in Electronic City</p>
+
+      <div class="hero-cta-button-row">
+        <a href="#venue-booking" class="btn-hero-venue-cta">
+          <span class="cta-pulse"></span>
+          🏟️ Book Your Slot Now
+        </a>
+      </div>
+
+      <div class="hero-input-area" id="hero-input-area">
+        <input type="tel" id="hero-mobile-input" class="hero-mobile-field" placeholder="Phone Number"
+          pattern="[0-9]{10}" maxlength="10" onkeypress="if(event.key === 'Enter') handleHeroStart()">
+        <button class="hero-submit-btn" onclick="handleHeroStart()">Get Callback</button>
+      </div>
+
+      <div id="hero-success-area"
+        style="display: none; background: rgba(0, 180, 216, 0.15); border: 1px solid var(--primary); padding: 15px 25px; border-radius: 30px; backdrop-filter: blur(10px); width: 100%; max-width: 500px; margin: 15px auto 0 auto; text-align: center;">
+        <p style="margin: 0; color: #fff; font-size: 0.95rem; font-weight: 500;">
+          🎉 Callback request received for <span id="submitted-phone-display"
+            style="color: #00E5FF; font-weight: 700;"></span>! We will contact you soon.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- --- APEX SPORTS ACADEMY VENUE BOOKING --- -->
+  <!-- ========================================== -->
+  <section id="venue-booking" class="venue-reference-section">
+    <div class="container venue-ref-container">
+
+      <!-- Top Title & Rating Header -->
+      <div class="venue-ref-header">
+        <h1 class="venue-ref-title">Apex Sports Academy</h1>
+        <div class="venue-ref-meta">
+          <span class="venue-ref-city">Electronic City</span>
+          <span class="venue-ref-rating">
+            <span class="star-gold">★</span> 5 <span class="rating-count">(11 ratings)</span>
+          </span>
+          <a href="#venue-booking" class="venue-ref-rate-link"
+            onclick="alert('Thank you for choosing Apex Sports Academy! Please share your review after your match.')">Rate
+            Venue</a>
+        </div>
+      </div>
+
+      <!-- 2-Column Venue Showcase Grid -->
+      <div class="venue-ref-grid">
+        <!-- Left Column: Large Venue Court Image -->
+        <div class="venue-ref-media-col">
+          <div class="venue-ref-image-card">
+            <img src="apex-volleyball-ground.jpg?v=1" alt="Apex Sports Academy Electronic City Court Arena"
+              class="venue-ref-main-img">
+            <div class="venue-ref-playo-tag">
+              <span class="playo-text">PLAYO</span>
+              <span class="playo-sub-tag">Verified Arena</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Actions, Timing & Location Cards -->
+        <div class="venue-ref-sidebar-col">
+          <!-- Big Green Book Now Button -->
+          <button type="button" class="btn-ref-book-now" onclick="openCleanBookingModal()">
+            Book Now
+          </button>
+
+          <!-- Share & Bulk / Corporate Row -->
+          <div class="venue-ref-actions-row">
+            <button type="button" class="btn-ref-action-sub" onclick="handleShareVenue()">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              <span>Share</span>
+            </button>
+            <button type="button" class="btn-ref-action-sub btn-bulk" onclick="openBulkInquiryModal()">
+              <span>Bulk / Corporate</span>
+            </button>
+          </div>
+
+          <!-- Timing Card -->
+          <div class="venue-ref-info-card">
+            <h4 class="ref-card-title">Timing</h4>
+            <p class="ref-card-content">
+              Mon - Fri 6 AM - 3 PM, Sat &amp; Sun 6 AM - 6 PM
+            </p>
+          </div>
+
+          <!-- Location Card -->
+          <div class="venue-ref-info-card">
+            <h4 class="ref-card-title">Location</h4>
+            <p class="ref-card-content">
+              VM77+WGJ, Doddanagamangala Rd, Konappana Agrahara, Electronic City, Bengaluru, Karnataka 560100
+            </p>
+            <div class="venue-ref-map-wrap">
+              <a href="https://maps.google.com/?q=VM77+WGJ,+Doddanagamangala+Rd,+Konappana+Agrahara,+Electronic+City,+Bengaluru,+Karnataka+560100"
+                target="_blank" rel="noopener" class="venue-ref-map-link">
+                <div class="map-mockup-pin">
+                  <span class="map-pin-icon">📍</span>
+                  <div class="map-pin-text">
+                    <strong>Apex Sports Academy</strong>
+                    <small>Open in Google Maps ↗</small>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- --- EMBEDDED / MODAL CLEAN BOOKING ENGINE CONTAINER --- -->
+      <!-- ==================================================== -->
+      <div class="clean-booking-section-wrap" id="venue-booking-modal-anchor">
+        <div class="clean-booking-wrapper" id="slot-booking-engine">
+          <div class="clean-booking-card">
+
+            <!-- Continuous Booking Journey Progress Header -->
+            <div class="booking-progress-bar">
+              <div class="progress-step active" id="prog-step-1" onclick="goToCleanStep1()">
+                <span class="step-num">①</span>
+                <span class="step-label">Select Slot</span>
+              </div>
+              <div class="progress-arrow" id="prog-arrow-1">→</div>
+              <div class="progress-step" id="prog-step-2">
+                <span class="step-num">②</span>
+                <span class="step-label">Your Details</span>
+              </div>
+              <div class="progress-arrow" id="prog-arrow-2">→</div>
+              <div class="progress-step" id="prog-step-3">
+                <span class="step-num">③</span>
+                <span class="step-label">Payment</span>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 1: SELECT SLOT -->
+            <!-- ========================================== -->
+            <div id="clean-step-1" class="clean-booking-step active">
+              <div class="clean-card-header">
+                <h3 class="clean-card-title">Book Your Slot</h3>
+                <p class="clean-card-sub">Choose your sport, date, time &amp; court</p>
+              </div>
+
+              <form id="clean-booking-form-step1" onsubmit="event.preventDefault(); goToCleanStep2();">
+                <!-- 2-Column Responsive Controls Grid -->
+                <div class="clean-form-grid">
+
+                  <!-- 1. Sport Selection -->
+                  <div class="clean-field-group">
+                    <label class="clean-label" for="clean-sport">
+                      <span class="label-icon">🏐</span> Sport
+                    </label>
+                    <div class="clean-select-wrap">
+                      <select id="clean-sport" class="clean-select" onchange="onCleanSportChange(this.value)">
+                        <option value="volleyball" selected>🏐 Volleyball</option>
+                        <option value="box-cricket">🏏 Box Cricket</option>
+                        <option value="football">⚽ Football</option>
+                      </select>
+                      <span class="select-chevron">▼</span>
+                    </div>
+                  </div>
+
+                  <!-- 2. Date Picker -->
+                  <div class="clean-field-group">
+                    <label class="clean-label" for="clean-date">
+                      <span class="label-icon">📅</span> Date
+                    </label>
+                    <div class="clean-input-wrap">
+                      <input type="date" id="clean-date" class="clean-input" onchange="onCleanDateChange(this.value)"
+                        required>
+                    </div>
+                  </div>
+
+                  <!-- 3. Start Time Dropdown -->
+                  <div class="clean-field-group">
+                    <label class="clean-label" for="clean-start-time">
+                      <span class="label-icon">🕐</span> Start Time
+                    </label>
+                    <div class="clean-select-wrap">
+                      <select id="clean-start-time" class="clean-select" onchange="onCleanStartTimeChange(this.value)"
+                        required>
+                        <!-- Populated dynamically with available slots -->
+                      </select>
+                      <span class="select-chevron">▼</span>
+                    </div>
+                    <div class="clean-slot-hint" id="clean-slot-hint">
+                      <span class="clean-status-dot"></span>
+                      <span id="clean-slot-hint-text">Loading available slots...</span>
+                    </div>
+                  </div>
+
+                  <!-- 4. Duration Selector (Compact Selectable Buttons) -->
+                  <div class="clean-field-group">
+                    <label class="clean-label">
+                      <span class="label-icon">⏱️</span> Duration
+                    </label>
+                    <div class="duration-pills-group" role="radiogroup" aria-label="Select Duration">
+                      <button type="button" class="duration-pill-btn active" data-duration="1"
+                        onclick="setCleanDuration(1)">1 Hr</button>
+                      <button type="button" class="duration-pill-btn" data-duration="1.5"
+                        onclick="setCleanDuration(1.5)">1.5 Hrs</button>
+                      <button type="button" class="duration-pill-btn" data-duration="2" onclick="setCleanDuration(2)">2
+                        Hrs</button>
+                    </div>
+                  </div>
+
+                  <!-- 5. Court / Ground Dropdown -->
+                  <div class="clean-field-group">
+                    <label class="clean-label" for="clean-court">
+                      <span class="label-icon">🏟️</span> Court / Ground
+                    </label>
+                    <div class="clean-select-wrap">
+                      <select id="clean-court" class="clean-select" onchange="onCleanCourtChange(this.value)">
+                        <!-- Populated dynamically based on sport -->
+                      </select>
+                      <span class="select-chevron">▼</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Step 1 Compact Booking Summary Card -->
+                <div class="booking-summary-panel">
+                  <h4 class="summary-panel-title">Booking Summary</h4>
+                  <div class="summary-panel-grid">
+                    <div class="summary-row">
+                      <span class="summary-row-label">Sport</span>
+                      <span class="summary-row-val" id="summary-s1-sport">Volleyball</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="summary-row-label">Date</span>
+                      <span class="summary-row-val" id="summary-s1-date">26 Aug 2026</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="summary-row-label">Time</span>
+                      <span class="summary-row-val" id="summary-s1-time">06:00 AM</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="summary-row-label">Duration</span>
+                      <span class="summary-row-val" id="summary-s1-duration">1 Hour</span>
+                    </div>
+                    <div class="summary-row">
+                      <span class="summary-row-label">Court</span>
+                      <span class="summary-row-val" id="summary-s1-court">Volleyball Court 1</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-total-row">
+                    <div class="total-left">
+                      <span class="total-label">Total Price</span>
+                      <small class="clean-price-sub" id="clean-rate-note">Inclusive of court lighting &amp; GST</small>
+                    </div>
+                    <span class="total-price" id="clean-price-val">₹500</span>
+                  </div>
+                </div>
+
+                <!-- Step 1 Continue CTA -->
+                <div class="clean-cta-wrap">
+                  <button type="submit" class="btn-clean-green btn-primary-cta" id="btn-continue-step1">
+                    Continue to Details →
+                  </button>
+                  <div class="secure-trust-caption">
+                    <span class="lock-icon">🔒</span> Secure booking • Instant confirmation via SMS &amp; Email
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 2: YOUR DETAILS -->
+            <!-- ========================================== -->
+            <div id="clean-step-2" class="clean-booking-step" style="display: none;">
+
+              <!-- Header -->
+              <div class="clean-card-header">
+                <h3 class="clean-card-title">Your Details</h3>
+                <p class="clean-card-sub">Please enter your details to complete the booking</p>
+              </div>
+
+              <!-- Compact Booking Strip at top with Edit button -->
+              <div class="compact-booking-strip">
+                <div class="strip-items-wrap" id="clean-strip-summary">
+                  <span class="strip-item"><span class="strip-icon" id="strip-icon">🏐</span> <strong
+                      id="strip-sport">Volleyball</strong></span>
+                  <span class="strip-sep">|</span>
+                  <span class="strip-item"><span class="strip-icon">📅</span> <span id="strip-date">26 Aug
+                      2026</span></span>
+                  <span class="strip-sep">|</span>
+                  <span class="strip-item"><span class="strip-icon">🕐</span> <span id="strip-time">06:00
+                      AM</span></span>
+                  <span class="strip-sep">|</span>
+                  <span class="strip-item"><span class="strip-icon">⏱</span> <span id="strip-duration">1
+                      Hour</span></span>
+                  <span class="strip-sep">|</span>
+                  <span class="strip-item"><span class="strip-icon">🏟</span> <span id="strip-court">Volleyball Court
+                      1</span></span>
+                </div>
+                <button type="button" class="btn-strip-edit" onclick="goToCleanStep1()">Edit</button>
+              </div>
+
+              <!-- Two-Column Layout on Laptop/Desktop -->
+              <div class="step2-layout-grid">
+
+                <!-- Left Column: Player Details Form -->
+                <div class="step2-form-col">
+                  <form id="clean-booking-form-step2" onsubmit="event.preventDefault(); handleCleanProceedToPayment();">
+
+                    <div class="details-fields-grid">
+                      <!-- Row 1: Full Name & Mobile Number -->
+                      <div class="clean-field-group">
+                        <label class="clean-label" for="clean-player-name">
+                          <span class="label-icon">👤</span> Full Name <span class="req-star">*</span>
+                        </label>
+                        <input type="text" id="clean-player-name" class="clean-input" placeholder="e.g. Vikram Malhotra"
+                          required autocomplete="name">
+                      </div>
+
+                      <div class="clean-field-group">
+                        <label class="clean-label" for="clean-player-phone">
+                          <span class="label-icon">📞</span> Mobile Number <span class="req-star">*</span>
+                        </label>
+                        <input type="tel" id="clean-player-phone" class="clean-input"
+                          placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required
+                          autocomplete="tel">
+                      </div>
+
+                      <!-- Row 2: Email Address & Team / Player Name (Optional) -->
+                      <div class="clean-field-group">
+                        <label class="clean-label" for="clean-player-email">
+                          <span class="label-icon">✉️</span> Email Address <span class="req-star">*</span>
+                        </label>
+                        <input type="email" id="clean-player-email" class="clean-input"
+                          placeholder="e.g. vikram@example.com" required autocomplete="email">
+                      </div>
+
+                      <div class="clean-field-group">
+                        <label class="clean-label" for="clean-team-name">
+                          <span class="label-icon">🛡️</span> Team / Player Name <span
+                            class="optional-tag">(Optional)</span>
+                        </label>
+                        <input type="text" id="clean-team-name" class="clean-input" placeholder="e.g. Apex Strikers">
+                      </div>
+
+                      <!-- Row 3: Number of Players -->
+                      <div class="clean-field-group clean-field-full">
+                        <label class="clean-label" for="clean-player-count">
+                          <span class="label-icon">👥</span> Number of Players
+                        </label>
+                        <div class="clean-select-wrap">
+                          <select id="clean-player-count" class="clean-select">
+                            <option value="2">2 Players</option>
+                            <option value="4">4 Players</option>
+                            <option value="6">6 Players</option>
+                            <option value="8">8 Players</option>
+                            <option value="10" selected>10 Players</option>
+                            <option value="12">12 Players</option>
+                            <option value="14">14 Players</option>
+                            <option value="16">16 Players</option>
+                            <option value="20">20+ Players</option>
+                          </select>
+                          <span class="select-chevron">▼</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Payment Action Button -->
+                    <div class="step2-cta-wrap">
+                      <button type="submit" class="btn-clean-green btn-primary-cta" id="btn-clean-proceed-pay">
+                        Proceed to Pay <span id="btn-pay-amount-label">₹500</span> →
+                      </button>
+                      <div class="secure-trust-caption">
+                        <span class="lock-icon">🔒</span> Secure booking • Your data is safe with us
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Right Column: Booking Summary Card on Desktop -->
+                <div class="step2-summary-col">
+                  <div class="desktop-summary-card">
+                    <h4 class="summary-card-title">Booking Summary</h4>
+
+                    <div class="summary-details-list">
+                      <div class="summary-item-row">
+                        <span class="item-label">Sport</span>
+                        <span class="item-val" id="summary-s2-sport">Volleyball</span>
+                      </div>
+                      <div class="summary-item-row">
+                        <span class="item-label">Date</span>
+                        <span class="item-val" id="summary-s2-date">26 Aug 2026</span>
+                      </div>
+                      <div class="summary-item-row">
+                        <span class="item-label">Time</span>
+                        <span class="item-val" id="summary-s2-time">06:00 AM</span>
+                      </div>
+                      <div class="summary-item-row">
+                        <span class="item-label">Duration</span>
+                        <span class="item-val" id="summary-s2-duration">1 Hour</span>
+                      </div>
+                      <div class="summary-item-row">
+                        <span class="item-label">Court</span>
+                        <span class="item-val" id="summary-s2-court">Volleyball Court 1</span>
+                      </div>
+                    </div>
+
+                    <div class="summary-card-divider"></div>
+
+                    <div class="summary-card-total">
+                      <span class="total-heading">Total Amount</span>
+                      <span class="total-price-large" id="clean-step2-total-amount">₹500</span>
+                    </div>
+
+                    <!-- Green instant confirmation box -->
+                    <div class="summary-instant-box">
+                      <div class="instant-box-head">
+                        <span class="check-icon">✓</span> <strong>Instant Confirmation</strong>
+                      </div>
+                      <p class="instant-box-sub">You will receive booking confirmation via SMS &amp; Email instantly.
+                      </p>
+                    </div>
+
+                    <!-- Compact Trust points -->
+                    <div class="summary-trust-pills">
+                      <div class="trust-pill-item"><span class="pill-check">✓</span> Easy Booking</div>
+                      <div class="trust-pill-item"><span class="pill-check">✓</span> Secure Payment</div>
+                      <div class="trust-pill-item"><span class="pill-check">✓</span> Best Price</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 3: CLEAN BOOKING CONFIRMED SCREEN -->
+            <!-- ========================================== -->
+            <div id="clean-step-3" class="clean-booking-step" style="display: none;">
+              <div class="clean-confirm-box">
+                <div class="clean-success-circle">✓</div>
+                <h3 class="clean-confirm-title">Booking Confirmed!</h3>
+                <p class="clean-confirm-sub">Your slot at Apex Sports Academy has been reserved.</p>
+
+                <!-- Confirmation Details Card -->
+                <div class="clean-receipt-card">
+                  <div class="receipt-row-item">
+                    <span class="r-label">Booking ID</span>
+                    <strong class="r-value" id="c-rec-id">ASA-BKG-XXXXXX</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Sport</span>
+                    <strong class="r-value" id="c-rec-sport">Volleyball</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Court / Ground</span>
+                    <strong class="r-value" id="c-rec-court">Volleyball Court 1</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Date &amp; Time</span>
+                    <strong class="r-value" id="c-rec-datetime">26 Aug 2026 • 06:00 AM (1 Hr)</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Player Name</span>
+                    <strong class="r-value" id="c-rec-name">Vikram Malhotra</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Mobile</span>
+                    <strong class="r-value" id="c-rec-phone">9876543210</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Total Paid</span>
+                    <strong class="r-value highlight-amount" id="c-rec-amount">₹500</strong>
+                  </div>
+                  <div class="receipt-row-item">
+                    <span class="r-label">Payment ID</span>
+                    <strong class="r-value mono-val" id="c-rec-payment-id">pay_123456789</strong>
+                  </div>
+                </div>
+
+                <!-- Address Strip -->
+                <div class="clean-venue-address-box">
+                  📍 <strong>Apex Sports Academy</strong><br>
+                  VM77+WGJ, Doddanagamangala Rd, Electronic City, Bengaluru 560100
+                </div>
+
+                <div class="clean-confirm-actions">
+                  <button type="button" class="btn-clean-green" onclick="printVenueReceipt()">
+                    📄 Download Receipt
+                  </button>
+                  <button type="button" class="btn-clean-secondary" onclick="resetCleanBookingForm()">
+                    Book Another Slot
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- --- Why Play Volleyball Section --- -->
+  <section id="why-volleyball" class="section-padding">
+    <!-- Background decorations -->
+    <div class="wv-bg-decorations" aria-hidden="true">
+      <!-- Volleyball player silhouette (right side) -->
+      <svg class="wv-silhouette" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+        <!-- Head -->
+        <ellipse cx="150" cy="42" rx="28" ry="30" fill="currentColor" />
+        <!-- Body / torso -->
+        <path d="M118 72 C108 90 100 130 105 170 L145 175 L145 130 L155 130 L155 175 L195 170 C200 130 192 90 182 72 Z"
+          fill="currentColor" />
+        <!-- Left arm raised up -->
+        <path d="M118 80 C100 65 70 40 55 18 C52 12 58 6 63 10 C78 30 108 56 122 78 Z" fill="currentColor" />
+        <!-- Right arm out -->
+        <path d="M182 80 C200 95 225 110 240 118 C246 121 246 129 240 130 C224 122 198 108 180 90 Z"
+          fill="currentColor" />
+        <!-- Left leg -->
+        <path d="M125 172 C120 210 115 255 110 300 L130 302 L145 240 L148 172 Z" fill="currentColor" />
+        <!-- Right leg -->
+        <path d="M175 172 C180 210 185 255 190 300 L170 302 L155 240 L152 172 Z" fill="currentColor" />
+        <!-- Lower left leg bent back -->
+        <path d="M110 300 C105 330 100 355 108 370 L120 362 C114 350 118 328 130 302 Z" fill="currentColor" />
+        <!-- Lower right leg -->
+        <path d="M190 300 C195 330 196 355 188 370 L176 362 C182 350 178 328 170 302 Z" fill="currentColor" />
+        <!-- Volleyball above left hand -->
+        <circle cx="48" cy="10" r="22" fill="currentColor" opacity="0.7" />
+        <path d="M28 8 Q48 -14 68 8" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" />
+        <path d="M48 -12 Q62 10 48 32" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" />
+      </svg>
+      <!-- Volleyball circle watermark (upper right) -->
+      <svg class="wv-ball-watermark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="3" />
+        <path d="M10 60 Q35 20 60 60 Q85 100 110 60" fill="none" stroke="currentColor" stroke-width="2.5" />
+        <path d="M60 4 Q100 35 60 60 Q20 85 60 116" fill="none" stroke="currentColor" stroke-width="2.5" />
+        <path d="M30 12 Q60 40 90 12" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M8 80 Q35 65 60 80 Q85 95 112 80" fill="none" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="why-volleyball-grid">
+        <!-- Left Side: Action Photo -->
+        <div class="why-volleyball-media">
+          <div class="why-volleyball-gif-wrapper">
+            <img src="volleyball-action-hero.jpg"
+              alt="Professional Volleyball Player #7 Jump Spike at Championship Stadium" class="why-volleyball-gif">
+          </div>
+        </div>
+
+        <!-- Right Side: Content -->
+        <div class="why-volleyball-content">
+          <h2 class="section-title text-left">Why Play Volleyball?</h2>
+          <div class="title-underline text-left"></div>
+
+          <p class="why-volleyball-p-simple">
+            Volleyball is a great and entertaining team sport that builds agility, coordination, speed, and balance
+            due to its quick changes of pace and direction. It burns calories and fat, tones and shapes the body by
+            strengthening the upper body, arms, shoulders, and lower body muscles. It has found immense popularity
+            globally as well as in the rural regions of India, making power, height, and agility vital components.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Coaching & Highlights Section --- -->
+  <section id="programs" class="section-padding programs-section">
+    <!-- Subtle background volleyball watermarks -->
+    <div class="programs-bg-deco" aria-hidden="true">
+      <svg class="prog-deco-ball prog-deco-ball--left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="4" />
+        <path d="M10 100 Q55 30 100 100 Q145 170 190 100" fill="none" stroke="currentColor" stroke-width="3" />
+        <path d="M100 4 Q160 60 100 100 Q40 140 100 196" fill="none" stroke="currentColor" stroke-width="3" />
+      </svg>
+      <svg class="prog-deco-ball prog-deco-ball--right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="4" />
+        <path d="M10 100 Q55 30 100 100 Q145 170 190 100" fill="none" stroke="currentColor" stroke-width="3" />
+        <path d="M100 4 Q160 60 100 100 Q40 140 100 196" fill="none" stroke="currentColor" stroke-width="3" />
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-subtitle">Develop Your Skills</span>
+        <h2 class="section-title">Coaching Programs</h2>
+        <div class="title-underline"></div>
+      </div>
+
+      <div class="programs-plans-grid">
+
+        <!-- ===== Weekday Batch (Batch 1) — BLUE THEME ===== -->
+        <div class="program-plan-card featured card-weekday">
+          <!-- Decorative curved blob top-left -->
+          <div class="card-deco-blob card-deco-blob--blue" aria-hidden="true"></div>
+
+          <!-- MOST POPULAR badge -->
+          <div class="plan-badge plan-badge--blue">⭐ Most Popular</div>
+
+          <div class="plan-header">
+            <!-- Blue calendar icon box -->
+            <div class="plan-icon plan-icon--blue">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.9 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+              </svg>
+            </div>
+            <h3 class="plan-title plan-title--blue">Weekday Batch <span class="plan-batch-num">(Batch 1)</span></h3>
+            <p class="plan-subtitle">5 Days Session (Monday to Friday)</p>
+          </div>
+
+          <div class="plan-pricing-tiers">
+            <div class="plan-price-tier plan-price-tier--blue" onclick="scrollToRegisterAndSelect('weekday-1')">
+              <span class="duration">1 Month</span>
+              <span class="price price--blue">₹2,500</span>
+            </div>
+            <div class="plan-price-tier plan-price-tier--blue highlight"
+              onclick="scrollToRegisterAndSelect('weekday-2')">
+              <span class="duration">2 Months</span>
+              <div class="price-right">
+                <span class="price price--blue">₹4,500</span>
+                <span class="save-tag save-tag--blue">Save ₹500</span>
+              </div>
+            </div>
+            <div class="plan-price-tier plan-price-tier--blue" onclick="scrollToRegisterAndSelect('weekday-3')">
+              <span class="duration">3 Months</span>
+              <div class="price-right">
+                <span class="price price--blue">₹7,000</span>
+                <span class="save-tag save-tag--blue">Save ₹500</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-details">
+            <div class="plan-timings plan-timings--blue">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z" />
+              </svg>
+              <span><strong>Timings:</strong> Morning (6:30 AM – 7:30 AM) &amp; Evening (4:00 PM – 5:30 PM)</span>
+            </div>
+            <ul class="plan-features">
+              <li>
+                <span class="feature-check feature-check--blue">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Elite court tactical training
+              </li>
+              <li>
+                <span class="feature-check feature-check--blue">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Fitness, strength &amp; conditioning
+              </li>
+              <li>
+                <span class="feature-check feature-check--blue">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Official academy playing jersey included
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn plan-btn--blue" onclick="scrollToRegisterAndSelect('weekday-1')">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17,12H12V17H10V12H5V10H10V5H12V10H17V12Z" />
+            </svg>
+            Register Weekday Batch
+          </button>
+        </div>
+
+        <!-- ===== Weekend Batch (Batch 2) — ORANGE THEME ===== -->
+        <div class="program-plan-card card-weekend">
+          <!-- Decorative curved blob top-left -->
+          <div class="card-deco-blob card-deco-blob--orange" aria-hidden="true"></div>
+
+          <div class="plan-header">
+            <!-- Orange target icon box -->
+            <div class="plan-icon plan-icon--orange">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+              </svg>
+            </div>
+            <h3 class="plan-title plan-title--orange">Weekend Batch <span class="plan-batch-num">(Batch 2)</span></h3>
+            <p class="plan-subtitle">Saturday, Sunday &amp; Monday</p>
+          </div>
+
+          <div class="plan-pricing-tiers">
+            <div class="plan-price-tier plan-price-tier--orange" onclick="scrollToRegisterAndSelect('weekend-1')">
+              <span class="duration">1 Month</span>
+              <span class="price price--orange">₹1,600</span>
+            </div>
+            <div class="plan-price-tier plan-price-tier--orange highlight"
+              onclick="scrollToRegisterAndSelect('weekend-2')">
+              <span class="duration">2 Months</span>
+              <div class="price-right">
+                <span class="price price--orange">₹2,500</span>
+                <span class="save-tag save-tag--orange">Save ₹700</span>
+              </div>
+            </div>
+            <div class="plan-price-tier plan-price-tier--orange" onclick="scrollToRegisterAndSelect('weekend-3')">
+              <span class="duration">3 Months</span>
+              <div class="price-right">
+                <span class="price price--orange">₹4,000</span>
+                <span class="save-tag save-tag--orange">Save ₹800</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-details">
+            <div class="plan-timings plan-timings--orange">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z" />
+              </svg>
+              <span><strong>Timings:</strong> Morning (6:30 AM – 7:30 AM) &amp; Evening (4:00 PM – 5:30 PM)</span>
+            </div>
+            <ul class="plan-features">
+              <li>
+                <span class="feature-check feature-check--orange">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Core techniques &amp; match play
+              </li>
+              <li>
+                <span class="feature-check feature-check--orange">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Fitness drills &amp; fun group activities
+              </li>
+              <li>
+                <span class="feature-check feature-check--orange">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                  </svg>
+                </span>
+                Official academy playing jersey included
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn plan-btn--orange" onclick="scrollToRegisterAndSelect('weekend-1')">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17,12H12V17H10V12H5V10H10V5H12V10H17V12Z" />
+            </svg>
+            Register Weekend Batch
+          </button>
+        </div>
+
+      </div><!-- end .programs-plans-grid -->
+
+      <!-- Coaching Highlights & Venue Info footer card -->
+      <div class="coaching-info-footer-card">
+        <div class="footer-info-item">
+          <div class="footer-info-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8A2.5,2.5 0 0,1 7.5,10.5A2.5,2.5 0 0,1 5,13A2.5,2.5 0 0,1 2.5,10.5A2.5,2.5 0 0,1 5,8M19,8A2.5,2.5 0 0,1 21.5,10.5A2.5,2.5 0 0,1 19,13A2.5,2.5 0 0,1 16.5,10.5A2.5,2.5 0 0,1 19,8M12,13.75C14.73,13.75 20,15.11 20,16.5V18H4V16.5C4,15.11 9.27,13.75 12,13.75M5,14.38C6.68,14.38 9,15.03 9,16V18H3V16C3,15.03 5.32,14.38 5,14.38M19,14.38C18.68,14.38 17.32,15.03 17.32,16V18H21V16C21,15.03 17.32,14.38 19,14.38Z" />
+            </svg>
+          </div>
+          <div class="footer-info-text">
+            <h4>Elite Coaching Ecosystem</h4>
+            <p>Tailored programs for school, college, corporate players, and special women's batches.</p>
+          </div>
+        </div>
+
+        <div class="footer-info-item">
+          <div class="footer-info-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+            </svg>
+          </div>
+          <div class="footer-info-text">
+            <h4>Venue Location & Details</h4>
+            <p>Hosaroad, Doddanagamangla Road, Siddharth Apartment, Beside Mud Road, Bangalore.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Tournament Center (ASA Cup Season 1) --- -->
+  <section id="tournament" class="tournament-ref-section">
+    <div class="container">
+      <div class="tournament-ref-card">
+
+        <!-- Left Content Column -->
+        <div class="tournament-ref-content">
+
+          <!-- Breadcrumb -->
+          <div class="tournament-ref-breadcrumb">
+            Tournaments / Under 20 Volleyball Tournament
+          </div>
+
+          <!-- Category Badge -->
+          <div class="tournament-ref-badge-wrap">
+            <span class="tournament-ref-badge">UNDER-20 BOYS</span>
+          </div>
+
+          <!-- Main Heading -->
+          <h2 class="tournament-ref-title">UNDER 20 VOLLEYBALL TOURNAMENT</h2>
+
+          <!-- Subtitle / Description -->
+          <p class="tournament-ref-desc">
+            Compete with the best young squads in Bangalore! ASA Cup Season 1 launches this September. Massive cash
+            prizes,
+            trophies, and surprise gifts await the winners and runners-up.
+          </p>
+
+          <!-- 4-Column Horizontal Info Card -->
+          <div class="tournament-ref-infobar">
+
+            <!-- Col 1: Date -->
+            <div class="infobar-item">
+              <div class="infobar-icon-wrap">
+                <svg viewBox="0 0 24 24" class="infobar-svg">
+                  <path
+                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z" />
+                </svg>
+              </div>
+              <div class="infobar-text">
+                <strong class="infobar-val">Coming Soon</strong>
+                <span class="infobar-sub">SEPTEMBER 2026</span>
+              </div>
+            </div>
+
+            <!-- Col 2: Teams -->
+            <div class="infobar-item">
+              <div class="infobar-icon-wrap">
+                <svg viewBox="0 0 24 24" class="infobar-svg">
+                  <path
+                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+              </div>
+              <div class="infobar-text">
+                <strong class="infobar-val">12 Players</strong>
+                <span class="infobar-sub">PER TEAM</span>
+              </div>
+            </div>
+
+            <!-- Col 3: Entry Fee -->
+            <div class="infobar-item">
+              <div class="infobar-icon-wrap">
+                <svg viewBox="0 0 24 24" class="infobar-svg">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z" />
+                </svg>
+              </div>
+              <div class="infobar-text">
+                <strong class="infobar-val">₹1,200</strong>
+                <span class="infobar-sub">ENTRY FEE / TEAM</span>
+              </div>
+            </div>
+
+            <!-- Col 4: Location -->
+            <a href="https://maps.app.goo.gl/vhZfiFGrC3wTSxCT6?g_st=iw" target="_blank" rel="noopener noreferrer"
+              class="infobar-item infobar-link" title="Open location in Google Maps">
+              <div class="infobar-icon-wrap">
+                <svg viewBox="0 0 24 24" class="infobar-svg">
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+              </div>
+              <div class="infobar-text">
+                <strong class="infobar-val">Hosa Road,</strong>
+                <span class="infobar-sub">Bangalore</span>
+              </div>
+            </a>
+
+          </div>
+
+          <!-- Bottom Action Buttons Row -->
+          <div class="tournament-ref-actions">
+            <button type="button" class="btn-tournament-navy" onclick="scrollToRegister('tournament')">
+              Register Team &amp; Pay Entry Fee
+            </button>
+            <button type="button" class="btn-tournament-rules" onclick="openRulebookModal()">
+              <svg viewBox="0 0 24 24" class="rules-btn-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+              </svg>
+              <span>Rules &amp; Regulations</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Seamless Volleyball Hero Illustration Stage (No Box Container) -->
+        <div class="tournament-ref-media">
+          <!-- Dynamic Soft Motion Waves SVG Background -->
+          <div class="tournament-hero-waves-bg" aria-hidden="true">
+            <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="tournamentWaveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7" />
+                  <stop offset="60%" stop-color="#94a3b8" stop-opacity="0.4" />
+                  <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.1" />
+                </linearGradient>
+                <linearGradient id="tournamentWaveGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00b86b" stop-opacity="0.5" />
+                  <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.3" />
+                </linearGradient>
+                <radialGradient id="dotFadeMask" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                  <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+                </radialGradient>
+                <mask id="dotMatrixMask">
+                  <rect x="0" y="0" width="500" height="400" fill="url(#dotFadeMask)" />
+                </mask>
+                <pattern id="dotMatrixPattern" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.5" fill="#0b192c" opacity="0.12" />
+                </pattern>
+              </defs>
+
+              <!-- Soft Motion Waves Arching Behind Player -->
+              <path d="M-30,260 C110,370 330,330 530,160" stroke="url(#tournamentWaveGrad1)" stroke-width="32" stroke-linecap="round" />
+              <path d="M-50,300 C90,400 350,360 550,200" stroke="url(#tournamentWaveGrad2)" stroke-width="16" stroke-linecap="round" />
+              <path d="M10,210 C170,320 370,260 530,100" stroke="url(#tournamentWaveGrad1)" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+
+              <!-- Dot Matrix Soft Glow Background -->
+              <rect x="0" y="0" width="500" height="400" fill="url(#dotMatrixPattern)" mask="url(#dotMatrixMask)" />
+            </svg>
+          </div>
+
+          <img src="tournament-player-spike.jpg" alt="Under 20 Volleyball Player Spiking" class="tournament-ref-img">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Club Gallery Section --- -->
+  <section id="gallery" class="section-padding">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-subtitle">Visual Highlights</span>
+        <h2 class="section-title">Academy Posters & Photos</h2>
+        <div class="title-underline"></div>
+      </div>
+
+      <div class="gallery-wrapper">
+        <button class="gallery-nav-btn prev-btn" aria-label="Previous images" id="gallery-prev-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+
+        <div class="gallery-scroll-container" id="gallery-scroll-container">
+          <div class="gallery-item" data-index="0" data-title="Academy Action" data-desc="Apex Sports Training Drill">
+            <img src="photos%20of%20apex/IMG20250518105745.jpg" alt="Academy Action" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"The Spike" - Net Duel</h4>
+                <p>Practice Drill, Net rally</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="1" data-title="Apex Cup Setup" data-desc="Championship Court Prepared">
+            <img src="photos%20of%20apex/IMG20250518111117.jpg" alt="Apex Cup Setup" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Double Block" - Wall at the net</h4>
+                <p>Practice Session, Defensive Drill</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="2" data-title="Defense Practice" data-desc="Volleyball Digs & Passes">
+            <img src="photos%20of%20apex/IMG20250518120257.jpg" alt="Defense Practice" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Airborne" - The Kill Shot</h4>
+                <p>Practice Match, Attacking Play</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="3" data-title="Serving Drills"
+            data-desc="Practicing the Underhand Serve">
+            <img src="photos%20of%20apex/IMG20250518120648.jpg" alt="Serving Drills" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Rise To The Ball" - Attack At The Net</h4>
+                <p>Team Practice, Scrimmage Action</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="4" data-title="Spike Training"
+            data-desc="Coaching Volleyball Attack Forms">
+            <img src="photos%20of%20apex/IMG20250518121025.jpg" alt="Spike Training" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Full Extension" - Chasing The Ball</h4>
+                <p>Practice Match, Transition Play</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="5" data-title="Academy Session"
+            data-desc="Skills and Game Fundamentals">
+            <img src="photos%20of%20apex/IMG20250518121107.jpg" alt="Academy Session" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Split Second" - Ball Over The Net</h4>
+                <p>Practice Match, Rally In Progress</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="6" data-title="Apex Sports Camp" data-desc="Elite Training Environment">
+            <img src="photos%20of%20apex/IMG20250518121132.jpg" alt="Apex Sports Camp" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Reaching High - Set In Motion</h4>
+                <p>Practice Match, Crowd Reaction Moment</p>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item" data-index="7" data-title="Court Practice"
+            data-desc="Team Play and Teamwork Drills">
+            <img src="photos%20of%20apex/IMG20250518122010.jpg" alt="Court Practice" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"The Approach" - Tip Over The Block</h4>
+                <p>Practice Match, One-On-One Net Battle</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="10" data-title="Apex Lead Coach"
+            data-desc="Professional Instruction & Guidance">
+            <img src="photos%20of%20apex/coach.jpeg" alt="Apex Lead Coach" loading="lazy" decoding="async">
+            <div class="gallery-overlay">
+              <div class="gallery-info">
+                <h4>"Young Squad" - Future Of The Academy</h4>
+                <p>Junior Team, Group Portrait</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="gallery-nav-btn next-btn" aria-label="Next images" id="gallery-next-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+
+        <!-- Right Fade Edge Indicator on Mobile -->
+        <div class="gallery-fade-indicator" id="gallery-fade-indicator" aria-hidden="true"></div>
+      </div>
+
+      <!-- Gallery Scroll Indicator & Swipe Cue -->
+      <div class="gallery-scroll-meta">
+        <span class="gallery-swipe-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+          Swipe / Drag to explore photos
+        </span>
+        <div class="gallery-progress-track" aria-hidden="true">
+          <div class="gallery-progress-thumb" id="gallery-progress-thumb"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Registration Portal & Form --- -->
+  <section id="register" class="section-padding reg-section-bg">
+    <div class="container">
+
+      <div class="register-layout">
+
+        <!-- ===== LEFT CARD — Choose Program ===== -->
+        <div class="register-info-panel">
+          <div class="info-header">
+            <!-- Calendar icon top-right -->
+            <div class="info-header-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.9 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+              </svg>
+            </div>
+            <h3>Choose Program</h3>
+            <p>Select the program/event you want to sign up for. Filling details and processing payment registers you
+              instantly.</p>
+          </div>
+
+          <div class="program-selection-form">
+
+            <!-- Row 1: Tournament — BLUE -->
+            <div class="program-select-row active" id="row-tournament" onclick="activateProgram('tournament')">
+              <div class="program-radio-col">
+                <input type="radio" name="active-program" id="radio-tournament" value="tournament" checked>
+              </div>
+              <div class="prog-row-icon prog-row-icon--blue" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M12,14A2,2 0 0,0 10,16A2,2 0 0,0 12,18A2,2 0 0,0 14,16A2,2 0 0,0 12,14Z" />
+                </svg>
+              </div>
+              <div class="program-select-col">
+                <label class="prog-cat-label prog-cat-label--blue" for="tournament-select">Tournament Program</label>
+                <select id="tournament-select" class="form-input" onchange="onTournamentSelectChange(this.value)">
+                  <option value="tournament">ASA Cup Season 1 Entry</option>
+                </select>
+                <span class="prog-price-tag prog-price-tag--blue">₹1,200</span>
+              </div>
+              <div class="prog-row-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Row 2: Weekday — ORANGE -->
+            <div class="program-select-row" id="row-weekday" onclick="activateProgram('weekday')">
+              <div class="program-radio-col">
+                <input type="radio" name="active-program" id="radio-weekday" value="weekday">
+              </div>
+              <div class="prog-row-icon prog-row-icon--orange" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.9 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                </svg>
+              </div>
+              <div class="program-select-col">
+                <label class="prog-cat-label prog-cat-label--orange" for="weekday-select">Weekday Coaching Batch</label>
+                <div class="prog-select-pill-wrap">
+                  <select id="weekday-select" class="prog-duration-select" onchange="onWeekdaySelectChange(this.value)">
+                    <option value="weekday-1">1 Month (Mon to Fri)</option>
+                    <option value="weekday-2">2 Months (Save ₹500)</option>
+                    <option value="weekday-3">3 Months (Save ₹500)</option>
+                  </select>
+                </div>
+                <span class="prog-price-tag prog-price-tag--orange" id="weekday-price-tag">₹2,500</span>
+              </div>
+              <div class="prog-row-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Row 3: Weekend — GREEN -->
+            <div class="program-select-row" id="row-weekend" onclick="activateProgram('weekend')">
+              <div class="program-radio-col">
+                <input type="radio" name="active-program" id="radio-weekend" value="weekend">
+              </div>
+              <div class="prog-row-icon prog-row-icon--green" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+                </svg>
+              </div>
+              <div class="program-select-col">
+                <label class="prog-cat-label prog-cat-label--green" for="weekend-select">Weekend Coaching Batch</label>
+                <div class="prog-select-pill-wrap">
+                  <select id="weekend-select" class="prog-duration-select" onchange="onWeekendSelectChange(this.value)">
+                    <option value="weekend-1">1 Month (Sat, Sun &amp; Mon)</option>
+                    <option value="weekend-2">2 Months (Save ₹700)</option>
+                    <option value="weekend-3">3 Months (Save ₹800)</option>
+                  </select>
+                </div>
+                <span class="prog-price-tag prog-price-tag--green" id="weekend-price-tag">₹1,600</span>
+              </div>
+              <div class="prog-row-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+              </div>
+            </div>
+
+          </div><!-- end .program-selection-form -->
+
+          <!-- Security trust badge -->
+          <div class="reg-trust-badge">
+            <div class="reg-trust-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,15.97 6,15.43C6,13.82 8.71,12.5 12,12.5C15.29,12.5 18,13.82 18,15.43C17.76,15.97 17.47,16.5 17.13,17Z" />
+              </svg>
+            </div>
+            <div class="reg-trust-text">
+              <strong>Secure payments. Instant confirmation.</strong>
+              <span>Your data is safe with us.</span>
+            </div>
+          </div>
+
+        </div><!-- end .register-info-panel -->
+
+        <!-- ===== RIGHT CARD — Registration Form ===== -->
+        <div class="form-card">
+          <!-- Segmented toggle tabs -->
+          <div class="form-tabs">
+            <button class="form-tab-btn active" id="tab-tournament-btn" onclick="toggleFormType('tournament')">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12,3L2,12H5V20H11V14H13V20H19V12H22L12,3Z" />
+              </svg>
+              Tournament Team
+            </button>
+            <button class="form-tab-btn" id="tab-coaching-btn" onclick="toggleFormType('coaching')">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+              </svg>
+              Individual Coaching
+            </button>
+          </div>
+
+          <!-- Registration Form (all handlers/ids preserved) -->
+          <form id="registration-form" onsubmit="handleRegistrationSubmit(event)">
+            <!-- Hidden inputs — DO NOT REMOVE -->
+            <input type="hidden" id="selected-tier" value="tournament">
+            <input type="hidden" id="selected-price" value="1200">
+
+            <!-- TOURNAMENT SPECIFIC FIELDS -->
+            <div id="tournament-fields">
+              <div class="form-group">
+                <label for="team-name">Team / Club Name <span class="req-star">*</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7L17,12.2V18H15V14H9V18H7V12.2L12,7.7Z" />
+                  </svg>
+                  <input type="text" id="team-name" class="form-input has-icon" placeholder="e.g. Apex Wolves Spikers"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="coach-name">Coach Name / Representative <span class="req-star">*</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+                  </svg>
+                  <input type="text" id="coach-name" class="form-input has-icon"
+                    placeholder="Full name of representative" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="coach-phone">Contact Phone <span class="req-star">*</span></label>
+                  <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+                    </svg>
+                    <input type="tel" id="coach-phone" class="form-input has-icon" placeholder="10-digit number"
+                      pattern="[0-9]{10}" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="coach-email">Representative Email <span class="req-star">*</span></label>
+                  <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                    </svg>
+                    <input type="email" id="coach-email" class="form-input has-icon" placeholder="email@address.com"
+                      required>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="player-count">Number of Players <span class="req-star">*</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z" />
+                  </svg>
+                  <select id="player-count" class="form-input has-icon">
+                    <option value="12" selected>12 Players (Fixed Squad)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- COACHING SPECIFIC FIELDS (Hidden by default) -->
+            <div id="coaching-fields" style="display: none;">
+              <div class="form-group">
+                <label for="student-name">Student Full Name <span class="req-star">*</span></label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+                  </svg>
+                  <input type="text" id="student-name" class="form-input has-icon" placeholder="Enter student name">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="student-dob">Date of Birth <span class="req-star">*</span></label>
+                  <input type="date" id="student-dob" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label for="student-gender">Gender <span class="req-star">*</span></label>
+                  <select id="student-gender" class="form-input">
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="student-phone">Contact Phone <span class="req-star">*</span></label>
+                  <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+                    </svg>
+                    <input type="tel" id="student-phone" class="form-input has-icon" placeholder="10-digit number"
+                      pattern="[0-9]{10}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="student-email">Email Address <span class="req-star">*</span></label>
+                  <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                    </svg>
+                    <input type="email" id="student-email" class="form-input has-icon" placeholder="email@address.com">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="student-experience">Coaching Group <span class="req-star">*</span></label>
+                <select id="student-experience" class="form-input">
+                  <option value="Beginner">Beginner Camp</option>
+                  <option value="Intermediate">Intermediate Camp</option>
+                  <option value="School / College Team">School / College Team Coaching</option>
+                  <option value="Corporate / Special">Corporate / Women's Special</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Agreement Checkbox -->
+            <div class="reg-agree-row">
+              <input type="checkbox" id="terms-agree" required>
+              <label for="terms-agree">
+                I agree to verify ID cards at the tournament arena. I understand registration fee is non-refundable.
+              </label>
+            </div>
+
+            <!-- Payment Button -->
+            <button type="submit" class="form-submit-btn reg-pay-btn">
+              <span>Proceed to Payment</span>
+              <span class="reg-pay-price">(<span id="btn-price-display">₹1,200</span>)</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+              </svg>
+            </button>
+            <p class="reg-secure-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z" />
+              </svg>
+              Secure checkout powered by trusted partners
+            </p>
+
+          </form>
+        </div><!-- end .form-card -->
+
+      </div><!-- end .register-layout -->
+
+    </div>
+  </section>
+
+  <!-- --- Contact Section --- -->
+  <section id="contact" class="contact-section-redesign">
+    <!-- Top Hero Banner with Athletic Sports Graphics -->
+    <div class="contact-hero-banner">
+      <div class="contact-hero-bg-shapes" aria-hidden="true">
+        <!-- Golden / Navy Dynamic Swoop Shapes -->
+        <svg class="contact-swoop-left" viewBox="0 0 300 200" preserveAspectRatio="none">
+          <path d="M0,0 L0,200 Q150,160 300,100 Q150,20 0,0 Z" fill="#F5A900" opacity="0.95" />
+          <path d="M0,0 L0,180 Q140,140 280,80 Q130,10 0,0 Z" fill="#0B2A4A" opacity="0.9" />
+        </svg>
+        <svg class="contact-swoop-right" viewBox="0 0 300 200" preserveAspectRatio="none">
+          <path d="M300,0 L300,200 Q150,160 0,100 Q150,20 300,0 Z" fill="#F5A900" opacity="0.95" />
+          <path d="M300,0 L300,180 Q160,140 20,80 Q170,10 300,0 Z" fill="#0B2A4A" opacity="0.9" />
+        </svg>
+
+        <!-- Athletic Dotted Grid -->
+        <div class="contact-dot-grid"></div>
+
+        <!-- Real Sports Action Photo with Seamless Gradient Blend -->
+        <div class="contact-hero-photo-wrap">
+          <img src="contact-volleyball-hero.jpg" alt="Volleyball Action" class="contact-hero-photo">
+          <div class="contact-hero-photo-fade"></div>
+        </div>
+      </div>
+
+      <div class="container contact-hero-content">
+        <span class="contact-hero-subtitle">REACH OUT</span>
+        <h2 class="contact-hero-title">LOCATION &amp; CONTACT</h2>
+        <p class="contact-hero-desc">We’d love to hear from you! Find our location, give us a call, or drop us an email.
+        </p>
+        <div class="contact-hero-gold-line"></div>
+      </div>
+    </div>
+
+    <!-- Main Contact Cards Body with Curved Flowing Background -->
+    <div class="contact-cards-section">
+      <div class="container">
+        <div class="contact-cards-grid">
+
+          <!-- LEFT CARD — APEX SPORTS ARENA (Dark Navy Premium Card) -->
+          <div class="contact-info-card-premium">
+            <!-- Background Trophy Watermark -->
+            <div class="contact-card-watermark" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M19,5H17V3H7V5H5C3.9,5 3,5.9 3,7V8C3,10.55 4.92,12.63 7.39,12.94C8.02,14.44 9.37,15.57 11,15.9V18H8V20H16V18H13V15.9C14.63,15.57 15.98,14.44 16.61,12.94C19.08,12.63 21,10.55 21,8V7C21,5.9 20.1,5 19,5M5,8V7H7V10.82C5.84,10.4 5,9.29 5,8M19,8C19,9.29 18.16,10.4 17,10.82V7H19V8Z" />
+              </svg>
+            </div>
+
+            <!-- Card Header -->
+            <div class="contact-card-header">
+              <div class="contact-badge-icon">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,15.97 6,15.43C6,13.82 8.71,12.5 12,12.5C15.29,12.5 18,13.82 18,15.43C17.76,15.97 17.47,16.5 17.13,17Z" />
+                </svg>
+              </div>
+              <h3 class="contact-arena-title">Apex <span class="gold-text">Sports Arena</span></h3>
+            </div>
+
+            <!-- Contact Detail List -->
+            <div class="premium-contact-list">
+              <!-- Address Venue -->
+              <div class="premium-contact-item">
+                <div class="contact-gold-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" />
+                  </svg>
+                </div>
+                <div class="contact-item-info">
+                  <span class="contact-item-label">ADDRESS VENUE</span>
+                  <p class="contact-item-val">Doddanagamangala Road, Hosaroad, Siddharth Apartment, Beside Mud Road,
+                    Bangalore – 560100</p>
+                </div>
+              </div>
+
+              <!-- Phone Contacts -->
+              <div class="premium-contact-item">
+                <div class="contact-gold-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+                  </svg>
+                </div>
+                <div class="contact-item-info">
+                  <span class="contact-item-label">PHONE CONTACTS</span>
+                  <div class="contact-item-val contact-links-group">
+                    <a href="tel:+916363845180">+91 6363845180</a>
+                    <a href="tel:+916360776957">+91 6360776957</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Support Email -->
+              <div class="premium-contact-item">
+                <div class="contact-gold-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                  </svg>
+                </div>
+                <div class="contact-item-info">
+                  <span class="contact-item-label">SUPPORT EMAIL</span>
+                  <div class="contact-item-val">
+                    <a href="mailto:apexsportsacademy08@gmail.com">apexsportsacademy08@gmail.com</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Follow Us Footer -->
+            <div class="contact-follow-section">
+              <span class="contact-follow-label">FOLLOW US</span>
+              <div class="contact-social-icons">
+                <a href="#" class="social-round-btn fb" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M17,2H14A5,5 0 0,0 9,7V10H6V14H9V22H13V14H16L17,10H13V7A1,1 0 0,1 14,6H17V2Z" />
+                  </svg>
+                </a>
+                <a href="https://www.instagram.com/apex.sports.academy_asa?utm_source=qr" class="social-round-btn insta"
+                  aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4A3.6,3.6 0 0,0 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6A3.6,3.6 0 0,0 16.4,4H7.6M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5Z" />
+                  </svg>
+                </a>
+                <a href="#" class="social-round-btn yt" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M10,15L15.19,12L10,9V15M21.56,7.11C21.72,7.74 21.83,8.71 21.89,10.03C21.95,11.36 21.98,12.35 21.98,13C21.98,13.65 21.95,14.64 21.89,15.97C21.83,17.29 21.72,18.26 21.56,18.89C21.39,19.5 21,20 20.39,20.17C19.76,20.33 18.2,20.44 15.71,20.5C13.22,20.56 12,20.59 12,20.59C12,20.59 10.78,20.56 8.29,20.5C5.8,20.44 4.24,20.33 3.61,20.17C3,20 2.61,19.5 2.44,18.89C2.28,18.26 2.17,17.29 2.11,15.97C2.05,14.64 2.02,13.65 2.02,13C2.02,12.35 2.05,11.36 2.11,10.03C2.17,8.71 2.28,7.74 2.44,7.11C2.61,6.5 3,6 3.61,5.83C4.24,5.67 5.8,5.56 8.29,5.5C10.78,5.44 12,5.41 12,5.41C12,5.41 13.22,5.44 15.71,5.5C18.2,5.56 19.76,5.67 20.39,5.83C21,6 21.39,6.5 21.56,7.11Z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD — GOOGLE MAP (Bright White Card with Skyline Illustration) -->
+          <div class="contact-map-card-premium">
+            <div class="map-card-inner">
+              <!-- Circular Location Pin Badge -->
+              <div class="map-center-pin-badge">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12,2C15.86,2 19,5.14 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9C5,5.14 8.14,2 12,2M12,4A5,5 0 0,0 7,9C7,10.5 7.9,12.63 9.42,15.22C10.61,17.25 11.66,18.9 12,19.39C12.34,18.9 13.39,17.25 14.58,15.22C16.1,12.63 17,10.5 17,9A5,5 0 0,0 12,4M12,6A3,3 0 0,1 15,9A3,3 0 0,1 12,12A3,3 0 0,1 9,9A3,3 0 0,1 12,6Z" />
+                </svg>
+              </div>
+
+              <!-- Heading and Details -->
+              <h3 class="map-card-heading">Find Us On Map</h3>
+              <p class="map-card-address">Doddanagamangala Road, Siddharth Apartment, Hosaroad, Beside Mud Road,
+                Bangalore</p>
+
+              <!-- Prominent Gold Button -->
+              <a href="https://maps.app.goo.gl/vhZfiFGrC3wTSxCT6?g_st=iw" target="_blank" rel="noopener noreferrer"
+                class="btn-gold-map">
+                <svg class="map-btn-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M11,16.5L15.5,12L11,7.5V16.5Z" />
+                </svg>
+                <span>Open in Google Maps</span>
+              </a>
+            </div>
+
+            <!-- Bangalore Skyline Illustration & Standing Gold Location Pin -->
+            <div class="map-skyline-illustration" aria-hidden="true">
+              <svg viewBox="0 0 500 150" preserveAspectRatio="xMidYMax meet" class="skyline-svg"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="skyGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#1B4D7E" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#0B2A4A" stop-opacity="0.9" />
+                  </linearGradient>
+                  <linearGradient id="skyGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#061A33" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#030E1D" stop-opacity="1" />
+                  </linearGradient>
+                  <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#E2E8F0" />
+                    <stop offset="100%" stop-color="#CBD5E1" />
+                  </linearGradient>
+                  <filter id="pinGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#F5A900" flood-opacity="0.5" />
+                  </filter>
+                </defs>
+
+                <!-- Background Layer: Distant Buildings -->
+                <g fill="url(#skyGrad1)">
+                  <!-- Left Distant Towers -->
+                  <rect x="25" y="45" width="22" height="75" rx="2" />
+                  <polygon points="25,45 36,25 47,45" />
+                  <rect x="52" y="60" width="18" height="60" rx="1" />
+                  <rect x="74" y="35" width="28" height="85" rx="2" />
+                  <rect x="106" y="55" width="20" height="65" />
+                  <polygon points="106,55 116,40 126,55" />
+                  <rect x="130" y="70" width="25" height="50" rx="2" />
+                  <rect x="160" y="80" width="30" height="40" />
+
+                  <!-- Right Distant Towers -->
+                  <rect x="310" y="75" width="25" height="45" rx="1" />
+                  <rect x="340" y="50" width="22" height="70" rx="2" />
+                  <rect x="366" y="30" width="26" height="90" rx="2" />
+                  <polygon points="366,30 379,15 392,30" />
+                  <rect x="396" y="60" width="24" height="60" rx="1" />
+                  <rect x="424" y="45" width="30" height="75" rx="2" />
+                  <rect x="458" y="65" width="20" height="55" />
+                </g>
+
+                <!-- Foreground Layer: Detailed Navy Silhouettes & Glass Windows -->
+                <g fill="url(#skyGrad2)">
+                  <!-- Left Buildings -->
+                  <rect x="10" y="65" width="24" height="65" rx="2" />
+                  <rect x="38" y="75" width="20" height="55" />
+                  <rect x="62" y="50" width="24" height="80" rx="2" />
+                  <rect x="90" y="68" width="28" height="62" rx="2" />
+                  <rect x="122" y="85" width="32" height="45" rx="1" />
+                  <circle cx="160" cy="115" r="14" fill="#0B2A4A" opacity="0.8" />
+                  <circle cx="180" cy="118" r="10" fill="#061A33" opacity="0.9" />
+
+                  <!-- Right Buildings -->
+                  <circle cx="320" cy="118" r="10" fill="#061A33" opacity="0.9" />
+                  <circle cx="338" cy="115" r="14" fill="#0B2A4A" opacity="0.8" />
+                  <rect x="350" y="80" width="26" height="50" rx="1" />
+                  <rect x="380" y="52" width="22" height="78" rx="2" />
+                  <rect x="406" y="70" width="26" height="60" rx="2" />
+                  <rect x="436" y="55" width="28" height="75" rx="2" />
+                  <rect x="468" y="75" width="24" height="55" rx="1" />
+                </g>
+
+                <!-- Windows on Key Buildings (Glowing Yellow & Light Blue dots) -->
+                <g fill="#F5A900" opacity="0.75">
+                  <rect x="68" y="58" width="3" height="4" />
+                  <rect x="75" y="58" width="3" height="4" />
+                  <rect x="68" y="66" width="3" height="4" />
+                  <rect x="75" y="66" width="3" height="4" />
+                  <rect x="68" y="74" width="3" height="4" />
+                  <rect x="75" y="74" width="3" height="4" />
+                  <rect x="386" y="60" width="3" height="4" />
+                  <rect x="393" y="60" width="3" height="4" />
+                  <rect x="386" y="68" width="3" height="4" />
+                  <rect x="393" y="68" width="3" height="4" />
+                </g>
+
+                <!-- Roadway / Ground Base -->
+                <path d="M0,130 Q250,118 500,130 L500,150 L0,150 Z" fill="#061A33" />
+                <path d="M210,130 L290,130 L320,150 L180,150 Z" fill="#E2E8F0" opacity="0.25" />
+
+                <!-- Center Golden Pin Marker on Roadway -->
+                <g filter="url(#pinGlow)">
+                  <path
+                    d="M250,90 C242.27,90 236,96.27 236,104 C236,114.5 250,128 250,128 C250,128 264,114.5 264,104 C264,96.27 257.73,90 250,90 Z"
+                    fill="#F5A900" />
+                  <circle cx="250" cy="103" r="4.5" fill="#061A33" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+        </div><!-- end .contact-cards-grid -->
+
+        <!-- Bottom Feature Strip (Dark Navy with Gold Icons & 3 Columns) -->
+        <div class="contact-feature-strip">
+          <div class="contact-features-grid">
+
+            <!-- Column 1: Premium Facilities -->
+            <div class="contact-feature-col">
+              <div class="feature-gold-icon">
+                <svg viewBox="0 0 24 24">
+                  <!-- Arena Shield & Stars -->
+                  <path
+                    d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,6.5L13.5,9.5L16.8,10L14.4,12.3L15,15.6L12,14L9,15.6L9.6,12.3L7.2,10L10.5,9.5L12,6.5Z" />
+                </svg>
+              </div>
+              <div class="feature-col-text">
+                <h4 class="feature-col-title">PREMIUM FACILITIES</h4>
+                <p class="feature-col-desc">World-class courts and training infrastructure</p>
+              </div>
+            </div>
+
+            <div class="feature-divider" aria-hidden="true"></div>
+
+            <!-- Column 2: Expert Coaches -->
+            <div class="contact-feature-col">
+              <div class="feature-gold-icon">
+                <svg viewBox="0 0 24 24">
+                  <!-- Coaches / Team Group -->
+                  <path
+                    d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z" />
+                </svg>
+              </div>
+              <div class="feature-col-text">
+                <h4 class="feature-col-title">EXPERT COACHES</h4>
+                <p class="feature-col-desc">Learn from experienced and certified coaches</p>
+              </div>
+            </div>
+
+            <div class="feature-divider" aria-hidden="true"></div>
+
+            <!-- Column 3: Build Champions -->
+            <div class="contact-feature-col">
+              <div class="feature-gold-icon">
+                <svg viewBox="0 0 24 24">
+                  <!-- Championship Trophy -->
+                  <path
+                    d="M19,5H17V3H7V5H5C3.9,5 3,5.9 3,7V8C3,10.55 4.92,12.63 7.39,12.94C8.02,14.44 9.37,15.57 11,15.9V18H8V20H16V18H13V15.9C14.63,15.57 15.98,14.44 16.61,12.94C19.08,12.63 21,10.55 21,8V7C21,5.9 20.1,5 19,5M5,8V7H7V10.82C5.84,10.4 5,9.29 5,8M19,8C19,9.29 18.16,10.4 17,10.82V7H19V8Z" />
+                </svg>
+              </div>
+              <div class="feature-col-text">
+                <h4 class="feature-col-title">BUILD CHAMPIONS</h4>
+                <p class="feature-col-desc">Shaping athletes today, champions tomorrow</p>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- end .contact-feature-strip -->
+
+      </div><!-- end .container -->
+
+    </div><!-- end .contact-cards-section -->
+  </section>
+
+  <!-- Admin panel moved to /admin/dashboard (secure separate page) -->
+
+
+  <!-- --- Admin Login Modal --- -->
+
+  <!-- --- Enquiry Authorization / Allow Access Modal --- -->
+  <div class="enquiry-modal-overlay" id="enquiry-modal">
+    <div class="enquiry-modal-card">
+      <button class="enquiry-close" onclick="closeEnquiryModal()">&times;</button>
+      <h3
+        style="margin-top: 0; margin-bottom: 12px; font-size: 1.5rem; font-family: var(--font-heading); color: #111827; display: flex; align-items: center; gap: 10px;">
+        <span style="color: #e50914;">🛡️</span> Allow Access &amp; Request Callback
+      </h3>
+      <p style="margin-bottom: 20px; font-size: 0.95rem; color: #4b5563; line-height: 1.5;">
+        You are requesting a quick callback for mobile number: <strong id="enquiry-modal-phone"
+          style="color: #e50914; font-size: 1.05rem;"></strong>
+      </p>
+
+      <div class="enquiry-checkbox-wrapper">
+        <input type="checkbox" id="enquiry-auth-check" onchange="toggleEnquirySubmitBtn(this)">
+        <label for="enquiry-auth-check" class="enquiry-checkbox-label">
+          I allow access and authorize <strong>Apex Sports Academy</strong> to contact me via phone call or WhatsApp
+          message regarding coaching batches, trial sessions, and schedules.
+        </label>
+      </div>
+
+      <button id="enquiry-submit-btn" class="enquiry-submit-btn" disabled onclick="submitEnquiry()">
+        Allow Access &amp; Get Started
+      </button>
+    </div>
+  </div>
+
+  <!-- --- Razorpay / Stripe Mock Payment Gateway Modal --- -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+          </svg>
+          <span>Apex Secure Checkout</span>
+        </div>
+        <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- STEP 2: PROCESSING / CHARGING SCREEN -->
+        <div id="payment-gateway-step2" style="display: none;">
+          <div class="processing-screen">
+            <div class="spinner"></div>
+            <h3 class="processing-title">Processing Your Transaction</h3>
+            <p class="processing-desc">Please do not refresh the page or click back button. Connecting to secure
+              merchant bank...</p>
+          </div>
+        </div>
+
+        <!-- STEP 3: SUCCESS / RECEIPT DETAILS -->
+        <div id="payment-gateway-step3" style="display: none;">
+          <div class="receipt-wrapper">
+            <div class="receipt-icon-success">
+              <svg viewBox="0 0 24 24">
+                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+              </svg>
+            </div>
+            <h3 class="receipt-title">Payment Successful! 🎉</h3>
+            <p class="receipt-subtitle">Your registration is confirmed. A receipt is generated below.</p>
+
+            <div class="receipt-slip" id="receipt-slip-print">
+              <div class="receipt-item">
+                <span>Registration ID:</span>
+                <span id="receipt-id" style="font-family: monospace; font-weight: 700; color: #fff;"></span>
+              </div>
+              <div class="receipt-item">
+                <span>Team / Student Name:</span>
+                <span id="receipt-name" style="font-weight: 600; color: #fff;"></span>
+              </div>
+              <div class="receipt-item">
+                <span>Program / Event:</span>
+                <span id="receipt-program" style="font-weight: 600; color: #fff;"></span>
+              </div>
+              <div class="receipt-item">
+                <span>Amount Paid:</span>
+                <span id="receipt-amount" style="font-weight: 700; color: var(--secondary);"></span>
+              </div>
+              <div class="receipt-item">
+                <span>Payment Status:</span>
+                <span id="receipt-status" style="font-weight: 700; color: #10b981;">PAID</span>
+              </div>
+              <div class="receipt-item">
+                <span>Razorpay Payment ID:</span>
+                <span id="receipt-ref" style="font-family: monospace; color: #fff;"></span>
+              </div>
+              <div class="receipt-item divider">
+                <span>Payment Date & Time:</span>
+                <span id="receipt-date" style="color: #fff;"></span>
+              </div>
+            </div>
+
+            <div class="receipt-actions">
+              <button class="btn-primary" onclick="downloadReceiptPDF()"
+                style="display: flex; align-items: center; justify-content: center; gap: 8px;">📄 Download
+                Receipt</button>
+              <button class="btn-secondary" onclick="printReceiptPDF()">Print Receipt</button>
+              <button class="btn-secondary" onclick="closePaymentModal()"
+                style="border-color: rgba(255,255,255,0.2); color: #fff;">Close Portal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- Footer --- -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#hero" class="logo-wrapper" style="margin-bottom: 20px;">
+          <img src="Logo.jpeg" alt="Apex Sports Logo" class="logo-img">
+          <span class="logo-text footer-logo-text">APEX <span>SPORTS</span></span>
+        </a>
+        <p>Apex Sports Academy commits to unlocking the full potential of volleyball athletes in Bangalore. Push your
+          limit to know your limits!</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Academy Links</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Home Base</a></li>
+          <li><a href="#programs">Coaching Camp</a></li>
+          <li><a href="#tournament">Tournament Center</a></li>
+          <li><a href="#gallery">Poster Gallery</a></li>
+          <li><a href="#contact">Academy Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Training Hours</h4>
+        <ul class="footer-links" style="color: var(--text-secondary); font-size: 0.9rem;">
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Morning Batch:</strong><br>6:00 AM – 8:30 AM</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Evening Batch:</strong><br>4:30 PM – 7:30 PM</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Weekends Elite:</strong><br>7:00 AM – 10:30 AM
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Newsletter Info</h4>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px;">Receive schedules, camp dates,
+          and tournament updates directly in your inbox.</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Your Email Address" required
+            autocomplete="email">
+          <button type="submit" id="newsletter-btn" class="newsletter-btn" aria-label="Subscribe">
+            <svg viewBox="0 0 24 24">
+              <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
+          </button>
+        </form>
+        <div id="newsletter-status" class="newsletter-status" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="footer-copyright-block">
+        <p class="footer-copyright-text">
+          &copy; 2026 Apex Sports Academy. All rights reserved.<br class="footer-mobile-break"> Bangalore, Karnataka.
+        </p>
+      </div>
+      <div class="footer-slogan-block">
+        <p class="footer-slogan-text">
+          Made for Athletes | Slogan: Push Your Limit To Know Your Limits.
+        </p>
+      </div>
+    </div>
+
+    <!-- Pixel Cult Developer Credit -->
+    <div class="pixel-cult-credit">
+      <div class="pixel-cult-divider"></div>
+      <a href="https://pixelcult.net" target="_blank" rel="noopener noreferrer" class="pixel-cult-link"
+        aria-label="Developed by Pixel Cult">
+        <span class="pixel-cult-label">Developed by</span>
+        <div class="pixel-cult-brand">
+          <img src="pixel-cult-logo.png" alt="Pixel Cult" class="pixel-cult-logo-img">
+        </div>
+      </a>
+    </div>
+  </footer>
+
+  <!-- --- Gallery Lightbox Modal --- -->
+  <div class="lightbox-overlay" id="gallery-lightbox" aria-modal="true" role="dialog">
+    <button class="lightbox-close" id="lightbox-close-btn" aria-label="Close Lightbox">&times;</button>
+
+    <button class="lightbox-nav-btn lightbox-prev" id="lightbox-prev-btn" aria-label="Previous Image">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+
+    <div class="lightbox-content">
+      <img src="" alt="Enlarged gallery view" id="lightbox-img">
+      <div class="lightbox-caption" id="lightbox-caption">
+        <h4 id="lightbox-title"></h4>
+        <p id="lightbox-desc"></p>
+      </div>
+    </div>
+
+    <button class="lightbox-nav-btn lightbox-next" id="lightbox-next-btn" aria-label="Next Image">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- --- Full Tournament Rulebook Modal --- -->
+  <div class="rulebook-modal-overlay" id="rulebook-modal" aria-modal="true" role="dialog">
+    <div class="rulebook-modal-backdrop" onclick="closeRulebookModal()"></div>
+    <div class="rulebook-modal-container">
+      <div class="rulebook-modal-header">
+        <div class="rulebook-header-left">
+          <span class="rulebook-badge">ASA CUP • OFFICIAL MANUAL</span>
+          <h3 class="rulebook-title">Rules &amp; Regulations</h3>
+          <p class="rulebook-subtitle">Official tournament guidelines, match regulations, and eligibility requirements.
+          </p>
+        </div>
+        <button class="rulebook-close-btn" onclick="closeRulebookModal()"
+          aria-label="Close Rulebook Modal">&times;</button>
+      </div>
+
+      <div class="rulebook-modal-body">
+        <div class="rulebook-grid-details">
+
+          <!-- Section 1: Eligibility -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-gold">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">01</span>
+                <h4>Eligibility</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Only Under-20 boys are eligible to participate.</li>
+              <li>Players must carry valid age/identity proof.</li>
+              <li>Each team must register with the required number of players.</li>
+            </ul>
+          </div>
+
+          <!-- Section 2: Team Registration -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-blue">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">02</span>
+                <h4>Team Registration</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Maximum 12 teams will be accepted.</li>
+              <li>Registration will be confirmed only after payment of the entry fee.</li>
+              <li>Once registration is confirmed, the team details cannot be changed without approval.</li>
+            </ul>
+          </div>
+
+          <!-- Section 3: Match Rules -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-teal">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">03</span>
+                <h4>Match Rules</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Matches will follow standard volleyball rules.</li>
+              <li>Referee decisions will be final.</li>
+              <li>Teams must report before their scheduled match time.</li>
+              <li>Late arrival may result in disqualification.</li>
+            </ul>
+          </div>
+
+          <!-- Section 4: Player Conduct -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-orange">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">04</span>
+                <h4>Player Conduct</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Players must maintain discipline and sportsmanship.</li>
+              <li>Abusive or inappropriate behaviour will not be tolerated.</li>
+              <li>Any misconduct may result in removal from the tournament.</li>
+            </ul>
+          </div>
+
+          <!-- Section 5: Tournament Schedule -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-purple">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">05</span>
+                <h4>Tournament Schedule</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Tournament month: September 2026 (Dates Coming Soon).</li>
+              <li>Match schedules and confirmed dates will be communicated to registered teams.</li>
+            </ul>
+          </div>
+
+          <!-- Section 6: Entry Fee -->
+          <div class="rulebook-section-card">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-cyan">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">06</span>
+                <h4>Entry Fee</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Entry fee: ₹1,200 per team.</li>
+              <li>Registration/payment confirmation is required to participate.</li>
+              <li>Follow the existing payment flow already implemented on the website.</li>
+            </ul>
+          </div>
+
+          <!-- Section 7: General Conditions -->
+          <div class="rulebook-section-card rulebook-card-full">
+            <div class="rb-card-header">
+              <div class="rb-icon icon-teal">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
+              </div>
+              <div>
+                <span class="rb-num">07</span>
+                <h4>General Conditions</h4>
+              </div>
+            </div>
+            <ul class="rb-list">
+              <li>Tournament organizers reserve the right to modify the schedule if required.</li>
+              <li>Any disputes will be handled by the tournament organizers.</li>
+              <li>The organizer's decision regarding tournament matters will be final.</li>
+            </ul>
+          </div>
+
+        </div><!-- end .rulebook-grid-details -->
+      </div><!-- end .rulebook-modal-body -->
+
+      <div class="rulebook-modal-footer">
+        <div class="rulebook-footer-note">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+          </svg>
+          <span>For technical queries or rules clarification, speak to the tournament desk.</span>
+        </div>
+        <div class="rulebook-footer-actions">
+          <button type="button" class="btn-secondary" onclick="closeRulebookModal()">Close</button>
+          <button type="button" class="btn-primary"
+            onclick="closeRulebookModal(); scrollToRegister('tournament');">Register Team Now</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- --- Unified Authentication Modal (Common for Admin & Athletes) --- -->
+  <div class="auth-modal-overlay" id="auth-modal" aria-modal="true" role="dialog">
+    <div class="auth-modal-backdrop" onclick="closeAuthModal()"></div>
+    <div class="auth-modal-container">
+      <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close modal">&times;</button>
+
+      <div class="auth-modal-header">
+        <div class="auth-modal-logo">
+          <img src="Logo.jpeg" alt="Apex Sports Logo" class="auth-logo-img">
+          <div class="logo-text">Apex <span>Sports</span></div>
+        </div>
+        <h3 class="auth-modal-title" id="auth-modal-title">Account Sign In</h3>
+        <p class="auth-modal-sub" id="auth-modal-sub">Sign in to manage registrations, teams, and schedules</p>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs" id="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign
+          In</button>
+        <button type="button" class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">Create
+          Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="auth-login-form" class="auth-form" onsubmit="handleAuthLogin(event)">
+        <div class="auth-error" id="auth-login-error"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="auth-identifier">Username, Phone or Email</label>
+          <input type="text" id="auth-identifier" class="form-input" placeholder="Enter username, phone, or email"
+            required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="auth-password">Password</label>
+          <div class="auth-pw-wrap">
+            <input type="password" id="auth-password" class="form-input" placeholder="Enter your password" required
+              autocomplete="current-password">
+            <button type="button" class="auth-pw-toggle" onclick="toggleAuthPw('auth-password')"
+              aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit-btn auth-submit-btn" id="auth-login-submit">
+          <span id="auth-login-btn-text">Sign In</span>
+          <svg viewBox="0 0 24 24">
+            <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42 5.43 5.43H5v2.44z" />
+          </svg>
+        </button>
+
+        <p class="auth-switch-prompt">
+          Don't have an account? <a href="javascript:void(0)" onclick="switchAuthTab('register')">Create an Athlete
+            Profile</a>
+        </p>
+      </form>
+
+      <!-- Registration Form -->
+      <form id="auth-register-form" class="auth-form" onsubmit="handleAuthRegister(event)" style="display: none;">
+        <div class="auth-error" id="auth-register-error"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="e.g. John Doe / Coach Name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Phone Number (10 digits)</label>
+          <input type="tel" id="reg-phone" class="form-input" placeholder="9876543210" pattern="[0-9]{10}"
+            maxlength="10" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="athlete@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Create Password</label>
+          <div class="auth-pw-wrap">
+            <input type="password" id="reg-password" class="form-input" placeholder="Create a secure password" required
+              minlength="4">
+            <button type="button" class="auth-pw-toggle" onclick="toggleAuthPw('reg-password')"
+              aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,7M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit-btn auth-submit-btn" id="auth-register-submit">
+          <span id="auth-reg-btn-text">Create Account</span>
+          <svg viewBox="0 0 24 24">
+            <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42 5.43 5.43H5v2.44z" />
+          </svg>
+        </button>
+
+        <p class="auth-switch-prompt">
+          Already have an account? <a href="javascript:void(0)" onclick="switchAuthTab('login')">Sign In</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- User Account Dashboard Modal --- -->
+  <div class="auth-modal-overlay" id="user-portal-modal" aria-modal="true" role="dialog" style="display: none;">
+    <div class="auth-modal-backdrop" onclick="closeUserPortal()"></div>
+    <div class="auth-modal-container user-portal-container">
+      <button class="auth-modal-close" onclick="closeUserPortal()" aria-label="Close modal">&times;</button>
+
+      <div class="user-portal-header">
+        <div class="user-avatar-circle" id="portal-user-avatar">A</div>
+        <div>
+          <h3 class="user-portal-name" id="portal-user-name">Athlete</h3>
+          <p class="user-portal-phone" id="portal-user-phone">—</p>
+          <span class="user-portal-badge" id="portal-user-role">Verified Athlete</span>
+        </div>
+      </div>
+
+      <div class="user-portal-content">
+        <div class="user-portal-sec-title">
+          <h4>My Registrations &amp; Bookings</h4>
+          <button class="btn-refresh-portal" onclick="loadUserPortalData()" title="Refresh Registrations">↻
+            Refresh</button>
+        </div>
+
+        <div id="user-portal-registrations" class="user-regs-list">
+          <div class="portal-empty-state">
+            <p>Loading your tournament entries and coaching bookings...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-portal-footer">
+        <button type="button" class="btn-portal-action" onclick="closeUserPortal(); scrollToRegister('tournament');">
+          + New Registration
+        </button>
+        <button type="button" class="btn-portal-logout" onclick="handleUserLogout()">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js?v=24.0"></script>
+</body>
+
+</html>

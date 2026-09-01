@@ -1,0 +1,10 @@
+node_modules/
+.env
+credentials.json
+admin_audit.log
+database.json
+newsletter_tokens.json
+verified_tokens.json
+config.json
+.DS_Store
+

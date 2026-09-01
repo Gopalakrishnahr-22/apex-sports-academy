@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Apex Sports Academy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <style>
+    .pw-toggle { position:relative; }
+    .pw-toggle-btn { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; padding:4px; display:flex; }
+    .pw-toggle-btn:hover { color:var(--primary); }
+    .pw-toggle-btn svg { width:18px; height:18px; fill:currentColor; }
+    .rate-limit-note { margin-top:10px; font-size:0.75rem; color:var(--text-muted); text-align:center; }
+    .attempts-warning { color:var(--warning); font-size:0.78rem; text-align:center; margin-top:6px; display:none; }
+  </style>
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="/Logo.jpeg" alt="Apex Sports Logo" onerror="this.style.display='none'">
+      <div class="logo-text">Apex <span>Sports</span></div>
+    </div>
+
+    <h1 class="login-heading">Admin Access</h1>
+    <p class="login-sub">Secure administrator login portal</p>
+
+    <div class="login-error" id="login-error"></div>
+
+    <form id="login-form" onsubmit="handleLogin(event)" autocomplete="off">
+      <div class="form-field">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-input" type="text" id="username" name="username"
+          placeholder="Enter admin username" autocomplete="username" required autofocus>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="password">Password</label>
+        <div class="pw-toggle">
+          <input class="form-input" type="password" id="password" name="password"
+            placeholder="Enter password" autocomplete="current-password" required style="padding-right:42px;">
+          <button type="button" class="pw-toggle-btn" onclick="togglePw()" aria-label="Show/hide password">
+            <svg id="pw-eye" viewBox="0 0 24 24"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="attempts-warning" id="attempts-warning"></div>
+      <button class="btn-login" type="submit" id="login-btn">
+        <span id="btn-text">Sign In to Dashboard</span>
+      </button>
+    </form>
+
+    <p class="login-footer-note">🔒 Secured • Session expires after 8 hours</p>
+    <p class="rate-limit-note">Max 5 attempts per 15 minutes</p>
+  </div>
+</div>
+
+<script>
+  // Redirect if already logged in
+  const existing = sessionStorage.getItem('asa_admin_token');
+  const expiry = parseInt(sessionStorage.getItem('asa_admin_expiry') || '0', 10);
+  if (existing && Date.now() < expiry) {
+    window.location.replace('/admin/dashboard');
+  }
+
+  let failCount = 0;
+  let locked = false;
+
+  function togglePw() {
+    const pw = document.getElementById('password');
+    pw.type = pw.type === 'password' ? 'text' : 'password';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('login-error');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+
+  function hideError() {
+    document.getElementById('login-error').classList.remove('visible');
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    if (locked) return;
+
+    const btn = document.getElementById('login-btn');
+    const btnText = document.getElementById('btn-text');
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    hideError();
+    btn.disabled = true;
+    btnText.textContent = 'Authenticating...';
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        sessionStorage.setItem('asa_admin_token', data.token);
+        sessionStorage.setItem('asa_admin_expiry', String(Date.now() + (data.expiresIn || 28800000)));
+        sessionStorage.setItem('asa_admin_user', username);
+        btnText.textContent = '✓ Access Granted — Redirecting...';
+        setTimeout(() => window.location.replace('/admin/dashboard'), 600);
+        return;
+      }
+
+      failCount++;
+      if (res.status === 429) {
+        locked = true;
+        showError('Too many failed attempts. Please wait 15 minutes before trying again.');
+        btn.disabled = true;
+        btnText.textContent = 'Temporarily Locked';
+        return;
+      }
+
+      const warn = document.getElementById('attempts-warning');
+      const remaining = 5 - failCount;
+      if (remaining > 0 && remaining <= 3) {
+        warn.textContent = `⚠ ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining before lockout`;
+        warn.style.display = 'block';
+      }
+      showError(data.error || 'Invalid username or password. Please try again.');
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+
+    } catch (err) {
+      showError('Connection error. Please check if the server is running.');
+    } finally {
+      if (!locked) {
+        btn.disabled = false;
+        if (btnText.textContent === 'Authenticating...') btnText.textContent = 'Sign In to Dashboard';
+      }
+    }
+  }
+</script>
+</body>
+</html>

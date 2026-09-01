@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Apex Sports Academy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+<!-- =================== SIDEBAR OVERLAY =================== -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- =================== ADMIN APP =================== -->
+<div class="admin-app">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="/Logo.jpeg" alt="Logo" onerror="this.style.display='none'">
+      <div>
+        <div class="sidebar-brand-text">Apex <span>Sports</span></div>
+        <div class="sidebar-brand-sub">Admin Dashboard</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Main</div>
+      <div class="nav-item active" onclick="showSection('overview',this)" data-section="overview">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Overview
+      </div>
+      <div class="nav-item" onclick="showSection('registrations',this)" data-section="registrations">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        Registrations
+      </div>
+      <div class="nav-item" onclick="showSection('payments',this)" data-section="payments">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        Payments
+      </div>
+      <div class="nav-item" onclick="showSection('receipts',this)" data-section="receipts">
+        <svg viewBox="0 0 24 24"><path d="M19.5 3.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5zm-1.5 15H6V5h12v13.5zm-2-10H8v-2h8v2zm0 3H8v-2h8v2zm0 3H8v-2h8v2z"/></svg>
+        Receipts
+      </div>
+
+      <div class="nav-group-label">Management</div>
+      <div class="nav-item" onclick="showSection('venueslots',this)" data-section="venueslots">
+        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
+        Venue &amp; Slots
+      </div>
+      <div class="nav-item" onclick="showSection('tournament',this)" data-section="tournament">
+        <svg viewBox="0 0 24 24"><path d="M18 2H6v2h2v2H6c0 3.31 2.69 6 6 6s6-2.69 6-6h-2V4h2V2zm-6 8c-2.21 0-4-1.79-4-4h8c0 2.21-1.79 4-4 4zM4 20v-2h7v2H4zm9 0v-2h7v2h-7zm-4.5-4l1.5-3.5 1.5 3.5H8.5z"/></svg>
+        Programs
+      </div>
+      <div class="nav-item" onclick="showSection('content',this)" data-section="content">
+        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        Content
+      </div>
+
+      <div class="nav-group-label">System</div>
+      <div class="nav-item" onclick="showSection('settings',this)" data-section="settings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        Settings
+      </div>
+      <div class="nav-item" onclick="showSection('enquiries',this)" data-section="enquiries">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        Enquiries
+      </div>
+
+      <div style="flex:1"></div>
+      <div class="nav-group-label">Account</div>
+      <div class="nav-item nav-logout" onclick="handleLogout()">
+        <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+        Logout
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-session">
+        Logged in as <strong id="sb-username">admin</strong><br>
+        Session expires: <strong id="sb-expiry">—</strong>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+    <!-- TOP BAR -->
+    <header class="admin-topbar">
+      <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <div class="topbar-title" id="topbar-title">Overview</div>
+      <div class="topbar-meta">
+        <span class="topbar-timer topbar-badge" id="session-countdown"></span>
+        <span class="topbar-badge">ASA Admin</span>
+      </div>
+    </header>
+
+    <!-- SECTIONS -->
+    <div class="admin-content">
+
+      <!-- ===== OVERVIEW ===== -->
+      <section class="admin-section active" id="section-overview">
+        <div class="section-hdr">
+          <div>
+            <div class="section-label">Dashboard</div>
+            <h2 class="section-title">Overview</h2>
+          </div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-secondary btn-sm" onclick="loadOverview()">
+              <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stats-grid" id="overview-stats">
+          <div class="stat-card"><div class="stat-label">Total Registrations</div><div class="stat-value blue" id="s-total">—</div></div>
+          <div class="stat-card c-green"><div class="stat-label">Successful Payments</div><div class="stat-value green" id="s-paid">—</div></div>
+          <div class="stat-card c-gold"><div class="stat-label">Total Revenue</div><div class="stat-value gold" id="s-revenue">—</div></div>
+          <div class="stat-card"><div class="stat-label">Tournament Teams</div><div class="stat-value blue" id="s-tournament">—</div></div>
+          <div class="stat-card"><div class="stat-label">Coaching Students</div><div class="stat-value blue" id="s-coaching">—</div></div>
+          <div class="stat-card"><div class="stat-label">Enquiry Leads</div><div class="stat-value" id="s-enquiries">—</div></div>
+        </div>
+
+        <!-- Chart + Recent Activity -->
+        <div class="overview-grid">
+          <div class="overview-main">
+            <div class="chart-card">
+              <div class="chart-title">Revenue by Registration (₹)</div>
+              <canvas id="revenue-canvas" height="180"></canvas>
+            </div>
+          </div>
+          <div>
+            <div class="admin-card">
+              <div class="admin-card-header"><span class="admin-card-title">Recent Registrations</span></div>
+              <div class="admin-card-body" id="recent-activity">
+                <div class="loading-state"><div class="spinner"></div><span>Loading...</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== VENUE & SLOTS MANAGEMENT ===== -->
+      <section class="admin-section" id="section-venueslots">
+        <div class="section-hdr">
+          <div>
+            <div class="section-label">Apex Sports Academy</div>
+            <h2 class="section-title">Venue &amp; Slot Management</h2>
+          </div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-warning btn-sm" onclick="openBlockSlotModal()">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              Block Time Slot
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="exportVenueBookingsCSV()">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              Export CSV
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="loadVenueSlots()">
+              <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Venue Summary Stats -->
+        <div class="stats-grid" id="venue-stats-grid">
+          <div class="stat-card c-gold"><div class="stat-label">Total Venue Revenue</div><div class="stat-value gold" id="vs-revenue">₹0</div></div>
+          <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-value blue" id="vs-total">0</div></div>
+          <div class="stat-card c-green"><div class="stat-label">Today's Bookings</div><div class="stat-value green" id="vs-today">0</div></div>
+          <div class="stat-card"><div class="stat-label">Upcoming Bookings</div><div class="stat-value blue" id="vs-upcoming">0</div></div>
+          <div class="stat-card"><div class="stat-label">Blocked Slots</div><div class="stat-value" id="vs-blocked">0</div></div>
+          <div class="stat-card"><div class="stat-label">Football / Box / Volley</div><div class="stat-value" id="vs-sports-split" style="font-size:1.1rem;">0 / 0 / 0</div></div>
+        </div>
+
+        <!-- 1. Interactive Visual Day Scheduler Matrix -->
+        <div class="admin-card" style="margin-bottom: 24px;">
+          <div class="admin-card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="admin-card-title">📅 Live Visual Day Scheduler (Apex Sports Academy)</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="btn btn-ghost btn-xs" onclick="shiftSchedulerDay(-1)">◀ Prev Day</button>
+              <input type="date" id="scheduler-date-input" class="form-input" style="padding:4px 8px; font-size:0.82rem; width:auto;" onchange="loadDayMatrix()">
+              <button class="btn btn-ghost btn-xs" onclick="shiftSchedulerDay(1)">Next Day ▶</button>
+              <select id="scheduler-sport-filter" class="filter-select" style="padding:4px 8px; font-size:0.82rem;" onchange="loadDayMatrix()">
+                <option value="football">⚽ Football (AstroTurf)</option>
+                <option value="box-cricket">🏏 Box Cricket Arena</option>
+                <option value="volleyball">🏐 Volleyball Court</option>
+              </select>
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div id="day-matrix-loading" style="display:none; text-align:center; padding:20px;">
+              <div class="spinner"></div>
+              <span style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">Loading scheduler matrix...</span>
+            </div>
+            <div class="day-slot-matrix-grid" id="day-slot-matrix-grid">
+              <!-- Dynamically populated slot cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Venue Bookings Table -->
+        <div class="admin-card" style="margin-bottom: 24px;">
+          <div class="admin-card-header"><span class="admin-card-title">📋 All Venue Bookings</span></div>
+          <div class="table-controls">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input class="search-input" type="text" id="vb-search" placeholder="Search by customer name, phone, email, booking ID…" oninput="filterVenueBookings()">
+            </div>
+            <select class="filter-select" id="vb-sport-filter" onchange="filterVenueBookings()">
+              <option value="all">All Sports</option>
+              <option value="football">Football</option>
+              <option value="box-cricket">Box Cricket</option>
+              <option value="volleyball">Volleyball</option>
+            </select>
+            <select class="filter-select" id="vb-status-filter" onchange="filterVenueBookings()">
+              <option value="all">All Statuses</option>
+              <option value="paid">Paid / Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="refund pending">Refund Pending</option>
+              <option value="refunded">Refunded</option>
+            </select>
+            <input type="date" id="vb-date-filter" class="filter-select" style="max-width:160px;" onchange="filterVenueBookings()">
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr>
+                <th>Booking ID</th><th>Customer / Team</th><th>Sport</th><th>Date &amp; Slots</th>
+                <th>Duration</th><th>Amount</th><th>Status</th><th>Razorpay Txn</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="vb-table-body">
+                <tr class="empty-row"><td colspan="9"><div class="loading-state"><div class="spinner"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Dynamic Pricing Configuration Panel -->
+        <div class="admin-card">
+          <div class="admin-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span class="admin-card-title">⚙️ Admin Configurable Pricing Engine</span>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">Set custom weekday, weekend, and peak-hour hourly pricing per sport.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveVenuePricing()">
+              <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+              Save Pricing Rules
+            </button>
+          </div>
+          <div class="admin-card-body">
+            <div class="pricing-config-grid">
+              <!-- Football Pricing -->
+              <div class="pricing-sport-card">
+                <div class="pricing-card-title"><span>⚽</span> Football (AstroTurf)</div>
+                <div class="form-field">
+                  <label class="form-label">Weekday Rate (₹/hr)</label>
+                  <input type="number" id="price-football-weekday" class="form-input" value="1000" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Weekend Rate (₹/hr)</label>
+                  <input type="number" id="price-football-weekend" class="form-input" value="1200" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Peak Hour Multiplier (e.g. 1.2 = +20%)</label>
+                  <input type="number" id="price-football-peak" class="form-input" value="1.2" min="1.0" max="2.5" step="0.05">
+                </div>
+              </div>
+
+              <!-- Box Cricket Pricing -->
+              <div class="pricing-sport-card">
+                <div class="pricing-card-title"><span>🏏</span> Box Cricket Arena</div>
+                <div class="form-field">
+                  <label class="form-label">Weekday Rate (₹/hr)</label>
+                  <input type="number" id="price-box-cricket-weekday" class="form-input" value="900" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Weekend Rate (₹/hr)</label>
+                  <input type="number" id="price-box-cricket-weekend" class="form-input" value="1100" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Peak Hour Multiplier</label>
+                  <input type="number" id="price-box-cricket-peak" class="form-input" value="1.2" min="1.0" max="2.5" step="0.05">
+                </div>
+              </div>
+
+              <!-- Volleyball Pricing -->
+              <div class="pricing-sport-card">
+                <div class="pricing-card-title"><span>🏐</span> Volleyball Court</div>
+                <div class="form-field">
+                  <label class="form-label">Weekday Rate (₹/hr)</label>
+                  <input type="number" id="price-volleyball-weekday" class="form-input" value="800" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Weekend Rate (₹/hr)</label>
+                  <input type="number" id="price-volleyball-weekend" class="form-input" value="1000" min="100" step="50">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Peak Hour Multiplier</label>
+                  <input type="number" id="price-volleyball-peak" class="form-input" value="1.2" min="1.0" max="2.5" step="0.05">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== REGISTRATIONS ===== -->
+      <section class="admin-section" id="section-registrations">
+        <div class="section-hdr">
+          <div><div class="section-label">Database</div><h2 class="section-title">Registrations</h2></div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-secondary btn-sm" onclick="exportRegistrationsCSV()">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Export CSV
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="loadRegistrations()">
+              <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Refresh
+            </button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <div class="table-controls">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input class="search-input" type="text" id="reg-search" placeholder="Search by name, phone, email, ID…" oninput="filterRegistrations()">
+            </div>
+            <select class="filter-select" id="reg-type-filter" onchange="filterRegistrations()">
+              <option value="all">All Types</option>
+              <option value="tournament">Tournament</option>
+              <option value="coaching">Coaching</option>
+            </select>
+            <select class="filter-select" id="reg-status-filter" onchange="filterRegistrations()">
+              <option value="all">All Status</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr>
+                <th>ID</th><th>Name / Team</th><th>Type</th><th>Contact</th>
+                <th>Phone</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="reg-table-body">
+                <tr class="empty-row"><td colspan="9">Loading registrations…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="reg-count">0 records</span></div>
+        </div>
+      </section>
+
+      <!-- ===== PAYMENTS ===== -->
+      <section class="admin-section" id="section-payments">
+        <div class="section-hdr">
+          <div><div class="section-label">Finance</div><h2 class="section-title">Payments</h2></div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-secondary btn-sm" onclick="exportPaymentsCSV()">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Export CSV
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="loadPayments()">Refresh</button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <div class="table-controls">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input class="search-input" type="text" id="pay-search" placeholder="Search by ID, name, transaction…" oninput="filterPayments()">
+            </div>
+            <select class="filter-select" id="pay-status-filter" onchange="filterPayments()">
+              <option value="all">All Status</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr>
+                <th>Reg ID</th><th>Name / Team</th><th>Type</th><th>Txn ID</th>
+                <th>Method</th><th>Amount</th><th>Status</th><th>Date</th>
+              </tr></thead>
+              <tbody id="pay-table-body">
+                <tr class="empty-row"><td colspan="8">Loading payments…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="pay-count">0 records</span></div>
+        </div>
+      </section>
+
+      <!-- ===== RECEIPTS ===== -->
+      <section class="admin-section" id="section-receipts">
+        <div class="section-hdr">
+          <div><div class="section-label">Documents</div><h2 class="section-title">Receipts</h2></div>
+          <button class="btn btn-primary btn-sm" onclick="loadReceipts()">Refresh</button>
+        </div>
+        <div class="admin-card">
+          <div class="table-controls">
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input class="search-input" type="text" id="receipt-search" placeholder="Search receipts…" oninput="filterReceipts()">
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr>
+                <th>Reg ID</th><th>Name</th><th>Type</th><th>Amount</th><th>Date</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="receipt-table-body">
+                <tr class="empty-row"><td colspan="6">Loading receipts…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROGRAMS ===== -->
+      <section class="admin-section" id="section-tournament">
+        <div class="section-hdr">
+          <div><div class="section-label">Management</div><h2 class="section-title">Programs</h2></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="programs-grid">
+          <!-- Populated by JS -->
+        </div>
+        <div class="admin-card" style="margin-top:20px;">
+          <div class="admin-card-header"><span class="admin-card-title">Participants by Program</span></div>
+          <div class="admin-card-body" id="participants-wrap">
+            <div class="loading-state"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CONTENT ===== -->
+      <section class="admin-section" id="section-content">
+        <div class="section-hdr">
+          <div><div class="section-label">CMS</div><h2 class="section-title">Website Content</h2></div>
+          <button class="btn btn-primary btn-sm" onclick="saveContent()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            Save All Changes
+          </button>
+        </div>
+        <div class="content-grid">
+          <div>
+            <div class="content-section-title">Tournament Info</div>
+            <div class="admin-form">
+              <div class="form-group"><label>Tournament Name</label><input type="text" id="c-tournament-name" placeholder="e.g. ASA Cup 2026"></div>
+              <div class="form-group"><label>Tournament Date</label><input type="text" id="c-tournament-date" placeholder="e.g. September 15, 2026"></div>
+              <div class="form-group"><label>Venue</label><input type="text" id="c-venue" placeholder="Tournament venue"></div>
+              <div class="form-group"><label>Entry Fee (₹)</label><input type="number" id="c-entry-fee" placeholder="1200"></div>
+              <div class="form-group"><label>Registration Status</label>
+                <select id="c-reg-status"><option value="open">Open</option><option value="closed">Closed</option></select>
+              </div>
+              <div class="form-group"><label>Max Teams / Slots</label><input type="number" id="c-max-slots" placeholder="32"></div>
+            </div>
+          </div>
+          <div>
+            <div class="content-section-title">Coaching Program</div>
+            <div class="admin-form">
+              <div class="form-group"><label>Coaching Batch Info</label><input type="text" id="c-coaching-info" placeholder="Batch timings / info"></div>
+              <div class="form-group"><label>Monthly Fee (₹)</label><input type="number" id="c-coaching-fee" placeholder="4500"></div>
+              <div class="form-group"><label>Coaching Status</label>
+                <select id="c-coaching-status"><option value="open">Accepting Students</option><option value="closed">Full / Closed</option></select>
+              </div>
+              <div class="form-group"><label>Announcement Banner</label><textarea id="c-announcement" placeholder="Site-wide announcement (leave blank to hide)"></textarea></div>
+              <div class="content-section-title" style="margin-top:8px;">Contact Info</div>
+              <div class="form-group"><label>Academy Phone</label><input type="text" id="c-phone" placeholder="+91 XXXXX XXXXX"></div>
+              <div class="form-group"><label>Academy Email</label><input type="email" id="c-email" placeholder="info@apexsports.in"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;font-size:0.82rem;color:var(--success);display:none;" id="content-saved-msg">
+          ✓ Content saved successfully
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS ===== -->
+      <section class="admin-section" id="section-settings">
+        <div class="section-hdr">
+          <div><div class="section-label">Configuration</div><h2 class="section-title">Settings</h2></div>
+        </div>
+
+        <!-- Change Password -->
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header"><span class="admin-card-title">🔐 Change Admin Password</span></div>
+          <div class="admin-card-body">
+            <form class="admin-form" onsubmit="changePassword(event)" style="max-width:420px;">
+              <div class="form-group"><label>Current Password</label><input type="password" id="pw-current" required autocomplete="current-password"></div>
+              <div class="form-group"><label>New Password</label><input type="password" id="pw-new" required autocomplete="new-password" minlength="8" placeholder="Min. 8 characters"></div>
+              <div class="form-group"><label>Confirm New Password</label><input type="password" id="pw-confirm" required autocomplete="new-password"></div>
+              <div><button type="submit" class="btn btn-primary btn-sm">Update Password</button></div>
+              <div id="pw-msg" style="font-size:0.82rem;display:none;margin-top:4px;"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Razorpay Keys -->
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header">
+            <span class="admin-card-title">💳 Razorpay Gateway Settings</span>
+            <span id="rzp-badge" class="badge badge-info">Loading…</span>
+          </div>
+          <div class="admin-card-body">
+            <form class="admin-form" onsubmit="saveRazorpay(event)" style="max-width:520px;">
+              <div class="form-row-2">
+                <div class="form-group"><label>Key ID</label><input type="text" id="rzp-key-id" placeholder="rzp_test_… or rzp_live_…"></div>
+                <div class="form-group"><label>Key Secret</label><input type="password" id="rzp-key-secret" placeholder="Enter key secret"></div>
+              </div>
+              <div><button type="submit" class="btn btn-primary btn-sm">Save Razorpay Keys</button></div>
+              <div id="rzp-msg" style="font-size:0.82rem;display:none;margin-top:4px;"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Supabase -->
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header">
+            <span class="admin-card-title">🗄 Supabase Database Settings</span>
+            <span id="sb-badge" class="badge badge-info">Loading…</span>
+          </div>
+          <div class="admin-card-body">
+            <form class="admin-form" onsubmit="saveSupabase(event)" style="max-width:520px;">
+              <div class="form-group"><label>Supabase URL</label><input type="url" id="sb-url" placeholder="https://your-project.supabase.co"></div>
+              <div class="form-group"><label>Supabase API Key</label><input type="password" id="sb-key" placeholder="anon or service_role key"></div>
+              <div><button type="submit" class="btn btn-primary btn-sm">Save Database Settings</button></div>
+              <div id="sb-msg" style="font-size:0.82rem;display:none;margin-top:4px;"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Email Settings -->
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header">
+            <span class="admin-card-title">✉️ Gmail SMTP Email Settings</span>
+            <span id="email-badge" class="badge badge-info">Loading…</span>
+          </div>
+          <div class="admin-card-body">
+            <form class="admin-form" onsubmit="saveEmail(event)" style="max-width:520px;">
+              <div class="form-row-2">
+                <div class="form-group"><label>Gmail Address</label><input type="email" id="em-user" placeholder="your@gmail.com"></div>
+                <div class="form-group"><label>App Password</label><input type="password" id="em-pass" placeholder="16-char Google App Password"></div>
+              </div>
+              <div class="form-group"><label>Admin Notification Email</label><input type="email" id="em-notify" placeholder="Notifications recipient"></div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary btn-sm">Save Email Settings</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="testEmail()">Send Test Email</button>
+              </div>
+              <div id="em-msg" style="font-size:0.82rem;display:none;margin-top:4px;"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="admin-card" style="margin-bottom:20px;border-color:rgba(239,68,68,0.3);">
+          <div class="admin-card-header" style="border-color:rgba(239,68,68,0.2);"><span class="admin-card-title" style="color:var(--danger);">⚠ Danger Zone</span></div>
+          <div class="admin-card-body">
+            <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:14px;">These actions are irreversible. Proceed with extreme caution.</p>
+            <button class="btn btn-danger btn-sm" onclick="confirmClearDB()">Clear All Database Records</button>
+          </div>
+        </div>
+
+        <!-- Audit Log -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <span class="admin-card-title">📋 Audit Log</span>
+            <button class="btn btn-ghost btn-xs" onclick="loadAuditLog()">Refresh</button>
+          </div>
+          <div class="admin-card-body">
+            <div class="audit-log-wrap" id="audit-log-wrap">
+              <div style="color:var(--text-muted);font-size:0.8rem;">Loading audit log…</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ENQUIRIES ===== -->
+      <section class="admin-section" id="section-enquiries">
+        <div class="section-hdr">
+          <div><div class="section-label">Leads</div><h2 class="section-title">Enquiries</h2></div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-secondary btn-sm" onclick="exportEnquiriesCSV()">Export CSV</button>
+            <button class="btn btn-primary btn-sm" onclick="loadEnquiries()">Refresh</button>
+          </div>
+        </div>
+        <div class="admin-card">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="enq-table-body">
+                <tr class="empty-row"><td colspan="8">Loading enquiries…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="enq-count">0 records</span></div>
+        </div>
+      </section>
+
+    </div><!-- /admin-content -->
+  </main>
+</div><!-- /admin-app -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- Registration Detail / Edit Modal -->
+<div class="modal-backdrop" id="reg-modal">
+  <div class="modal-box wide">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title" id="reg-modal-title">Registration Details</div>
+      <button class="modal-close-btn" onclick="closeModal('reg-modal')">&times;</button>
+    </div>
+    <div class="modal-body" id="reg-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('reg-modal')">Close</button>
+      <button class="btn btn-primary btn-sm" id="reg-modal-save" onclick="saveRegistrationEdit()" style="display:none;">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="modal-backdrop" id="confirm-modal">
+  <div class="modal-box narrow">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Confirm Action</div>
+      <button class="modal-close-btn" onclick="closeModal('confirm-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-msg" style="color:var(--text-secondary);font-size:0.95rem;line-height:1.6;"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('confirm-modal')">Cancel</button>
+      <button class="btn btn-danger btn-sm" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Receipt Print Modal -->
+<div class="modal-backdrop" id="receipt-modal">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Payment Receipt</div>
+      <button class="modal-close-btn" onclick="closeModal('receipt-modal')">&times;</button>
+    </div>
+    <div class="modal-body" id="receipt-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('receipt-modal')">Close</button>
+      <button class="btn btn-primary btn-sm" onclick="printReceipt()">
+        <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+        Print / Download PDF
+      </button>
+    </div>
+  <!-- Modal: Block Slot -->
+<div class="modal-backdrop" id="modal-block-slot">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Block Venue Time Slot</div>
+      <button class="modal-close-btn" onclick="closeModal('modal-block-slot')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label class="form-label">Sport Arena</label>
+        <select id="blk-sport" class="form-input">
+          <option value="football">Football (AstroTurf)</option>
+          <option value="box-cricket">Box Cricket Arena</option>
+          <option value="volleyball">Volleyball Court</option>
+          <option value="all">All Sports (Entire Venue)</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Date</label>
+        <input type="date" id="blk-date" class="form-input">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Time Slot</label>
+        <select id="blk-slot" class="form-input">
+          <option value="06:00 - 07:00">06:00 - 07:00</option>
+          <option value="07:00 - 08:00">07:00 - 08:00</option>
+          <option value="08:00 - 09:00">08:00 - 09:00</option>
+          <option value="09:00 - 10:00">09:00 - 10:00</option>
+          <option value="10:00 - 11:00">10:00 - 11:00</option>
+          <option value="11:00 - 12:00">11:00 - 12:00</option>
+          <option value="12:00 - 13:00">12:00 - 13:00</option>
+          <option value="13:00 - 14:00">13:00 - 14:00</option>
+          <option value="14:00 - 15:00">14:00 - 15:00</option>
+          <option value="15:00 - 16:00">15:00 - 16:00</option>
+          <option value="16:00 - 17:00">16:00 - 17:00</option>
+          <option value="17:00 - 18:00">17:00 - 18:00</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Reason / Notes</label>
+        <input type="text" id="blk-reason" class="form-input" placeholder="e.g. Turf Maintenance / Academy Coaching Batch">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-block-slot')">Cancel</button>
+      <button class="btn btn-warning btn-sm" onclick="submitBlockSlot()">Confirm Block</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Change Venue Booking Status -->
+<div class="modal-backdrop" id="modal-booking-status">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">Update Booking Status</div>
+      <button class="modal-close-btn" onclick="closeModal('modal-booking-status')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-booking-id">
+      <div class="form-field">
+        <label class="form-label">Booking ID</label>
+        <input type="text" id="edit-booking-id-display" class="form-input" readonly style="opacity:0.75;">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Payment &amp; Booking Status</label>
+        <select id="edit-booking-status-select" class="form-input">
+          <option value="Paid">Paid (Confirmed)</option>
+          <option value="Booking Confirmed">Booking Confirmed</option>
+          <option value="Pending Payment">Pending Payment</option>
+          <option value="Payment Failed">Payment Failed</option>
+          <option value="Refund Pending">Refund Pending</option>
+          <option value="Refunded">Refunded</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Admin Notes</label>
+        <input type="text" id="edit-booking-notes" class="form-input" placeholder="e.g. Rescheduled / Refund processed via Razorpay">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-booking-status')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="submitBookingStatus()">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ============================================================
+// AUTH & SESSION
+// ============================================================
+const TOKEN = sessionStorage.getItem('asa_admin_token');
+const EXPIRY = parseInt(sessionStorage.getItem('asa_admin_expiry') || '0', 10);
+const USERNAME = sessionStorage.getItem('asa_admin_user') || 'admin';
+
+if (!TOKEN || Date.now() >= EXPIRY) {
+  sessionStorage.clear();
+  window.location.replace('/admin/login');
+}
+
+document.getElementById('sb-username').textContent = USERNAME;
+
+// Session countdown
+function updateCountdown() {
+  const left = EXPIRY - Date.now();
+  if (left <= 0) { handleLogout(); return; }
+  const h = Math.floor(left / 3600000);
+  const m = Math.floor((left % 3600000) / 60000);
+  const el = document.getElementById('session-countdown');
+  if (el) el.textContent = `${h}h ${m}m`;
+  const sbe = document.getElementById('sb-expiry');
+  if (sbe) sbe.textContent = `${h}h ${m}m`;
+}
+updateCountdown();
+setInterval(updateCountdown, 30000);
+
+async function handleLogout() {
+  try {
+    await api('POST', '/api/logout');
+  } catch(e) {}
+  sessionStorage.clear();
+  window.location.replace('/admin/login');
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+async function api(method, url, body) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${TOKEN}` }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (r.status === 401) { sessionStorage.clear(); window.location.replace('/admin/login'); }
+  return r.json();
+}
+
+function toast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  container.appendChild(el);
+  requestAnimationFrame(() => { requestAnimationFrame(() => { el.classList.add('show'); }); });
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 3500);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function confirm_(msg, cb) {
+  document.getElementById('confirm-msg').textContent = msg;
+  const btn = document.getElementById('confirm-ok-btn');
+  btn.onclick = () => { closeModal('confirm-modal'); cb(); };
+  openModal('confirm-modal');
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = String(s||''); return d.innerHTML; }
+
+function statusBadge(st) {
+  const s = (st||'').toLowerCase();
+  if (s === 'paid') return '<span class="badge badge-paid">Paid</span>';
+  if (s === 'pending') return '<span class="badge badge-pending">Pending</span>';
+  return `<span class="badge badge-info">${esc(st)}</span>`;
+}
+
+function typeBadge(t) {
+  const s = (t||'').toLowerCase();
+  if (s.includes('tournament')) return `<span class="badge badge-tournament">${esc(t)}</span>`;
+  return `<span class="badge badge-coaching">${esc(t)}</span>`;
+}
+
+function formatAmount(a) { return '₹' + (Number(a)||0).toLocaleString('en-IN'); }
+
+function downloadCSV(rows, headers, filename) {
+  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = filename;
+  a.click();
+}
+
+// ============================================================
+// SIDEBAR / NAVIGATION
+// ============================================================
+const SECTION_TITLES = {
+  overview:'Overview', venueslots:'Venue & Slots', registrations:'Registrations', payments:'Payments',
+  receipts:'Receipts', tournament:'Programs', content:'Website Content',
+  settings:'Settings', enquiries:'Enquiries'
+};
+
+function showSection(id, el) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`section-${id}`).classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbar-title').textContent = SECTION_TITLES[id] || id;
+  closeSidebar();
+
+  const loaders = {
+    overview: loadOverview,
+    venueslots: loadVenueSlots,
+    registrations: loadRegistrations,
+    payments: loadPayments,
+    receipts: loadReceipts,
+    tournament: loadPrograms,
+    content: loadContent,
+    settings: loadSettings,
+    enquiries: loadEnquiries
+  };
+  if (loaders[id]) loaders[id]();
+}
+
+function toggleSidebar() {
+  document.getElementById('admin-sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('visible');
+}
+function closeSidebar() {
+  document.getElementById('admin-sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+// ============================================================
+// OVERVIEW
+// ============================================================
+let chartData = null;
+
+async function loadOverview() {
+  try {
+    const d = await api('GET', '/api/admin/stats');
+    if (!d.success) return;
+    const s = d.stats;
+    document.getElementById('s-total').textContent = s.totalRegistrations;
+    document.getElementById('s-paid').textContent = s.totalPaid;
+    document.getElementById('s-revenue').textContent = formatAmount(s.totalRevenue);
+    document.getElementById('s-tournament').textContent = s.tournamentCount;
+    document.getElementById('s-coaching').textContent = s.coachingCount;
+    document.getElementById('s-enquiries').textContent = s.enquiryCount;
+
+    // Recent activity
+    const el = document.getElementById('recent-activity');
+    if (!d.recentRegistrations || !d.recentRegistrations.length) {
+      el.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No registrations yet</p>';
+    } else {
+      el.innerHTML = `<div class="activity-list">${d.recentRegistrations.slice(0,6).map(r => `
+        <div class="activity-item">
+          <div class="activity-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+          <div class="activity-info">
+            <div class="activity-name">${esc(r.entityName||r.contactPerson)}</div>
+            <div class="activity-meta">${esc(r.id)} · ${esc(r.type)}</div>
+          </div>
+          <div class="activity-amount">${formatAmount(r.amount)}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    // Chart
+    chartData = d.monthlyRevenue;
+    drawChart(chartData);
+  } catch(e) { console.error(e); }
+}
+
+function drawChart(data) {
+  const canvas = document.getElementById('revenue-canvas');
+  if (!canvas || !data) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.parentElement.clientWidth - 40;
+  canvas.width = W;
+  canvas.height = 180;
+
+  const entries = Object.entries(data).sort(([a],[b]) => a.localeCompare(b)).slice(-8);
+  if (!entries.length) {
+    ctx.fillStyle = '#6c757d';
+    ctx.font = '14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('No payment data yet', W/2, 90);
+    return;
+  }
+
+  const vals = entries.map(([,v]) => v);
+  const maxV = Math.max(...vals, 1);
+  const barW = Math.min(50, (W - 60) / entries.length - 12);
+  const startX = 40;
+  const chartH = 140;
+  const baseY = 160;
+
+  ctx.clearRect(0, 0, W, 180);
+
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const y = baseY - (chartH / 4) * i;
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.beginPath(); ctx.moveTo(30, y); ctx.lineTo(W, y); ctx.stroke();
+    ctx.fillStyle = '#6c757d';
+    ctx.font = '10px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('₹' + Math.round((maxV/4)*i).toLocaleString('en-IN'), 28, y+3);
+  }
+
+  entries.forEach(([label, val], i) => {
+    const x = startX + i * ((W - startX) / entries.length) + ((W - startX) / entries.length - barW) / 2;
+    const barH = Math.max(4, (val / maxV) * chartH);
+    const y = baseY - barH;
+
+    const grad = ctx.createLinearGradient(0, y, 0, baseY);
+    grad.addColorStop(0, '#00b4d8');
+    grad.addColorStop(1, 'rgba(0,180,216,0.2)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]) : ctx.rect(x, y, barW, barH);
+    ctx.fill();
+
+    ctx.fillStyle = '#adb5bd';
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    const parts = label.split('-');
+    ctx.fillText(parts[1] ? ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(parts[1])] + " '" + parts[0].slice(2) : label, x + barW/2, baseY + 14);
+
+    if (val > 0) {
+      ctx.fillStyle = '#f8f9fa';
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('₹' + Math.round(val/1000) + 'k', x + barW/2, y - 4);
+    }
+  });
+}
+
+// ============================================================
+// REGISTRATIONS
+// ============================================================
+let allRegistrations = [];
+
+async function loadRegistrations() {
+  document.getElementById('reg-table-body').innerHTML = '<tr class="empty-row"><td colspan="9"><div class="loading-state"><div class="spinner"></div></div></td></tr>';
+  try {
+    const d = await api('GET', '/api/admin/registrations');
+    allRegistrations = d.registrations || [];
+    renderRegistrations(allRegistrations);
+  } catch(e) { toast('Failed to load registrations', 'error'); }
+}
+
+function renderRegistrations(regs) {
+  const tbody = document.getElementById('reg-table-body');
+  document.getElementById('reg-count').textContent = `${regs.length} record${regs.length !== 1 ? 's' : ''}`;
+  if (!regs.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No registrations found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = regs.map(r => `
+    <tr>
+      <td><code style="font-size:0.75rem;color:var(--primary)">${esc(r.id)}</code></td>
+      <td style="font-weight:600;color:var(--text-primary);">${esc(r.entityName)}</td>
+      <td>${typeBadge(r.type)}</td>
+      <td>${esc(r.contactPerson)}</td>
+      <td>${esc(r.phone)}</td>
+      <td style="font-weight:600;color:var(--success);">${formatAmount(r.amount)}</td>
+      <td>${statusBadge(r.status)}</td>
+      <td style="font-size:0.78rem;">${esc(r.date)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-xs" onclick='viewRegistration(${JSON.stringify(JSON.stringify(r))})' title="View">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+          <button class="btn btn-ghost btn-xs" onclick='editRegistration(${JSON.stringify(JSON.stringify(r))})' title="Edit">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="btn btn-danger btn-xs" onclick="deleteRegistration('${esc(r.id)}')" title="Delete">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function filterRegistrations() {
+  const q = document.getElementById('reg-search').value.toLowerCase();
+  const type = document.getElementById('reg-type-filter').value;
+  const status = document.getElementById('reg-status-filter').value;
+  let filtered = allRegistrations.filter(r => {
+    const matchQ = !q || [r.id,r.entityName,r.contactPerson,r.phone,r.email].some(v => (v||'').toLowerCase().includes(q));
+    const matchType = type === 'all' || (r.type||'').toLowerCase().includes(type);
+    const matchStatus = status === 'all' || (r.status||'').toLowerCase() === status;
+    return matchQ && matchType && matchStatus;
+  });
+  renderRegistrations(filtered);
+}
+
+let currentEditId = null;
+
+function viewRegistration(jsonStr) {
+  const r = JSON.parse(jsonStr);
+  document.getElementById('reg-modal-title').textContent = 'Registration Details';
+  document.getElementById('reg-modal-save').style.display = 'none';
+  document.getElementById('reg-modal-body').innerHTML = `
+    <div style="display:grid;gap:10px;">
+      ${[['Registration ID', r.id],['Name / Team', r.entityName],['Type', r.type],
+         ['Contact Person', r.contactPerson],['Phone', r.phone],['Email', r.email],
+         ['Details', r.details],['Amount', formatAmount(r.amount)],
+         ['Transaction ID', r.txnId],['Payment Method', r.method],
+         ['Status', r.status],['Date', r.date]].map(([l,v]) =>
+        `<div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="color:var(--text-muted);font-size:0.84rem;">${esc(l)}</span>
+          <span style="font-weight:600;font-size:0.84rem;text-align:right;">${esc(v)}</span>
+        </div>`).join('')}
+    </div>`;
+  openModal('reg-modal');
+}
+
+function editRegistration(jsonStr) {
+  const r = JSON.parse(jsonStr);
+  currentEditId = r.id;
+  document.getElementById('reg-modal-title').textContent = 'Edit Registration';
+  document.getElementById('reg-modal-save').style.display = 'inline-flex';
+  document.getElementById('reg-modal-body').innerHTML = `
+    <div class="admin-form">
+      <div class="form-row-2">
+        <div class="form-group"><label>Name / Team</label><input id="e-entity" type="text" value="${esc(r.entityName)}"></div>
+        <div class="form-group"><label>Contact Person</label><input id="e-contact" type="text" value="${esc(r.contactPerson)}"></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Phone</label><input id="e-phone" type="text" value="${esc(r.phone)}"></div>
+        <div class="form-group"><label>Email</label><input id="e-email" type="email" value="${esc(r.email)}"></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Amount (₹)</label><input id="e-amount" type="number" value="${r.amount}"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="e-status">
+            <option value="Paid" ${r.status==='Paid'?'selected':''}>Paid</option>
+            <option value="Pending" ${r.status==='Pending'?'selected':''}>Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Details</label><textarea id="e-details">${esc(r.details)}</textarea></div>
+    </div>`;
+  openModal('reg-modal');
+}
+
+async function saveRegistrationEdit() {
+  if (!currentEditId) return;
+  const updates = {
+    entityName: document.getElementById('e-entity').value,
+    contactPerson: document.getElementById('e-contact').value,
+    phone: document.getElementById('e-phone').value,
+    email: document.getElementById('e-email').value,
+    amount: parseInt(document.getElementById('e-amount').value),
+    status: document.getElementById('e-status').value,
+    details: document.getElementById('e-details').value
+  };
+  try {
+    const d = await api('PUT', `/api/admin/registrations/${currentEditId}`, updates);
+    if (d.success) { toast('Registration updated', 'success'); closeModal('reg-modal'); loadRegistrations(); }
+    else toast(d.error || 'Update failed', 'error');
+  } catch(e) { toast('Error updating registration', 'error'); }
+}
+
+function deleteRegistration(id) {
+  confirm_(`Delete registration ${id}? This action cannot be undone.`, async () => {
+    try {
+      const d = await api('DELETE', `/api/admin/registrations/${id}`);
+      if (d.success) { toast('Registration deleted', 'success'); loadRegistrations(); }
+      else toast(d.error || 'Delete failed', 'error');
+    } catch(e) { toast('Error deleting registration', 'error'); }
+  });
+}
+
+function exportRegistrationsCSV() {
+  const headers = ['ID','Name/Team','Type','Contact','Phone','Email','Details','Amount','TxnID','Method','Status','Date'];
+  const rows = allRegistrations.map(r => [r.id,r.entityName,r.type,r.contactPerson,r.phone,r.email,r.details,r.amount,r.txnId,r.method,r.status,r.date]);
+  downloadCSV(rows, headers, `registrations_${Date.now()}.csv`);
+  toast('CSV downloaded', 'success');
+}
+
+// ============================================================
+// PAYMENTS
+// ============================================================
+let allPayments = [];
+
+async function loadPayments() {
+  document.getElementById('pay-table-body').innerHTML = '<tr class="empty-row"><td colspan="8"><div class="loading-state"><div class="spinner"></div></div></td></tr>';
+  try {
+    const d = await api('GET', '/api/admin/payments');
+    allPayments = d.payments || [];
+    renderPayments(allPayments);
+  } catch(e) { toast('Failed to load payments', 'error'); }
+}
+
+function renderPayments(pays) {
+  const tbody = document.getElementById('pay-table-body');
+  document.getElementById('pay-count').textContent = `${pays.length} record${pays.length !== 1 ? 's' : ''}`;
+  if (!pays.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No payment records found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = pays.map(p => `
+    <tr>
+      <td><code style="font-size:0.74rem;color:var(--primary)">${esc(p.registrationId)}</code></td>
+      <td style="font-weight:600;color:var(--text-primary);">${esc(p.playerName)}</td>
+      <td>${typeBadge(p.type)}</td>
+      <td><code style="font-size:0.74rem;color:var(--text-muted)">${esc(p.txnId||'N/A')}</code></td>
+      <td style="font-size:0.78rem;">${esc(p.method||'Razorpay')}</td>
+      <td style="font-weight:700;color:var(--success);">${formatAmount(p.amount)}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td style="font-size:0.78rem;">${esc(p.date)}</td>
+    </tr>`).join('');
+}
+
+function filterPayments() {
+  const q = document.getElementById('pay-search').value.toLowerCase();
+  const status = document.getElementById('pay-status-filter').value;
+  let filtered = allPayments.filter(p => {
+    const matchQ = !q || [p.registrationId,p.playerName,p.txnId].some(v => (v||'').toLowerCase().includes(q));
+    const matchStatus = status === 'all' || (p.status||'').toLowerCase() === status;
+    return matchQ && matchStatus;
+  });
+  renderPayments(filtered);
+}
+
+function exportPaymentsCSV() {
+  const headers = ['RegID','Name','Type','TxnID','Method','Amount','Status','Date'];
+  const rows = allPayments.map(p => [p.registrationId,p.playerName,p.type,p.txnId,p.method,p.amount,p.status,p.date]);
+  downloadCSV(rows, headers, `payments_${Date.now()}.csv`);
+  toast('Payments CSV downloaded', 'success');
+}
+
+// ============================================================
+// RECEIPTS
+// ============================================================
+let allReceipts = [];
+
+async function loadReceipts() {
+  document.getElementById('receipt-table-body').innerHTML = '<tr class="empty-row"><td colspan="6"><div class="loading-state"><div class="spinner"></div></div></td></tr>';
+  try {
+    const d = await api('GET', '/api/admin/registrations');
+    allReceipts = (d.registrations || []).filter(r => r.status === 'Paid');
+    renderReceipts(allReceipts);
+  } catch(e) { toast('Failed to load receipts', 'error'); }
+}
+
+function renderReceipts(recs) {
+  const tbody = document.getElementById('receipt-table-body');
+  if (!recs.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No paid registrations found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = recs.map(r => `
+    <tr>
+      <td><code style="font-size:0.74rem;color:var(--primary)">${esc(r.id)}</code></td>
+      <td style="font-weight:600;color:var(--text-primary);">${esc(r.entityName)}</td>
+      <td>${typeBadge(r.type)}</td>
+      <td style="font-weight:700;color:var(--success);">${formatAmount(r.amount)}</td>
+      <td style="font-size:0.78rem;">${esc(r.date)}</td>
+      <td>
+        <button class="btn btn-ghost btn-xs" onclick='showReceipt(${JSON.stringify(JSON.stringify(r))})'>
+          <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M19.5 3.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5zm-1.5 15H6V5h12v13.5z"/></svg>
+          View Receipt
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterReceipts() {
+  const q = document.getElementById('receipt-search').value.toLowerCase();
+  renderReceipts(allReceipts.filter(r =>
+    !q || [r.id,r.entityName,r.type].some(v => (v||'').toLowerCase().includes(q))
+  ));
+}
+
+function showReceipt(jsonStr) {
+  const r = JSON.parse(jsonStr);
+  const isTournament = (r.type||'').toLowerCase().includes('tournament');
+  document.getElementById('receipt-modal-body').innerHTML = `
+    <div class="receipt-print" id="print-area">
+      <div class="receipt-header">
+        <div class="receipt-logo-text">Apex <span>Sports</span> Academy</div>
+        <div class="receipt-sub">Official Payment Receipt</div>
+        <div style="display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:100px;padding:3px 12px;font-size:0.75rem;font-weight:700;color:#34d399;margin-top:8px;">✓ Payment Confirmed</div>
+      </div>
+      ${[['Registration ID', r.id],
+         ['Date & Time', r.date],
+         [isTournament ? 'Team / Entity Name' : 'Student Name', r.entityName],
+         ['Contact Person', r.contactPerson],
+         ['Phone', r.phone],
+         ['Email', r.email],
+         ['Program / Category', r.type],
+         ['Details', r.details],
+         ['Transaction ID', r.txnId],
+         ['Payment Method', r.method || 'Razorpay UPI/Card']
+        ].map(([l,v]) =>
+          `<div class="receipt-row"><span class="r-label">${esc(l)}</span><span class="r-value">${esc(v||'—')}</span></div>`
+        ).join('')}
+      <div class="receipt-total">
+        <span class="r-label">Amount Paid</span>
+        <span class="r-value">${formatAmount(r.amount)} INR</span>
+      </div>
+      <div class="receipt-footer">
+        Apex Sports Academy • Doddanagamangla Road, Hosaroad, Bangalore – 560100<br>
+        apexsportsacademy08@gmail.com • +91 6363845180
+      </div>
+    </div>`;
+  openModal('receipt-modal');
+}
+
+function printReceipt() {
+  window.print();
+}
+
+// ============================================================
+// PROGRAMS
+// ============================================================
+async function loadPrograms() {
+  try {
+    const d = await api('GET', '/api/admin/registrations');
+    const regs = d.registrations || [];
+    const tournaments = regs.filter(r => (r.type||'').toLowerCase().includes('tournament'));
+    const coaching = regs.filter(r => (r.type||'').toLowerCase().includes('coaching'));
+
+    document.getElementById('programs-grid').innerHTML = `
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <span class="admin-card-title">🏆 ASA Cup — Tournament</span>
+          <span class="badge badge-open">Active</span>
+        </div>
+        <div class="admin-card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div><div class="stat-label">Registered Teams</div><div class="stat-value blue" style="font-size:1.4rem;">${tournaments.length}</div></div>
+            <div><div class="stat-label">Revenue</div><div class="stat-value green" style="font-size:1.4rem;">${formatAmount(tournaments.reduce((s,r)=>s+(r.amount||0),0))}</div></div>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;">Entry fee: ₹1,200 per team · 12 squad players</p>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <span class="admin-card-title">🏐 Coaching Program</span>
+          <span class="badge badge-open">Active</span>
+        </div>
+        <div class="admin-card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div><div class="stat-label">Enrolled Students</div><div class="stat-value blue" style="font-size:1.4rem;">${coaching.length}</div></div>
+            <div><div class="stat-label">Revenue</div><div class="stat-value green" style="font-size:1.4rem;">${formatAmount(coaching.reduce((s,r)=>s+(r.amount||0),0))}</div></div>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;">Monthly / 2-month / 3-month plans available</p>
+        </div>
+      </div>`;
+
+    // Participants
+    document.getElementById('participants-wrap').innerHTML = `
+      <div style="margin-bottom:14px;"><strong>Tournament Participants (${tournaments.length})</strong></div>
+      ${tournaments.length ? `<div class="table-wrap"><table class="admin-table" style="min-width:400px;">
+        <thead><tr><th>Team Name</th><th>Contact</th><th>Phone</th><th>Amount</th></tr></thead>
+        <tbody>${tournaments.map(r => `<tr>
+          <td style="font-weight:600;">${esc(r.entityName)}</td>
+          <td>${esc(r.contactPerson)}</td>
+          <td>${esc(r.phone)}</td>
+          <td style="color:var(--success);font-weight:600;">${formatAmount(r.amount)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p style="color:var(--text-muted);">No tournament registrations yet</p>'}`;
+  } catch(e) { toast('Failed to load programs', 'error'); }
+}
+
+// ============================================================
+// CONTENT
+// ============================================================
+async function loadContent() {
+  try {
+    const d = await api('GET', '/api/admin/content');
+    const c = d.content || {};
+    const fields = ['tournament-name','tournament-date','venue','entry-fee','reg-status','max-slots',
+                    'coaching-info','coaching-fee','coaching-status','announcement','phone','email'];
+    fields.forEach(f => {
+      const el = document.getElementById(`c-${f}`);
+      if (el && c[f] !== undefined) { el.tagName === 'SELECT' ? (el.value = c[f]) : (el.value = c[f]); }
+    });
+  } catch(e) { console.error(e); }
+}
+
+async function saveContent() {
+  const body = {
+    'tournament-name': document.getElementById('c-tournament-name').value,
+    'tournament-date': document.getElementById('c-tournament-date').value,
+    'venue': document.getElementById('c-venue').value,
+    'entry-fee': document.getElementById('c-entry-fee').value,
+    'reg-status': document.getElementById('c-reg-status').value,
+    'max-slots': document.getElementById('c-max-slots').value,
+    'coaching-info': document.getElementById('c-coaching-info').value,
+    'coaching-fee': document.getElementById('c-coaching-fee').value,
+    'coaching-status': document.getElementById('c-coaching-status').value,
+    'announcement': document.getElementById('c-announcement').value,
+    'phone': document.getElementById('c-phone').value,
+    'email': document.getElementById('c-email').value
+  };
+  try {
+    const d = await api('POST', '/api/admin/update-content', body);
+    if (d.success) {
+      toast('Content saved successfully', 'success');
+      const msg = document.getElementById('content-saved-msg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    } else toast(d.error || 'Save failed', 'error');
+  } catch(e) { toast('Error saving content', 'error'); }
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+async function loadSettings() {
+  // Razorpay
+  try {
+    const d = await api('GET', '/api/get-razorpay-keys');
+    const badge = document.getElementById('rzp-badge');
+    if (d.success) {
+      document.getElementById('rzp-key-id').value = d.key_id || '';
+      badge.textContent = d.is_mock ? 'Mock Mode' : 'Live / Test';
+      badge.className = 'badge ' + (d.is_mock ? 'badge-pending' : 'badge-open');
+    }
+  } catch(e) {}
+
+  // Supabase
+  try {
+    const d = await api('GET', '/api/get-supabase-keys');
+    const badge = document.getElementById('sb-badge');
+    if (d.success) {
+      document.getElementById('sb-url').value = d.supabase_url || '';
+      badge.textContent = d.is_local ? 'Local JSON' : 'Supabase';
+      badge.className = 'badge ' + (d.is_local ? 'badge-pending' : 'badge-open');
+    }
+  } catch(e) {}
+
+  // Email
+  try {
+    const d = await api('GET', '/api/get-email-settings');
+    const badge = document.getElementById('email-badge');
+    if (d.success) {
+      document.getElementById('em-user').value = d.gmail_user || '';
+      document.getElementById('em-notify').value = d.admin_notification_email || '';
+      badge.textContent = d.is_configured ? 'Configured' : 'Not Set';
+      badge.className = 'badge ' + (d.is_configured ? 'badge-open' : 'badge-pending');
+    }
+  } catch(e) {}
+
+  loadAuditLog();
+}
+
+async function changePassword(e) {
+  e.preventDefault();
+  const cur = document.getElementById('pw-current').value;
+  const nw = document.getElementById('pw-new').value;
+  const cf = document.getElementById('pw-confirm').value;
+  const msg = document.getElementById('pw-msg');
+  if (nw !== cf) { msg.textContent = '❌ New passwords do not match'; msg.style.display='block'; msg.style.color='var(--danger)'; return; }
+  try {
+    const d = await api('POST', '/api/admin/change-password', { currentPassword: cur, newPassword: nw });
+    if (d.success) {
+      msg.textContent = '✅ Password updated successfully'; msg.style.color='var(--success)'; msg.style.display='block';
+      e.target.reset();
+      toast('Password changed', 'success');
+    } else {
+      msg.textContent = '❌ ' + (d.error || 'Failed'); msg.style.color='var(--danger)'; msg.style.display='block';
+    }
+  } catch(err) { msg.textContent = '❌ Error'; msg.style.display='block'; }
+}
+
+async function saveRazorpay(e) {
+  e.preventDefault();
+  const msg = document.getElementById('rzp-msg');
+  try {
+    const d = await api('POST', '/api/save-razorpay-keys', { key_id: document.getElementById('rzp-key-id').value, key_secret: document.getElementById('rzp-key-secret').value });
+    if (d.success) { msg.textContent='✅ Saved'; msg.style.color='var(--success)'; toast('Razorpay keys saved','success'); }
+    else { msg.textContent='❌ '+(d.error||'Failed'); msg.style.color='var(--danger)'; }
+    msg.style.display='block';
+  } catch(e) { msg.textContent='❌ Error'; msg.style.display='block'; }
+}
+
+async function saveSupabase(e) {
+  e.preventDefault();
+  const msg = document.getElementById('sb-msg');
+  try {
+    const d = await api('POST', '/api/save-supabase-keys', { supabase_url: document.getElementById('sb-url').value, supabase_key: document.getElementById('sb-key').value });
+    if (d.success) { msg.textContent='✅ Saved'; msg.style.color='var(--success)'; toast('Supabase settings saved','success'); }
+    else { msg.textContent='❌ '+(d.error||'Failed'); msg.style.color='var(--danger)'; }
+    msg.style.display='block';
+  } catch(e) { msg.textContent='❌ Error'; msg.style.display='block'; }
+}
+
+async function saveEmail(e) {
+  e.preventDefault();
+  const msg = document.getElementById('em-msg');
+  try {
+    const d = await api('POST', '/api/save-email-settings', { gmail_user: document.getElementById('em-user').value, gmail_app_password: document.getElementById('em-pass').value, admin_notification_email: document.getElementById('em-notify').value });
+    if (d.success) { msg.textContent='✅ Saved'; msg.style.color='var(--success)'; toast('Email settings saved','success'); }
+    else { msg.textContent='❌ '+(d.error||'Failed'); msg.style.color='var(--danger)'; }
+    msg.style.display='block';
+  } catch(e) { msg.textContent='❌ Error'; msg.style.display='block'; }
+}
+
+async function testEmail() {
+  const msg = document.getElementById('em-msg');
+  msg.textContent='Sending test email…'; msg.style.color='var(--primary)'; msg.style.display='block';
+  try {
+    const d = await api('POST', '/api/test-email', { to: document.getElementById('em-notify').value || document.getElementById('em-user').value });
+    if (d.success) { msg.textContent='✅ Test email sent!'; msg.style.color='var(--success)'; toast('Test email sent','success'); }
+    else { msg.textContent='❌ '+(d.error||'Failed'); msg.style.color='var(--danger)'; }
+  } catch(e) { msg.textContent='❌ Error'; }
+}
+
+function confirmClearDB() {
+  confirm_('⚠ This will permanently delete ALL registration and enquiry records. This cannot be undone. Are you absolutely sure?', async () => {
+    try {
+      const d = await api('POST', '/api/clear-db');
+      if (d.success) { toast('All database records cleared', 'success'); }
+      else toast(d.error || 'Clear failed', 'error');
+    } catch(e) { toast('Error clearing database', 'error'); }
+  });
+}
+
+async function loadAuditLog() {
+  const wrap = document.getElementById('audit-log-wrap');
+  wrap.innerHTML = '<div style="color:var(--text-muted);font-size:0.8rem;">Loading…</div>';
+  try {
+    const d = await api('GET', '/api/admin/audit-log');
+    if (d.success && d.log.length) {
+      wrap.innerHTML = d.log.map(l => `<div class="audit-entry">${esc(l)}</div>`).join('');
+    } else {
+      wrap.innerHTML = '<div style="color:var(--text-muted);">No audit entries yet.</div>';
+    }
+  } catch(e) { wrap.innerHTML = '<div style="color:var(--danger);">Failed to load audit log</div>'; }
+}
+
+// ============================================================
+// ENQUIRIES
+// ============================================================
+let allEnquiries = [];
+
+async function loadEnquiries() {
+  document.getElementById('enq-table-body').innerHTML = '<tr class="empty-row"><td colspan="8"><div class="loading-state"><div class="spinner"></div></div></td></tr>';
+  try {
+    const d = await api('GET', '/api/dashboard-data');
+    allEnquiries = d.enquiries || [];
+    renderEnquiries(allEnquiries);
+  } catch(e) { toast('Failed to load enquiries','error'); }
+}
+
+function renderEnquiries(enqs) {
+  const tbody = document.getElementById('enq-table-body');
+  document.getElementById('enq-count').textContent = `${enqs.length} record${enqs.length!==1?'s':''}`;
+  if (!enqs.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="8">No enquiries found</td></tr>'; return; }
+  tbody.innerHTML = enqs.map(e => `
+    <tr>
+      <td style="font-size:0.74rem;color:var(--text-muted);">${esc(e.id)}</td>
+      <td style="font-weight:600;">${esc(e.name||'—')}</td>
+      <td>${esc(e.phone||'—')}</td>
+      <td style="font-size:0.8rem;">${esc(e.email||'—')}</td>
+      <td style="font-size:0.8rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(e.message||'—')}</td>
+      <td>${e.status==='Resolved'?'<span class="badge badge-open">Resolved</span>':'<span class="badge badge-pending">Pending</span>'}</td>
+      <td style="font-size:0.78rem;">${esc(e.date)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-xs" onclick="toggleEnquiry('${esc(e.id)}')" title="Toggle Status">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </button>
+          <button class="btn btn-danger btn-xs" onclick="deleteEnquiry('${esc(e.id)}')" title="Delete">
+            <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+async function toggleEnquiry(id) {
+  try {
+    const d = await api('POST', '/api/toggle-enquiry', { id });
+    if (d.success) { toast('Status updated','success'); loadEnquiries(); }
+  } catch(e) { toast('Error','error'); }
+}
+
+function deleteEnquiry(id) {
+  confirm_(`Delete enquiry ${id}?`, async () => {
+    try {
+      const d = await api('POST', '/api/delete-enquiry', { id });
+      if (d.success) { toast('Enquiry deleted','success'); loadEnquiries(); }
+    } catch(e) { toast('Error','error'); }
+  });
+}
+
+function exportEnquiriesCSV() {
+  const headers = ['ID','Name','Phone','Email','Message','Status','Date'];
+  const rows = allEnquiries.map(e => [e.id,e.name,e.phone,e.email,e.message,e.status,e.date]);
+  downloadCSV(rows, headers, `enquiries_${Date.now()}.csv`);
+  toast('Enquiries CSV downloaded','success');
+}
+
+// ============================================================
+// VENUE & SLOTS MANAGEMENT
+// ============================================================
+let allVenueBookings = [];
+let allBlockedSlots = [];
+let venuePricing = null;
+
+async function loadVenueSlots() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
+  const dateInput = document.getElementById('scheduler-date-input');
+  if (dateInput && !dateInput.value) {
+    dateInput.value = todayStr;
+  }
+
+  loadVenueStats();
+  loadDayMatrix();
+  loadVenueBookings();
+  loadVenuePricing();
+}
+
+async function loadVenueStats() {
+  try {
+    const d = await api('GET', '/api/admin/venue-stats');
+    if (d.success) {
+      const s = d.stats;
+      document.getElementById('vs-revenue').textContent = formatAmount(s.totalRevenue || 0);
+      document.getElementById('vs-total').textContent = s.totalBookings || 0;
+      document.getElementById('vs-today').textContent = s.todayBookings || 0;
+      document.getElementById('vs-upcoming').textContent = s.upcomingBookings || 0;
+      document.getElementById('vs-blocked').textContent = s.blockedSlotsCount || 0;
+
+      const sp = s.sportsSplit || {};
+      document.getElementById('vs-sports-split').textContent = `${sp.football || 0} / ${sp['box-cricket'] || 0} / ${sp.volleyball || 0}`;
+    }
+  } catch (e) {
+    console.error('Error loading venue stats:', e);
+  }
+}
+
+function shiftSchedulerDay(delta) {
+  const input = document.getElementById('scheduler-date-input');
+  if (!input) return;
+  const cur = input.value ? new Date(input.value + 'T12:00:00Z') : new Date();
+  cur.setDate(cur.getDate() + delta);
+  const yyyy = cur.getFullYear();
+  const mm = String(cur.getMonth() + 1).padStart(2, '0');
+  const dd = String(cur.getDate()).padStart(2, '0');
+  input.value = `${yyyy}-${mm}-${dd}`;
+  loadDayMatrix();
+}
+
+async function loadDayMatrix() {
+  const dateInput = document.getElementById('scheduler-date-input');
+  const sportSelect = document.getElementById('scheduler-sport-filter');
+  const date = dateInput ? dateInput.value : '';
+  const sport = sportSelect ? sportSelect.value : 'football';
+
+  const grid = document.getElementById('day-slot-matrix-grid');
+  const loading = document.getElementById('day-matrix-loading');
+  if (!grid || !date) return;
+
+  if (loading) loading.style.display = 'block';
+  grid.style.opacity = '0.4';
+
+  try {
+    const d = await api('GET', `/api/venues/apex-sports-academy/availability?sport=${encodeURIComponent(sport)}&date=${encodeURIComponent(date)}`);
+    if (loading) loading.style.display = 'none';
+    grid.style.opacity = '1';
+
+    if (d.success) {
+      renderDayMatrixSlots(d, sport, date);
+    }
+  } catch (e) {
+    if (loading) loading.style.display = 'none';
+    grid.style.opacity = '1';
+    toast('Failed to load scheduler matrix', 'error');
+  }
+}
+
+function renderDayMatrixSlots(availData, sport, date) {
+  const grid = document.getElementById('day-slot-matrix-grid');
+  if (!grid) return;
+
+  const { allSlots = [], bookedSlots = [], blockedSlots = [] } = availData;
+
+  // Filter bookings for this date and sport to show customer info
+  const dayBookings = allVenueBookings.filter(b => b.date === date && (b.sport === sport || sport === 'all') && b.paymentStatus !== 'Cancelled');
+
+  grid.innerHTML = allSlots.map(slot => {
+    const matchingBooking = dayBookings.find(b => Array.isArray(b.timeSlots) ? b.timeSlots.includes(slot) : b.timeSlots === slot);
+    const isBooked = bookedSlots.includes(slot) || !!matchingBooking;
+    const isBlocked = blockedSlots.includes(slot);
+
+    if (isBooked) {
+      const bkgId = matchingBooking ? matchingBooking.id : 'Booked';
+      const custName = matchingBooking ? matchingBooking.customerName : 'Occupied Slot';
+      const phone = matchingBooking ? matchingBooking.phone : '';
+      const amount = matchingBooking ? formatAmount(matchingBooking.amount) : '';
+
+      return `
+        <div class="matrix-slot-card occupied">
+          <div class="slot-card-header">
+            <span class="slot-time-text">🕒 ${slot}</span>
+            <span class="badge badge-paid">Booked</span>
+          </div>
+          <div class="slot-card-body">
+            <div class="slot-customer-name">👤 ${esc(custName)}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${phone ? '📞 ' + esc(phone) : ''} ${amount ? '• ' + amount : ''}</div>
+            <div style="font-size:0.72rem; color:var(--primary); font-family:monospace; margin-top:2px;">${esc(bkgId)}</div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:6px;">
+            ${matchingBooking ? `<button class="btn btn-ghost btn-xs" onclick="openBookingStatusModal('${esc(matchingBooking.id)}')">Edit Status</button>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    if (isBlocked) {
+      return `
+        <div class="matrix-slot-card blocked">
+          <div class="slot-card-header">
+            <span class="slot-time-text">🕒 ${slot}</span>
+            <span class="badge badge-blocked">Blocked</span>
+          </div>
+          <div class="slot-card-body">
+            <div style="font-size:0.78rem; color:var(--warning);">🔒 Slot Blocked / Maintenance</div>
+            <div style="font-size:0.72rem; color:var(--text-muted);">Unavailable for public booking</div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-danger btn-xs" onclick="unblockSlotByDetail('${sport}', '${date}', '${slot}')">Unblock</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Free Slot
+    return `
+      <div class="matrix-slot-card free">
+        <div class="slot-card-header">
+          <span class="slot-time-text">🕒 ${slot}</span>
+          <span class="badge" style="background:rgba(0,180,216,0.15); color:var(--primary); border:1px solid rgba(0,180,216,0.3);">Available</span>
+        </div>
+        <div class="slot-card-body">
+          <div style="font-size:0.78rem; color:var(--text-secondary);">Open for online bookings</div>
+        </div>
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn btn-ghost btn-xs" onclick="quickBlockSlot('${sport}', '${date}', '${slot}')">🔒 Block Slot</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function loadVenueBookings() {
+  const tbody = document.getElementById('vb-table-body');
+  if (tbody) tbody.innerHTML = '<tr class="empty-row"><td colspan="9"><div class="loading-state"><div class="spinner"></div></div></td></tr>';
+
+  try {
+    const d = await api('GET', '/api/admin/venue-bookings');
+    if (d.success) {
+      allVenueBookings = d.bookings || [];
+      allBlockedSlots = d.blockedSlots || [];
+      filterVenueBookings();
+    }
+  } catch (e) {
+    toast('Failed to load venue bookings', 'error');
+  }
+}
+
+function filterVenueBookings() {
+  const search = (document.getElementById('vb-search')?.value || '').toLowerCase().trim();
+  const sport = document.getElementById('vb-sport-filter')?.value || 'all';
+  const status = document.getElementById('vb-status-filter')?.value || 'all';
+  const date = document.getElementById('vb-date-filter')?.value || '';
+
+  const filtered = allVenueBookings.filter(b => {
+    const matchSearch = !search ||
+      (b.id || '').toLowerCase().includes(search) ||
+      (b.customerName || '').toLowerCase().includes(search) ||
+      (b.phone || '').toLowerCase().includes(search) ||
+      (b.email || '').toLowerCase().includes(search) ||
+      (b.teamName || '').toLowerCase().includes(search) ||
+      (b.razorpayPaymentId || '').toLowerCase().includes(search);
+
+    const matchSport = sport === 'all' || b.sport === sport;
+
+    let matchStatus = true;
+    if (status !== 'all') {
+      const st = (b.paymentStatus || '').toLowerCase();
+      if (status === 'paid') matchStatus = st === 'paid' || st === 'booking confirmed';
+      else matchStatus = st === status;
+    }
+
+    const matchDate = !date || b.date === date;
+
+    return matchSearch && matchSport && matchStatus && matchDate;
+  });
+
+  renderVenueBookings(filtered);
+}
+
+function renderVenueBookings(bookings) {
+  const tbody = document.getElementById('vb-table-body');
+  if (!tbody) return;
+
+  if (!bookings.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No venue bookings match the selected filters.</td></tr>';
+    return;
+  }
+
+  const sportIcons = { football: '⚽ Football', 'box-cricket': '🏏 Box Cricket', volleyball: '🏐 Volleyball' };
+
+  tbody.innerHTML = bookings.map(b => {
+    const slotStr = Array.isArray(b.timeSlots) ? b.timeSlots.join(', ') : (b.timeSlots || '—');
+    const st = (b.paymentStatus || 'Pending Payment').toLowerCase();
+    let badgeClass = 'badge-pending';
+    if (st === 'paid' || st === 'booking confirmed') badgeClass = 'badge-confirmed';
+    else if (st === 'cancelled') badgeClass = 'badge-cancelled';
+    else if (st === 'refunded' || st === 'refund pending') badgeClass = 'badge-refunded';
+
+    return `
+      <tr>
+        <td style="font-family:monospace; font-weight:700; color:var(--primary); font-size:0.8rem;">${esc(b.id)}</td>
+        <td>
+          <div style="font-weight:700; color:var(--text-primary);">${esc(b.customerName)}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${esc(b.phone)} • ${esc(b.teamName || 'Individual')}</div>
+        </td>
+        <td><span style="font-weight:600;">${sportIcons[b.sport] || b.sport}</span></td>
+        <td>
+          <div style="font-weight:600; font-size:0.82rem;">${esc(b.date)}</div>
+          <div style="font-size:0.75rem; color:var(--primary);">${esc(slotStr)}</div>
+        </td>
+        <td style="font-size:0.82rem;">${b.durationHours || 1} hr${(b.durationHours || 1) > 1 ? 's' : ''}</td>
+        <td style="font-weight:800; color:var(--secondary); font-size:0.92rem;">${formatAmount(b.amount)}</td>
+        <td><span class="badge ${badgeClass}">${esc(b.paymentStatus || 'Pending')}</span></td>
+        <td style="font-family:monospace; font-size:0.74rem; color:var(--text-muted);">${esc(b.razorpayPaymentId || 'N/A')}</td>
+        <td>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-ghost btn-xs" onclick="openBookingStatusModal('${esc(b.id)}')" title="Change Status">
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-xs" onclick="quickViewReceipt('${esc(b.id)}')" title="Receipt">
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function quickViewReceipt(bkgId) {
+  const b = allVenueBookings.find(x => x.id === bkgId);
+  if (!b) return;
+
+  const slotStr = Array.isArray(b.timeSlots) ? b.timeSlots.join(', ') : b.timeSlots;
+  const body = document.getElementById('receipt-modal-body');
+  if (!body) return;
+
+  body.innerHTML = `
+    <div class="receipt-box">
+      <div class="receipt-hdr">
+        <div>
+          <div class="receipt-logo-text">Apex <span>Sports</span> Academy</div>
+          <div class="receipt-sub">Electronic City, Bengaluru</div>
+        </div>
+        <div class="badge badge-paid">PAID &amp; CONFIRMED</div>
+      </div>
+      <div class="receipt-row"><span class="r-label">Booking ID</span><span class="r-value" style="font-family:monospace;color:var(--primary);">${esc(b.id)}</span></div>
+      <div class="receipt-row"><span class="r-label">Sport</span><span class="r-value">${esc(b.sport)}</span></div>
+      <div class="receipt-row"><span class="r-label">Date &amp; Time Slot</span><span class="r-value">${esc(b.date)} (${esc(slotStr)})</span></div>
+      <div class="receipt-row"><span class="r-label">Customer Name</span><span class="r-value">${esc(b.customerName)}</span></div>
+      <div class="receipt-row"><span class="r-label">Mobile</span><span class="r-value">${esc(b.phone)}</span></div>
+      <div class="receipt-row"><span class="r-label">Email</span><span class="r-value">${esc(b.email)}</span></div>
+      <div class="receipt-row"><span class="r-label">Razorpay Payment ID</span><span class="r-value" style="font-family:monospace;">${esc(b.razorpayPaymentId || 'N/A')}</span></div>
+      <div class="receipt-total"><span class="r-label">Total Amount Paid</span><span class="r-value">${formatAmount(b.amount)}</span></div>
+      <div class="receipt-footer">Apex Sports Academy • Bangalore • Valid Booking Proof</div>
+    </div>
+  `;
+  openModal('receipt-modal');
+}
+
+function openBlockSlotModal(sport, date, slot) {
+  const sportSel = document.getElementById('blk-sport');
+  const dateInp = document.getElementById('blk-date');
+  const slotSel = document.getElementById('blk-slot');
+  const reasonInp = document.getElementById('blk-reason');
+
+  if (sportSel && sport) sportSel.value = sport;
+  if (dateInp) {
+    if (date) dateInp.value = date;
+    else if (!dateInp.value) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      dateInp.value = `${yyyy}-${mm}-${dd}`;
+    }
+  }
+  if (slotSel && slot) slotSel.value = slot;
+  if (reasonInp) reasonInp.value = '';
+
+  openModal('modal-block-slot');
+}
+
+function quickBlockSlot(sport, date, slot) {
+  openBlockSlotModal(sport, date, slot);
+}
+
+async function submitBlockSlot() {
+  const sport = document.getElementById('blk-sport')?.value;
+  const date = document.getElementById('blk-date')?.value;
+  const slot = document.getElementById('blk-slot')?.value;
+  const reason = document.getElementById('blk-reason')?.value || 'Maintenance';
+
+  if (!sport || !date || !slot) {
+    toast('Please fill sport, date, and slot.', 'error');
+    return;
+  }
+
+  try {
+    const d = await api('POST', '/api/admin/block-slot', {
+      venueId: 'apex-sports-academy',
+      sport,
+      date,
+      timeSlot: slot,
+      reason
+    });
+
+    if (d.success) {
+      toast('Time slot blocked successfully', 'success');
+      closeModal('modal-block-slot');
+      loadVenueSlots();
+    } else {
+      toast(d.error || 'Failed to block slot', 'error');
+    }
+  } catch (e) {
+    toast('Error connecting to server', 'error');
+  }
+}
+
+async function unblockSlotByDetail(sport, date, slot) {
+  confirm_(`Unblock slot ${slot} on ${date} for ${sport}?`, async () => {
+    try {
+      const target = allBlockedSlots.find(b => b.date === date && b.timeSlot === slot && (b.sport === sport || b.sport === 'all'));
+      const id = target ? target.id : `${sport}_${date}_${slot}`;
+
+      const d = await api('DELETE', `/api/admin/block-slot/${encodeURIComponent(id)}`);
+      if (d.success) {
+        toast('Slot unblocked', 'success');
+        loadVenueSlots();
+      } else {
+        toast(d.error || 'Failed to unblock', 'error');
+      }
+    } catch (e) {
+      toast('Error unblocking slot', 'error');
+    }
+  });
+}
+
+function openBookingStatusModal(bookingId) {
+  const b = allVenueBookings.find(x => x.id === bookingId);
+  if (!b) return;
+
+  document.getElementById('edit-booking-id').value = b.id;
+  document.getElementById('edit-booking-id-display').value = `${b.id} (${b.customerName} - ${b.sport})`;
+  document.getElementById('edit-booking-status-select').value = b.paymentStatus || 'Paid';
+  document.getElementById('edit-booking-notes').value = b.adminNotes || '';
+
+  openModal('modal-booking-status');
+}
+
+async function submitBookingStatus() {
+  const id = document.getElementById('edit-booking-id')?.value;
+  const status = document.getElementById('edit-booking-status-select')?.value;
+  const notes = document.getElementById('edit-booking-notes')?.value;
+
+  if (!id || !status) return;
+
+  try {
+    const d = await api('PUT', `/api/admin/venue-bookings/${encodeURIComponent(id)}`, {
+      paymentStatus: status,
+      adminNotes: notes
+    });
+
+    if (d.success) {
+      toast('Booking status updated', 'success');
+      closeModal('modal-booking-status');
+      loadVenueSlots();
+    } else {
+      toast(d.error || 'Failed to update status', 'error');
+    }
+  } catch (e) {
+    toast('Error updating booking', 'error');
+  }
+}
+
+async function loadVenuePricing() {
+  try {
+    const d = await api('GET', '/api/admin/venue-pricing');
+    if (d.success && d.pricing) {
+      venuePricing = d.pricing;
+      if (d.pricing.football) {
+        document.getElementById('price-football-weekday').value = d.pricing.football.weekdayHourlyRate || 1000;
+        document.getElementById('price-football-weekend').value = d.pricing.football.weekendHourlyRate || 1200;
+        document.getElementById('price-football-peak').value = d.pricing.football.peakHourMultiplier || 1.2;
+      }
+      if (d.pricing['box-cricket']) {
+        document.getElementById('price-box-cricket-weekday').value = d.pricing['box-cricket'].weekdayHourlyRate || 900;
+        document.getElementById('price-box-cricket-weekend').value = d.pricing['box-cricket'].weekendHourlyRate || 1100;
+        document.getElementById('price-box-cricket-peak').value = d.pricing['box-cricket'].peakHourMultiplier || 1.2;
+      }
+      if (d.pricing.volleyball) {
+        document.getElementById('price-volleyball-weekday').value = d.pricing.volleyball.weekdayHourlyRate || 800;
+        document.getElementById('price-volleyball-weekend').value = d.pricing.volleyball.weekendHourlyRate || 1000;
+        document.getElementById('price-volleyball-peak').value = d.pricing.volleyball.peakHourMultiplier || 1.2;
+      }
+    }
+  } catch (e) {
+    console.error('Error loading venue pricing:', e);
+  }
+}
+
+async function saveVenuePricing() {
+  const payload = {
+    football: {
+      weekdayHourlyRate: parseFloat(document.getElementById('price-football-weekday').value) || 1000,
+      weekendHourlyRate: parseFloat(document.getElementById('price-football-weekend').value) || 1200,
+      peakHourMultiplier: parseFloat(document.getElementById('price-football-peak').value) || 1.2,
+      peakSlots: ['06:00 - 07:00', '07:00 - 08:00', '16:00 - 17:00', '17:00 - 18:00']
+    },
+    'box-cricket': {
+      weekdayHourlyRate: parseFloat(document.getElementById('price-box-cricket-weekday').value) || 900,
+      weekendHourlyRate: parseFloat(document.getElementById('price-box-cricket-weekend').value) || 1100,
+      peakHourMultiplier: parseFloat(document.getElementById('price-box-cricket-peak').value) || 1.2,
+      peakSlots: ['06:00 - 07:00', '07:00 - 08:00', '16:00 - 17:00', '17:00 - 18:00']
+    },
+    volleyball: {
+      weekdayHourlyRate: parseFloat(document.getElementById('price-volleyball-weekday').value) || 800,
+      weekendHourlyRate: parseFloat(document.getElementById('price-volleyball-weekend').value) || 1000,
+      peakHourMultiplier: parseFloat(document.getElementById('price-volleyball-peak').value) || 1.2,
+      peakSlots: ['06:00 - 07:00', '07:00 - 08:00', '16:00 - 17:00', '17:00 - 18:00']
+    }
+  };
+
+  try {
+    const d = await api('POST', '/api/admin/update-venue-pricing', { pricing: payload });
+    if (d.success) {
+      toast('Venue pricing rules updated successfully', 'success');
+      loadVenueSlots();
+    } else {
+      toast(d.error || 'Failed to update pricing', 'error');
+    }
+  } catch (e) {
+    toast('Error updating venue pricing', 'error');
+  }
+}
+
+function exportVenueBookingsCSV() {
+  const headers = ['Booking ID', 'Customer Name', 'Phone', 'Email', 'Team Name', 'Sport', 'Date', 'Slots', 'Duration (Hours)', 'Amount (INR)', 'Payment Status', 'Razorpay Payment ID', 'Created At'];
+  const rows = allVenueBookings.map(b => [
+    b.id,
+    b.customerName,
+    b.phone,
+    b.email,
+    b.teamName || '',
+    b.sport,
+    b.date,
+    Array.isArray(b.timeSlots) ? b.timeSlots.join('; ') : b.timeSlots,
+    b.durationHours || 1,
+    b.amount,
+    b.paymentStatus,
+    b.razorpayPaymentId || '',
+    b.createdAt || ''
+  ]);
+  downloadCSV(rows, headers, `apex_venue_bookings_${Date.now()}.csv`);
+  toast('Venue bookings CSV exported', 'success');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('resize', () => {
+  if (chartData) drawChart(chartData);
+  if (window.innerWidth >= 768) closeSidebar();
+});
+
+loadOverview();
+</script>
+</body>
+</html>
