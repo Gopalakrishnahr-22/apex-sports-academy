@@ -2624,7 +2624,7 @@ function handleCleanProceedToPayment() {
         currency: 'INR',
         name: 'Apex Sports Academy',
         description: `${bookingPayload.sport.toUpperCase()} Booking on ${bookingPayload.date}`,
-        image: 'Logo.jpeg',
+        image: 'logo.jpeg',
         order_id: orderRes.order_id,
         handler: function (response) {
           verifyCleanVenuePayment(response, bookingPayload, false);
