@@ -46,6 +46,10 @@
       </div>
 
       <div class="nav-group-label">Management</div>
+      <div class="nav-item" onclick="showSection('subscriptions',this)" data-section="subscriptions">
+        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+        Coaching Registrations
+      </div>
       <div class="nav-item" onclick="showSection('venueslots',this)" data-section="venueslots">
         <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
         Venue &amp; Slots
@@ -599,11 +603,151 @@
         </div>
       </section>
 
+      <!-- ===== COACHING REGISTRATIONS ===== -->
+      <section class="admin-section" id="section-subscriptions">
+        <div class="section-hdr">
+          <div><div class="section-label">Coaching</div><h2 class="section-title">Coaching Registrations</h2></div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-secondary btn-sm" onclick="exportSubscriptionsCSV()">Export CSV</button>
+            <button class="btn btn-primary btn-sm" onclick="loadSubscriptionsData()">Refresh</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap;">
+            <input type="text" id="sub-filter-q" class="form-input" style="max-width: 280px;" placeholder="Search name, phone, email, Txn..." oninput="loadSubscriptionsData()">
+            <select id="sub-filter-sport" class="form-select" style="max-width: 160px;" onchange="loadSubscriptionsData()">
+              <option value="all">All Sports</option>
+              <option value="khokho">Kho Kho</option>
+              <option value="football">Football</option>
+              <option value="volleyball">Volleyball</option>
+              <option value="throwball">Throwball</option>
+            </select>
+            <select id="sub-filter-pay" class="form-select" style="max-width: 160px;" onchange="loadSubscriptionsData()">
+              <option value="all">All Payment Status</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select id="sub-filter-status" class="form-select" style="max-width: 160px;" onchange="loadSubscriptionsData()">
+              <option value="all">All Subscription Status</option>
+              <option value="active">Active</option>
+              <option value="expired">Expired</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Reg ID</th>
+                  <th>Full Name</th>
+                  <th>DOB / Age / Gender</th>
+                  <th>Phone &amp; Email</th>
+                  <th>Sport</th>
+                  <th>Group</th>
+                  <th>Days &amp; Time</th>
+                  <th>Fee</th>
+                  <th>Payment</th>
+                  <th>Validity Period</th>
+                  <th>Subscription</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subscriptions-table-body">
+                <tr class="empty-row"><td colspan="12">Loading registrations…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="sub-count">0 records</span></div>
+        </div>
+      </section>
+
     </div><!-- /admin-content -->
   </main>
 </div><!-- /admin-app -->
 
 <!-- ===== MODALS ===== -->
+
+<!-- Coaching Registration Detail & Management Modal -->
+<div class="modal-backdrop" id="coaching-detail-modal">
+  <div class="modal-box wide" style="max-width: 760px;">
+    <div class="modal-hdr" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%); color: #fff; padding: 18px 24px; border-radius: 12px 12px 0 0;">
+      <div>
+        <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #a5b4fc; font-weight: 700;">Coaching Registration Record</div>
+        <div class="modal-hdr-title" id="cdm-title" style="color: #ffffff; font-size: 1.35rem; font-weight: 800;">Registration Details</div>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('coaching-detail-modal')" style="color: #fff;">&times;</button>
+    </div>
+    
+    <div class="modal-body" style="padding: 24px; max-height: 75vh; overflow-y: auto;">
+      
+      <!-- Student Info Grid -->
+      <div style="margin-bottom: 14px; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; font-size: 0.95rem;">
+        👤 Personal Information
+      </div>
+      <div class="modal-detail-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">REGISTRATION ID</strong><span id="cdm-id" style="font-family:monospace; font-weight:800; color:#2563eb; font-size:1.05rem;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">FULL NAME</strong><span id="cdm-name" style="font-weight:700; color:#0f172a; font-size:1.05rem;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">DATE OF BIRTH</strong><span id="cdm-dob" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">AGE &amp; GENDER</strong><span id="cdm-age-gender" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">CONTACT PHONE</strong><span id="cdm-phone" style="font-weight:600; color:#0f172a;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">EMAIL ADDRESS</strong><span id="cdm-email" style="font-weight:600; color:#0f172a;">—</span></div>
+      </div>
+
+      <!-- Coaching Program Grid -->
+      <div style="margin-bottom: 14px; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; font-size: 0.95rem;">
+        🏆 Sport &amp; Coaching Program
+      </div>
+      <div class="modal-detail-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">SPORT</strong><span id="cdm-sport" style="font-weight:800; color:#0f172a; font-size:1.05rem;">—</span></div>
+        <div>
+          <strong style="color:#64748b; font-size:0.8rem; display:block; margin-bottom: 4px;">COACHING GROUP (EDITABLE BY ADMIN)</strong>
+          <select id="cdm-group-input" class="form-select" style="padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1; font-weight:600; width:100%;">
+            <option value="Beginner Camp">Beginner Camp</option>
+            <option value="Intermediate Batch">Intermediate Batch</option>
+            <option value="Elite Academy">Elite Academy</option>
+          </select>
+        </div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">COACHING DAYS</strong><span id="cdm-days" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">COACHING TIME</strong><span id="cdm-time" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">MONTHLY FEE</strong><span id="cdm-fee" style="font-weight:800; color:#16a34a; font-size:1.1rem;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">AGREEMENT STATUS</strong><span id="cdm-agree" style="color:#16a34a; font-weight:700;">✓ Terms Accepted &amp; Verified</span></div>
+      </div>
+
+      <!-- Payment & Subscription Grid -->
+      <div style="margin-bottom: 14px; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; font-size: 0.95rem;">
+        💳 Payment &amp; Subscription Audit
+      </div>
+      <div class="modal-detail-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">REGISTRATION DATE</strong><span id="cdm-reg-date" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">PAYMENT STATUS</strong><span id="cdm-pay-status">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">RAZORPAY ORDER ID (LOCKED)</strong><span id="cdm-order-id" style="font-family:monospace; font-size:0.88rem; color:#475569;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">RAZORPAY PAYMENT ID (LOCKED)</strong><span id="cdm-txn-id" style="font-family:monospace; font-size:0.88rem; color:#475569;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">PAYMENT DATE</strong><span id="cdm-pay-date" style="font-weight:600;">—</span></div>
+        <div>
+          <strong style="color:#64748b; font-size:0.8rem; display:block; margin-bottom: 4px;">SUBSCRIPTION STATUS (EDITABLE BY ADMIN)</strong>
+          <select id="cdm-sub-status-input" class="form-select" style="padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1; font-weight:700; width:100%;">
+            <option value="Active">Active</option>
+            <option value="Expired">Expired</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">SUBSCRIPTION START DATE</strong><span id="cdm-start-date" style="font-weight:600;">—</span></div>
+        <div><strong style="color:#64748b; font-size:0.8rem; display:block;">SUBSCRIPTION END DATE</strong><span id="cdm-end-date" style="font-weight:600;">—</span></div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('coaching-detail-modal')">Close</button>
+      <button class="btn btn-primary btn-sm" id="cdm-save-btn" onclick="saveCoachingRegistrationChanges()" style="background:#2563eb; padding: 10px 20px; font-weight: 700;">Save Admin Changes</button>
+    </div>
+  </div>
+</div>
 
 <!-- Registration Detail / Edit Modal -->
 <div class="modal-backdrop" id="reg-modal">
@@ -844,7 +988,7 @@ function downloadCSV(rows, headers, filename) {
 // SIDEBAR / NAVIGATION
 // ============================================================
 const SECTION_TITLES = {
-  overview:'Overview', venueslots:'Venue & Slots', registrations:'Registrations', payments:'Payments',
+  overview:'Overview', subscriptions:'Coaching Registrations', venueslots:'Venue & Slots', registrations:'Registrations', payments:'Payments',
   receipts:'Receipts', tournament:'Programs', content:'Website Content',
   settings:'Settings', enquiries:'Enquiries'
 };
@@ -859,6 +1003,7 @@ function showSection(id, el) {
 
   const loaders = {
     overview: loadOverview,
+    subscriptions: loadSubscriptionsData,
     venueslots: loadVenueSlots,
     registrations: loadRegistrations,
     payments: loadPayments,
@@ -2028,6 +2173,273 @@ function exportVenueBookingsCSV() {
   ]);
   downloadCSV(rows, headers, `apex_venue_bookings_${Date.now()}.csv`);
   toast('Venue bookings CSV exported', 'success');
+}
+
+// ============================================================
+// COACHING REGISTRATIONS MANAGEMENT
+// ============================================================
+let allSubscriptions = [];
+let activeDetailId = null;
+
+async function loadSubscriptionsData() {
+  const tbody = document.getElementById('subscriptions-table-body');
+  const countEl = document.getElementById('sub-count');
+  if (tbody) tbody.innerHTML = `<tr class="empty-row"><td colspan="12">Loading coaching registrations…</td></tr>`;
+
+  const q = (document.getElementById('sub-filter-q')?.value || '').trim();
+  const sport = document.getElementById('sub-filter-sport')?.value || 'all';
+  const pay = document.getElementById('sub-filter-pay')?.value || 'all';
+  const status = document.getElementById('sub-filter-status')?.value || 'all';
+
+  const queryParams = new URLSearchParams({
+    q,
+    sport,
+    paymentStatus: pay,
+    subStatus: status
+  });
+
+  try {
+    const data = await api('GET', `/api/admin/coaching-registrations?${queryParams.toString()}`);
+    if (data.success && Array.isArray(data.registrations || data.subscriptions)) {
+      allSubscriptions = data.registrations || data.subscriptions;
+      renderSubscriptionsTable(allSubscriptions);
+    } else {
+      if (tbody) tbody.innerHTML = `<tr class="empty-row"><td colspan="12">${data.error || 'No registrations found.'}</td></tr>`;
+      if (countEl) countEl.innerText = '0 records';
+    }
+  } catch (e) {
+    if (tbody) tbody.innerHTML = `<tr class="empty-row"><td colspan="12">Error loading coaching registrations.</td></tr>`;
+    if (countEl) countEl.innerText = '0 records';
+  }
+}
+
+function renderSubscriptionsTable(list) {
+  const tbody = document.getElementById('subscriptions-table-body');
+  const countEl = document.getElementById('sub-count');
+  if (!tbody) return;
+
+  if (countEl) countEl.innerText = `${list.length} record${list.length !== 1 ? 's' : ''}`;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="12">No coaching registrations match the selected filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(s => {
+    const subStat = s.subscription_status || s.subscriptionStatus || 'Active';
+    let statusBadge = `<span class="badge badge-success">Active</span>`;
+    if (subStat === 'Expired') statusBadge = `<span class="badge badge-danger">Expired</span>`;
+    else if (subStat === 'Inactive' || subStat === 'Failed') statusBadge = `<span class="badge badge-secondary">Inactive</span>`;
+    else if (subStat === 'Pending') statusBadge = `<span class="badge badge-warning">Pending</span>`;
+
+    const payStat = s.payment_status || s.paymentStatus || 'Paid';
+    let payBadge = `<span class="badge badge-success">✓ Paid</span>`;
+    if (payStat === 'Failed') payBadge = `<span class="badge badge-danger">✕ Failed</span>`;
+    else if (payStat === 'Cancelled') payBadge = `<span class="badge badge-warning">Cancelled</span>`;
+    else if (payStat === 'Pending') payBadge = `<span class="badge badge-info">Pending</span>`;
+
+    const name = s.full_name || s.studentName || 'Student';
+    const dob = s.date_of_birth || s.dob || '—';
+    const age = s.age ? `${s.age} yrs` : '—';
+    const gender = s.gender || '—';
+    const sport = s.sport || s.sportName || '—';
+    const group = s.coaching_group || s.coachingGroup || s.parentName || 'Beginner Camp';
+    const days = s.coaching_days || s.coachingDays || '—';
+    const time = s.coaching_time || s.coachingTime || '—';
+    const fee = s.monthly_fee || s.monthlyFee || 0;
+    const startDate = s.subscription_start_date || s.startDate || '—';
+    const endDate = s.subscription_end_date || s.endDate || '—';
+
+    return `
+      <tr>
+        <td style="font-family:monospace; font-weight:800; color:var(--accent);">${s.id}</td>
+        <td style="font-weight:700; color:var(--text-main);">${esc(name)}</td>
+        <td style="font-size:12px;">
+          <div><strong>DOB:</strong> ${esc(dob)}</div>
+          <div>${age} • ${esc(gender)}</div>
+        </td>
+        <td>
+          <div style="font-weight:600; color:var(--text-main);">${esc(s.phone)}</div>
+          <div style="font-size:12px; color:var(--text-muted);">${esc(s.email)}</div>
+        </td>
+        <td><strong style="color:var(--text-main); font-family:var(--font-heading);">${esc(sport)}</strong></td>
+        <td><span class="badge badge-info" style="font-size:11px;">${esc(group)}</span></td>
+        <td style="font-size:12px; max-width:170px;">
+          <div><strong>${esc(days)}</strong></div>
+          <div style="color:var(--text-muted);">${esc(time)}</div>
+        </td>
+        <td style="font-weight:800; color:var(--text-main);">₹${fee.toLocaleString('en-IN')}</td>
+        <td>${payBadge}</td>
+        <td style="font-size:12px;">
+          <div><strong>Start:</strong> ${startDate}</div>
+          <div><strong>End:</strong> ${endDate}</div>
+        </td>
+        <td>${statusBadge}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" style="font-weight:700;" onclick="openCoachingDetailModal('${s.id}')">View Details</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openCoachingDetailModal(id) {
+  const item = allSubscriptions.find(s => s.id === id);
+  if (!item) {
+    toast('Registration record not found', 'error');
+    return;
+  }
+
+  activeDetailId = id;
+
+  const titleEl = document.getElementById('cdm-title');
+  const idEl = document.getElementById('cdm-id');
+  const nameEl = document.getElementById('cdm-name');
+  const dobEl = document.getElementById('cdm-dob');
+  const ageGenderEl = document.getElementById('cdm-age-gender');
+  const phoneEl = document.getElementById('cdm-phone');
+  const emailEl = document.getElementById('cdm-email');
+  const sportEl = document.getElementById('cdm-sport');
+  const groupInput = document.getElementById('cdm-group-input');
+  const daysEl = document.getElementById('cdm-days');
+  const timeEl = document.getElementById('cdm-time');
+  const feeEl = document.getElementById('cdm-fee');
+  const agreeEl = document.getElementById('cdm-agree');
+  const regDateEl = document.getElementById('cdm-reg-date');
+  const payStatusEl = document.getElementById('cdm-pay-status');
+  const orderIdEl = document.getElementById('cdm-order-id');
+  const txnIdEl = document.getElementById('cdm-txn-id');
+  const payDateEl = document.getElementById('cdm-pay-date');
+  const subStatusInput = document.getElementById('cdm-sub-status-input');
+  const startDateEl = document.getElementById('cdm-start-date');
+  const endDateEl = document.getElementById('cdm-end-date');
+
+  const name = item.full_name || item.studentName || 'Student';
+  const dob = item.date_of_birth || item.dob || 'N/A';
+  const age = item.age ? `${item.age} Years Old` : 'N/A';
+  const gender = item.gender || 'Not Specified';
+  const sport = item.sport || item.sportName || 'Volleyball';
+  const group = item.coaching_group || item.coachingGroup || item.parentName || 'Beginner Camp';
+  const days = item.coaching_days || item.coachingDays || 'Scheduled Days';
+  const time = item.coaching_time || item.coachingTime || '4:00 PM – 6:00 PM';
+  const fee = item.monthly_fee || item.monthlyFee || 0;
+  const regDate = item.registration_date || item.registrationDate || item.created_at || item.createdAt || 'N/A';
+  const payStatus = item.payment_status || item.paymentStatus || 'Paid';
+  const orderId = item.razorpay_order_id || item.razorpayOrderId || 'N/A';
+  const txnId = item.razorpay_payment_id || item.razorpayPaymentId || 'N/A';
+  const payDate = item.payment_date || item.paymentDate || item.created_at || item.createdAt || 'N/A';
+  const subStatus = item.subscription_status || item.subscriptionStatus || 'Active';
+  const startDate = item.subscription_start_date || item.startDate || 'N/A';
+  const endDate = item.subscription_end_date || item.endDate || 'N/A';
+
+  if (titleEl) titleEl.innerText = `Registration #${item.id}`;
+  if (idEl) idEl.innerText = item.id;
+  if (nameEl) nameEl.innerText = name;
+  if (dobEl) dobEl.innerText = dob;
+  if (ageGenderEl) ageGenderEl.innerText = `${age} (${gender})`;
+  if (phoneEl) phoneEl.innerText = item.phone || 'N/A';
+  if (emailEl) emailEl.innerText = item.email || 'N/A';
+  if (sportEl) sportEl.innerText = sport;
+  if (groupInput) groupInput.value = group;
+  if (daysEl) daysEl.innerText = days;
+  if (timeEl) timeEl.innerText = time;
+  if (feeEl) feeEl.innerText = `₹${fee.toLocaleString('en-IN')} / Month`;
+  if (agreeEl) agreeEl.innerHTML = item.agreement_accepted !== false ? `<span style="color:#16a34a; font-weight:700;">✓ Accepted &amp; Verified</span>` : `<span style="color:#ef4444; font-weight:700;">✕ Pending</span>`;
+  if (regDateEl) regDateEl.innerText = regDate ? new Date(regDate).toLocaleString('en-IN') : 'N/A';
+  
+  if (payStatusEl) {
+    if (payStatus === 'Paid') payStatusEl.innerHTML = `<span class="badge badge-success">✓ Paid</span>`;
+    else if (payStatus === 'Failed') payStatusEl.innerHTML = `<span class="badge badge-danger">✕ Failed</span>`;
+    else payStatusEl.innerHTML = `<span class="badge badge-warning">${payStatus}</span>`;
+  }
+
+  if (orderIdEl) orderIdEl.innerText = orderId;
+  if (txnIdEl) txnIdEl.innerText = txnId;
+  if (payDateEl) payDateEl.innerText = payDate ? new Date(payDate).toLocaleString('en-IN') : 'N/A';
+  if (subStatusInput) subStatusInput.value = subStatus;
+  if (startDateEl) startDateEl.innerText = startDate;
+  if (endDateEl) endDateEl.innerText = endDate;
+
+  const modal = document.getElementById('coaching-detail-modal');
+  if (modal) {
+    modal.classList.add('open');
+    modal.style.display = 'flex';
+  }
+}
+
+async function saveCoachingRegistrationChanges() {
+  if (!activeDetailId) return;
+
+  const group = document.getElementById('cdm-group-input')?.value;
+  const status = document.getElementById('cdm-sub-status-input')?.value;
+
+  const btn = document.getElementById('cdm-save-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Saving Changes...';
+  }
+
+  try {
+    const res = await api('PATCH', `/api/admin/coaching-registrations/${activeDetailId}`, {
+      coaching_group: group,
+      subscription_status: status
+    });
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = 'Save Admin Changes';
+    }
+
+    if (res.success) {
+      toast('Registration record updated successfully! ✓', 'success');
+      closeModal('coaching-detail-modal');
+      loadSubscriptionsData();
+    } else {
+      toast(res.error || 'Failed to update record', 'error');
+    }
+  } catch (e) {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = 'Save Admin Changes';
+    }
+    toast('Error updating registration record', 'error');
+  }
+}
+
+function exportSubscriptionsCSV() {
+  const headers = [
+    'Registration ID', 'Full Name', 'Date of Birth', 'Age', 'Gender', 'Contact Phone', 'Email Address',
+    'Sport', 'Coaching Group', 'Coaching Days', 'Coaching Time', 'Monthly Fee (INR)',
+    'Registration Date', 'Agreement Status', 'Payment Status', 'Razorpay Payment ID', 'Razorpay Order ID',
+    'Payment Date', 'Subscription Start Date', 'Subscription End Date', 'Subscription Status'
+  ];
+
+  const rows = allSubscriptions.map(s => [
+    s.id,
+    s.full_name || s.studentName || '',
+    s.date_of_birth || s.dob || '',
+    s.age || '',
+    s.gender || '',
+    s.phone || '',
+    s.email || '',
+    s.sport || s.sportName || '',
+    s.coaching_group || s.coachingGroup || s.parentName || '',
+    s.coaching_days || s.coachingDays || '',
+    s.coaching_time || s.coachingTime || '',
+    s.monthly_fee || s.monthlyFee || '',
+    s.registration_date || s.registrationDate || s.created_at || '',
+    s.agreement_accepted !== false ? 'Accepted' : 'Pending',
+    s.payment_status || s.paymentStatus || '',
+    s.razorpay_payment_id || s.razorpayPaymentId || '',
+    s.razorpay_order_id || s.razorpayOrderId || '',
+    s.payment_date || s.paymentDate || '',
+    s.subscription_start_date || s.startDate || '',
+    s.subscription_end_date || s.endDate || '',
+    s.subscription_status || s.subscriptionStatus || ''
+  ]);
+
+  downloadCSV(rows, headers, `apex_coaching_registrations_${Date.now()}.csv`);
+  toast('Coaching registrations CSV exported successfully! ✓', 'success');
 }
 
 // ============================================================

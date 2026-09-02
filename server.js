@@ -218,6 +218,7 @@ function loadDbLocal() {
       bookings: raw.bookings || [],
       blocked_slots: raw.blocked_slots || [],
       registrations: raw.registrations || [],
+      coachingSubscriptions: raw.coachingSubscriptions || [],
       enquiries: raw.enquiries || [],
       users: raw.users || [],
       newsletter_subscribers: raw.newsletter_subscribers || []
@@ -360,6 +361,97 @@ async function saveRegistrationToDb(record) {
   db.registrations = db.registrations || [];
   db.registrations.unshift(record);
   saveDbLocal(db);
+}
+
+async function saveCoachingRegistrationToDb(record) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
+    try {
+      const { error } = await supabase.from('coaching_registrations').insert([record]);
+      if (error) {
+        console.warn('Supabase insert error (coaching_registrations):', error.message);
+      }
+    } catch (e) {
+      console.warn('Supabase insert exception (coaching_registrations):', e.message);
+    }
+  }
+
+  const db = loadDbLocal();
+  db.coachingRegistrations = db.coachingRegistrations || db.coachingSubscriptions || [];
+  
+  const existingIdx = db.coachingRegistrations.findIndex(item => item.id === record.id);
+  if (existingIdx >= 0) {
+    db.coachingRegistrations[existingIdx] = { ...db.coachingRegistrations[existingIdx], ...record };
+  } else {
+    db.coachingRegistrations.unshift(record);
+  }
+
+  db.coachingSubscriptions = db.coachingRegistrations;
+  saveDbLocal(db);
+}
+
+async function saveSubscriptionToDb(record) {
+  return saveCoachingRegistrationToDb(record);
+}
+
+async function getCoachingRegistrationsFromDb() {
+  let list = [];
+  const supabase = getSupabaseClient();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('coaching_registrations')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (!error && Array.isArray(data)) {
+        list = data;
+      }
+    } catch (e) {
+      console.warn('Supabase fetch exception (coaching_registrations):', e.message);
+    }
+  }
+
+  const db = loadDbLocal();
+  const localList = db.coachingRegistrations || db.coachingSubscriptions || [];
+
+  const map = new Map();
+  [...list, ...localList].forEach(item => {
+    if (item && item.id) map.set(item.id, item);
+  });
+
+  return Array.from(map.values());
+}
+
+async function getSubscriptionsFromDb() {
+  return getCoachingRegistrationsFromDb();
+}
+
+async function updateCoachingRegistrationInDb(id, updates) {
+  const supabase = getSupabaseClient();
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('coaching_registrations')
+        .update(updates)
+        .eq('id', id);
+      if (error) {
+        console.warn('Supabase update error (coaching_registrations):', error.message);
+      }
+    } catch (e) {
+      console.warn('Supabase update exception (coaching_registrations):', e.message);
+    }
+  }
+
+  const db = loadDbLocal();
+  db.coachingRegistrations = db.coachingRegistrations || db.coachingSubscriptions || [];
+  const idx = db.coachingRegistrations.findIndex(item => item.id === id);
+  if (idx >= 0) {
+    db.coachingRegistrations[idx] = { ...db.coachingRegistrations[idx], ...updates, updated_at: new Date().toISOString() };
+    db.coachingSubscriptions = db.coachingRegistrations;
+    saveDbLocal(db);
+    return db.coachingRegistrations[idx];
+  }
+  return null;
 }
 
 async function saveEnquiryToDb(data) {
@@ -1843,6 +1935,206 @@ app.post('/api/verify-payment', async (req, res) => {
   }
 });
 
+// ============================================================
+// COACHING SUBSCRIPTIONS ENDPOINTS
+// ============================================================
+
+// 1. Create Subscription Razorpay Order Endpoint
+app.post('/api/subscribe/create-order', async (req, res) => {
+  try {
+    const rawAmount = req.body.amount;
+    const amount = parseInt(rawAmount || 1600, 10);
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).json({ success: false, error: 'Valid subscription amount is required.' });
+    }
+
+    const amountPaise = amount * 100;
+    const receiptId = `sub_rcpt_${crypto.randomBytes(4).toString('hex')}`;
+
+    const { client, keyId } = getRazorpayClient();
+
+    if (!client) {
+      const mockOrderId = `order_sub_${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
+      return res.json({
+        success: true,
+        order_id: mockOrderId,
+        key_id: 'rzp_test_placeholder_key_id',
+        amount: amount,
+        mock: true
+      });
+    }
+
+    const order = await client.orders.create({
+      amount: amountPaise,
+      currency: 'INR',
+      receipt: receiptId,
+      payment_capture: 1
+    });
+
+    return res.json({
+      success: true,
+      order_id: order.id,
+      key_id: keyId,
+      amount: amount,
+      mock: false
+    });
+  } catch (e) {
+    console.error('Error in /api/subscribe/create-order:', e.message);
+    return res.status(400).json({ success: false, error: e.message });
+  }
+});
+
+// 2. Verify Subscription Payment Endpoint
+app.post('/api/subscribe/verify-payment', async (req, res) => {
+  try {
+    const {
+      razorpay_payment_id: paymentId,
+      razorpay_order_id: orderId,
+      razorpay_signature: signature,
+      subscription_data: subData = {},
+      is_mock: isMock = false
+    } = req.body;
+
+    let verified = false;
+    const { client, keySecret } = getRazorpayClient();
+
+    if (!client || isMock) {
+      verified = true;
+    } else {
+      try {
+        const text = `${orderId}|${paymentId}`;
+        const generatedSignature = crypto
+          .createHmac('sha256', keySecret)
+          .update(text)
+          .digest('hex');
+
+        if (generatedSignature === signature) {
+          verified = true;
+        } else {
+          console.warn('Razorpay subscription signature mismatch.');
+          verified = false;
+        }
+      } catch (e) {
+        console.error('Razorpay signature verification exception:', e.message);
+        verified = false;
+      }
+    }
+
+    if (!verified) {
+      const failId = `CR-FAIL-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+      const nowFail = new Date();
+      const failedRecord = {
+        id: failId,
+        full_name: subData.studentName || subData.full_name || 'Student',
+        studentName: subData.studentName || subData.full_name || 'Student',
+        date_of_birth: subData.dob || subData.date_of_birth || 'N/A',
+        dob: subData.dob || subData.date_of_birth || 'N/A',
+        age: parseInt(subData.age || 0, 10),
+        gender: subData.gender || 'Not Specified',
+        phone: subData.phone || '',
+        email: subData.email || '',
+        sport: subData.sportName || subData.sport || 'Volleyball',
+        sportName: subData.sportName || subData.sport || 'Volleyball',
+        coaching_group: subData.coachingGroup || subData.coaching_group || subData.parentName || 'Beginner Camp',
+        coachingGroup: subData.coachingGroup || subData.coaching_group || subData.parentName || 'Beginner Camp',
+        parentName: subData.parentName || 'N/A',
+        coaching_days: subData.coachingDays || subData.coaching_days || 'Scheduled Days',
+        coachingDays: subData.coachingDays || subData.coaching_days || 'Scheduled Days',
+        coaching_time: subData.coachingTime || subData.coaching_time || '4:00 PM – 6:00 PM',
+        coachingTime: subData.coachingTime || subData.coaching_time || '4:00 PM – 6:00 PM',
+        monthly_fee: parseInt(subData.monthlyFee || subData.amount || 1600, 10),
+        monthlyFee: parseInt(subData.monthlyFee || subData.amount || 1600, 10),
+        agreement_accepted: true,
+        registration_date: nowFail.toISOString(),
+        registrationDate: nowFail.toISOString(),
+        created_at: nowFail.toISOString(),
+        createdAt: nowFail.toISOString(),
+        updated_at: nowFail.toISOString(),
+        payment_status: 'Failed',
+        paymentStatus: 'Failed',
+        razorpay_payment_id: paymentId || '',
+        razorpayPaymentId: paymentId || '',
+        razorpay_order_id: orderId || '',
+        razorpayOrderId: orderId || '',
+        payment_date: '',
+        paymentDate: '',
+        subscription_start_date: '',
+        startDate: '',
+        subscription_end_date: '',
+        endDate: '',
+        subscription_status: 'Inactive',
+        subscriptionStatus: 'Inactive'
+      };
+      await saveCoachingRegistrationToDb(failedRecord);
+
+      return res.status(400).json({
+        success: false,
+        error: 'Signature verification failed. Payment not authenticated.'
+      });
+    }
+
+    const subId = `CR-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    const now = new Date();
+    const startDate = now.toISOString().split('T')[0];
+    const endDateObj = new Date(now);
+    endDateObj.setDate(endDateObj.getDate() + 30);
+    const endDate = endDateObj.toISOString().split('T')[0];
+
+    const record = {
+      id: subId,
+      full_name: subData.studentName || subData.full_name || 'Student',
+      studentName: subData.studentName || subData.full_name || 'Student',
+      date_of_birth: subData.dob || subData.date_of_birth || 'N/A',
+      dob: subData.dob || subData.date_of_birth || 'N/A',
+      age: parseInt(subData.age || 0, 10),
+      gender: subData.gender || 'Not Specified',
+      phone: subData.phone || '',
+      email: subData.email || '',
+      sport: subData.sportName || subData.sport || 'Volleyball',
+      sportName: subData.sportName || subData.sport || 'Volleyball',
+      coaching_group: subData.coachingGroup || subData.coaching_group || subData.parentName || 'Beginner Camp',
+      coachingGroup: subData.coachingGroup || subData.coaching_group || subData.parentName || 'Beginner Camp',
+      parentName: subData.parentName || 'N/A',
+      coaching_days: subData.coachingDays || subData.coaching_days || 'Scheduled Days',
+      coachingDays: subData.coachingDays || subData.coaching_days || 'Scheduled Days',
+      coaching_time: subData.coachingTime || subData.coaching_time || '4:00 PM – 6:00 PM',
+      coachingTime: subData.coachingTime || subData.coaching_time || '4:00 PM – 6:00 PM',
+      monthly_fee: parseInt(subData.monthlyFee || subData.amount || 1600, 10),
+      monthlyFee: parseInt(subData.monthlyFee || subData.amount || 1600, 10),
+      agreement_accepted: true,
+      registration_date: now.toISOString(),
+      registrationDate: now.toISOString(),
+      created_at: now.toISOString(),
+      createdAt: now.toISOString(),
+      updated_at: now.toISOString(),
+      payment_status: 'Paid',
+      paymentStatus: 'Paid',
+      razorpay_payment_id: paymentId || `TXN_SUB_${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
+      razorpayPaymentId: paymentId || `TXN_SUB_${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
+      razorpay_order_id: orderId || '',
+      razorpayOrderId: orderId || '',
+      payment_date: now.toISOString(),
+      paymentDate: now.toISOString(),
+      subscription_start_date: startDate,
+      startDate: startDate,
+      subscription_end_date: endDate,
+      endDate: endDate,
+      subscription_status: 'Active',
+      subscriptionStatus: 'Active'
+    };
+
+    await saveCoachingRegistrationToDb(record);
+
+    return res.json({
+      success: true,
+      subscription: record
+    });
+  } catch (e) {
+    console.error('Error in /api/subscribe/verify-payment:', e.message);
+    return res.status(400).json({ success: false, error: e.message });
+  }
+});
+
 // 3. Save Enquiry Endpoint
 app.post('/api/save-enquiry', async (req, res) => {
   try {
@@ -2980,6 +3272,31 @@ app.post('/api/logout', (req, res) => {
 });
 
 // ============================================================
+// SPORT DEDICATED PAGES ROUTES & ASSETS
+// ============================================================
+app.get('/volleyball', (req, res) => res.sendFile(path.join(__dirname, 'volleyball.html')));
+app.get('/throwball', (req, res) => res.sendFile(path.join(__dirname, 'throwball.html')));
+app.get('/football', (req, res) => res.sendFile(path.join(__dirname, 'football.html')));
+app.get('/khokho', (req, res) => res.sendFile(path.join(__dirname, 'khokho.html')));
+
+app.get('/sport/style.css', (req, res) => res.sendFile(path.join(__dirname, 'style.css')));
+app.get('/sport/logo.jpeg', (req, res) => res.sendFile(path.join(__dirname, 'logo.jpeg')));
+app.get('/sport/app.js', (req, res) => res.sendFile(path.join(__dirname, 'app.js')));
+
+app.get('/sport/volleyball', (req, res) => res.sendFile(path.join(__dirname, 'volleyball.html')));
+app.get('/sport/throwball', (req, res) => res.sendFile(path.join(__dirname, 'throwball.html')));
+app.get('/sport/football', (req, res) => res.sendFile(path.join(__dirname, 'football.html')));
+app.get('/sport/khokho', (req, res) => res.sendFile(path.join(__dirname, 'khokho.html')));
+app.get('/sport/:sportName', (req, res) => {
+  const s = req.params.sportName.toLowerCase();
+  if (s === 'volleyball') return res.sendFile(path.join(__dirname, 'volleyball.html'));
+  if (s === 'throwball') return res.sendFile(path.join(__dirname, 'throwball.html'));
+  if (s === 'football') return res.sendFile(path.join(__dirname, 'football.html'));
+  if (s === 'khokho' || s === 'kho-kho') return res.sendFile(path.join(__dirname, 'khokho.html'));
+  res.redirect('/#programs');
+});
+
+// ============================================================
 // ADMIN PAGE ROUTES
 // ============================================================
 app.get('/admin', (req, res) => res.redirect('/admin/login'));
@@ -3184,6 +3501,165 @@ app.get('/api/admin/venue-pricing', requireAdmin, async (req, res) => {
   }
 });
 
+// GET /api/admin/coaching-registrations (Search & Filter Coaching Registrations)
+app.get('/api/admin/coaching-registrations', requireAdmin, async (req, res) => {
+  try {
+    let list = await getCoachingRegistrationsFromDb();
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    list = list.map(item => {
+      let subStatus = item.subscription_status || item.subscriptionStatus || 'Active';
+      const endDate = item.subscription_end_date || item.endDate;
+      const payStatus = item.payment_status || item.paymentStatus || 'Paid';
+
+      if (payStatus !== 'Paid') {
+        subStatus = payStatus === 'Failed' ? 'Inactive' : (payStatus === 'Cancelled' ? 'Cancelled' : 'Pending');
+      } else if (endDate && endDate < todayStr && subStatus === 'Active') {
+        subStatus = 'Expired';
+      }
+
+      return {
+        ...item,
+        id: item.id,
+        full_name: item.full_name || item.studentName || 'Student',
+        studentName: item.full_name || item.studentName || 'Student',
+        date_of_birth: item.date_of_birth || item.dob || 'N/A',
+        dob: item.date_of_birth || item.dob || 'N/A',
+        age: item.age || 0,
+        gender: item.gender || 'Not Specified',
+        phone: item.phone || '',
+        email: item.email || '',
+        sport: item.sport || item.sportName || 'Volleyball',
+        sportName: item.sport || item.sportName || 'Volleyball',
+        coaching_group: item.coaching_group || item.coachingGroup || item.parentName || 'Beginner Camp',
+        coachingGroup: item.coaching_group || item.coachingGroup || item.parentName || 'Beginner Camp',
+        coaching_days: item.coaching_days || item.coachingDays || '',
+        coachingDays: item.coaching_days || item.coachingDays || '',
+        coaching_time: item.coaching_time || item.coachingTime || '',
+        coachingTime: item.coaching_time || item.coachingTime || '',
+        monthly_fee: item.monthly_fee || item.monthlyFee || 0,
+        monthlyFee: item.monthly_fee || item.monthlyFee || 0,
+        agreement_accepted: item.agreement_accepted !== undefined ? item.agreement_accepted : true,
+        registration_date: item.registration_date || item.registrationDate || item.created_at || item.createdAt || new Date().toISOString(),
+        registrationDate: item.registration_date || item.registrationDate || item.created_at || item.createdAt || new Date().toISOString(),
+        payment_status: payStatus,
+        paymentStatus: payStatus,
+        razorpay_payment_id: item.razorpay_payment_id || item.razorpayPaymentId || '',
+        razorpayPaymentId: item.razorpay_payment_id || item.razorpayPaymentId || '',
+        razorpay_order_id: item.razorpay_order_id || item.razorpayOrderId || '',
+        razorpayOrderId: item.razorpay_order_id || item.razorpayOrderId || '',
+        payment_date: item.payment_date || item.paymentDate || item.created_at || item.createdAt || '',
+        paymentDate: item.payment_date || item.paymentDate || item.created_at || item.createdAt || '',
+        subscription_start_date: item.subscription_start_date || item.startDate || '',
+        startDate: item.subscription_start_date || item.startDate || '',
+        subscription_end_date: item.subscription_end_date || item.endDate || '',
+        endDate: item.subscription_end_date || item.endDate || '',
+        subscription_status: subStatus,
+        subscriptionStatus: subStatus
+      };
+    });
+
+    const q = (req.query.q || '').trim().toLowerCase();
+    const sport = (req.query.sport || '').trim().toLowerCase();
+    const paymentStatus = (req.query.paymentStatus || '').trim().toLowerCase();
+    const subStatus = (req.query.subStatus || '').trim().toLowerCase();
+
+    if (q) {
+      list = list.filter(s =>
+        [s.id, s.full_name, s.phone, s.email, s.razorpay_payment_id, s.razorpay_order_id, s.sport]
+          .some(v => (v || '').toString().toLowerCase().includes(q))
+      );
+    }
+
+    if (sport && sport !== 'all') {
+      list = list.filter(s => (s.sport || '').toLowerCase().includes(sport));
+    }
+
+    if (paymentStatus && paymentStatus !== 'all') {
+      list = list.filter(s => (s.payment_status || '').toLowerCase() === paymentStatus);
+    }
+
+    if (subStatus && subStatus !== 'all') {
+      list = list.filter(s => (s.subscription_status || '').toLowerCase() === subStatus);
+    }
+
+    return res.json({
+      success: true,
+      registrations: list,
+      subscriptions: list
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// GET /api/admin/coaching-registrations/:id
+app.get('/api/admin/coaching-registrations/:id', requireAdmin, async (req, res) => {
+  try {
+    const list = await getCoachingRegistrationsFromDb();
+    const item = list.find(r => r.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ success: false, error: 'Registration record not found.' });
+    }
+    return res.json({ success: true, registration: item });
+  } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// PATCH /api/admin/coaching-registrations/:id (Update subscription_status or coaching_group)
+app.patch('/api/admin/coaching-registrations/:id', requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subscription_status, subscriptionStatus, coaching_group, coachingGroup } = req.body;
+
+    const updates = {};
+    const subStat = subscription_status || subscriptionStatus;
+    if (subStat) {
+      updates.subscription_status = subStat;
+      updates.subscriptionStatus = subStat;
+    }
+    const cGroup = coaching_group || coachingGroup;
+    if (cGroup) {
+      updates.coaching_group = cGroup;
+      updates.coachingGroup = cGroup;
+    }
+
+    const updated = await updateCoachingRegistrationInDb(id, updates);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Coaching registration not found.' });
+    }
+
+    auditLog('COACHING_REGISTRATION_UPDATED', `id=${id} updates=${Object.keys(updates).join(',')}`);
+    return res.json({ success: true, registration: updated });
+  } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// GET /api/admin/subscriptions (Legacy Alias)
+app.get('/api/admin/subscriptions', requireAdmin, async (req, res) => {
+  try {
+    let list = await getSubscriptionsFromDb();
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    list = list.map(item => {
+      let subStatus = item.subscriptionStatus || item.subscription_status || 'Active';
+      if (item.endDate && item.endDate < todayStr) {
+        subStatus = 'Expired';
+      }
+      return { ...item, subscriptionStatus: subStatus };
+    });
+
+    return res.json({
+      success: true,
+      subscriptions: list
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+});
+
 // POST /api/admin/update-venue-pricing
 app.post('/api/admin/update-venue-pricing', requireAdmin, async (req, res) => {
   try {
@@ -3379,6 +3855,16 @@ app.use(express.static(__dirname, {
     }
   }
 }));
+
+// Dedicated Sport Page Routes & Assets
+app.get('/sport/style.css', (req, res) => res.sendFile(path.join(__dirname, 'style.css')));
+app.get('/sport/logo.jpeg', (req, res) => res.sendFile(path.join(__dirname, 'logo.jpeg')));
+app.get('/sport/app.js', (req, res) => res.sendFile(path.join(__dirname, 'app.js')));
+
+app.get(['/volleyball', '/sport/volleyball'], (req, res) => res.sendFile(path.join(__dirname, 'volleyball.html')));
+app.get(['/throwball', '/sport/throwball'], (req, res) => res.sendFile(path.join(__dirname, 'throwball.html')));
+app.get(['/football', '/sport/football'], (req, res) => res.sendFile(path.join(__dirname, 'football.html')));
+app.get(['/khokho', '/sport/khokho'], (req, res) => res.sendFile(path.join(__dirname, 'khokho.html')));
 
 // Serve index.html on root or fallback (do not intercept /admin paths)
 app.get('*', (req, res) => {

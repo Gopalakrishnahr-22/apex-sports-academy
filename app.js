@@ -2832,5 +2832,593 @@ function printVenueReceipt() {
   printWin.document.close();
 }
 
+/* ==========================================================================
+   SPORTS PROGRAMS HORIZONTAL CAROUSEL CONTROLLER
+   ========================================================================== */
+
+/* ==========================================================================
+   SPORTS PROGRAMS HORIZONTAL CAROUSEL CONTROLLER
+   ========================================================================== */
+
+function initSportsCarousel() {
+  const track = document.getElementById('sports-carousel-track');
+  const prevBtn = document.getElementById('sports-carousel-prev');
+  const nextBtn = document.getElementById('sports-carousel-next');
+  const dotsContainer = document.getElementById('sports-carousel-dots');
+  const dots = document.querySelectorAll('.sports-carousel-dot');
+  const cards = document.querySelectorAll('.sport-card-item');
+
+  if (!track || cards.length === 0) return;
+
+  let currentIndex = 0;
+  let autoScrollTimer = null;
+  let isInteracting = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let isSwiping = false;
+
+  const totalCards = cards.length;
+
+  // Calculate card scroll width dynamically
+  const getCardWidth = () => {
+    if (cards.length === 0) return 300;
+    const card = cards[0];
+    const style = window.getComputedStyle(track);
+    const gap = parseFloat(style.gap) || 0;
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  // Scroll to target index smoothly
+  const scrollToCard = (index, smooth = true) => {
+    currentIndex = (index + totalCards) % totalCards;
+    const cardWidth = getCardWidth();
+    const targetLeft = currentIndex * cardWidth;
+
+    track.scrollTo({
+      left: targetLeft,
+      behavior: smooth ? 'smooth' : 'auto'
+    });
+
+    updateDots(currentIndex);
+  };
+
+  // Update Active Pagination Dot
+  const updateDots = (index) => {
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === index);
+      dot.setAttribute('aria-selected', idx === index ? 'true' : 'false');
+    });
+  };
+
+  // Helper to check if current screen is mobile
+  const isMobileView = () => window.innerWidth <= 768;
+
+  // Auto Scroll Engine (5 Seconds per sport - STRICTLY FOR MOBILE VIEW ONLY)
+  const startAutoScroll = () => {
+    stopAutoScroll();
+    if (!isMobileView()) return; // Do NOT auto-scroll on desktop or laptop
+
+    autoScrollTimer = setInterval(() => {
+      if (!isInteracting && isMobileView()) {
+        scrollToCard(currentIndex + 1, true);
+      } else if (!isMobileView()) {
+        stopAutoScroll();
+      }
+    }, 5000);
+  };
+
+  const stopAutoScroll = () => {
+    if (autoScrollTimer) {
+      clearInterval(autoScrollTimer);
+      autoScrollTimer = null;
+    }
+  };
+
+  // Pause on user interaction & resume after 5s of inactivity (Mobile only)
+  const handleUserInteraction = () => {
+    isInteracting = true;
+    stopAutoScroll();
+    clearTimeout(track._resumeTimer);
+    if (isMobileView()) {
+      track._resumeTimer = setTimeout(() => {
+        isInteracting = false;
+        startAutoScroll();
+      }, 5000);
+    }
+  };
+
+  // Sync scroll position with active dot index on manual scroll/swipe
+  let scrollTimeout = null;
+  track.addEventListener('scroll', () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const cardWidth = getCardWidth();
+      if (cardWidth > 0) {
+        const approxIndex = Math.round(track.scrollLeft / cardWidth);
+        if (approxIndex >= 0 && approxIndex < totalCards && approxIndex !== currentIndex) {
+          currentIndex = approxIndex;
+          updateDots(currentIndex);
+        }
+      }
+    }, 80);
+  });
+
+  // Touch Swipe Handlers for Android & iOS
+  track.addEventListener('touchstart', (e) => {
+    handleUserInteraction();
+    touchStartX = e.touches[0].clientX;
+    isSwiping = false;
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    touchEndX = e.touches[0].clientX;
+    if (Math.abs(touchEndX - touchStartX) > 10) {
+      isSwiping = true;
+    }
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    handleUserInteraction();
+  }, { passive: true });
+
+  // Prevent link click triggered during finger swipe
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (isSwiping) {
+        e.preventDefault();
+        e.stopPropagation();
+        isSwiping = false;
+      }
+    });
+  });
+
+  // Pagination Dot Click Listeners
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleUserInteraction();
+      scrollToCard(idx, true);
+    });
+  });
+
+  // Next / Prev Arrow Button Click Listeners (Desktop)
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      handleUserInteraction();
+      scrollToCard(currentIndex - 1, true);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      handleUserInteraction();
+      scrollToCard(currentIndex + 1, true);
+    });
+  }
+
+  // Window resize handler to switch between mobile auto-scroll & desktop static view
+  window.addEventListener('resize', () => {
+    if (!isMobileView()) {
+      stopAutoScroll();
+    } else if (!autoScrollTimer && !isInteracting) {
+      startAutoScroll();
+    }
+  });
+
+  // Start initial 5-second auto scroll loop (Mobile View Only)
+  startAutoScroll();
+}
+
+// Auto-initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSportsCarousel);
+} else {
+  initSportsCarousel();
+}
+
+/* ==========================================================================
+   COACHING SUBSCRIPTION & MONTHLY MEMBERSHIP SYSTEM
+   ========================================================================== */
+
+const COACHING_SPORTS_CONFIG = {
+  khokho: {
+    sportName: 'Kho Kho',
+    coachingDays: 'Monday & Tuesday',
+    coachingTime: '4:00 PM – 6:00 PM',
+    monthlyFee: 1100
+  },
+  football: {
+    sportName: 'Football',
+    coachingDays: 'Wednesday, Thursday & Friday',
+    coachingTime: '4:00 PM – 6:00 PM',
+    monthlyFee: 1600
+  },
+  volleyball: {
+    sportName: 'Volleyball',
+    coachingDays: 'Saturday, Sunday & Monday',
+    coachingTime: '4:00 PM – 6:00 PM',
+    monthlyFee: 1600
+  },
+  throwball: {
+    sportName: 'Throwball',
+    coachingDays: 'Saturday & Sunday',
+    coachingTime: 'Morning: 7:00 AM – 9:00 AM',
+    monthlyFee: 800
+  }
+};
+
+let currentSubConfig = COACHING_SPORTS_CONFIG.volleyball;
+
+function openSubModal(sportKey) {
+  const config = COACHING_SPORTS_CONFIG[sportKey] || COACHING_SPORTS_CONFIG.volleyball;
+  currentSubConfig = config;
+
+  const modal = document.getElementById('coaching-sub-modal');
+  if (!modal) return;
+
+  // Reset steps
+  showSubStep(1);
+
+  // Pre-fill read-only fields
+  const fieldSport = document.getElementById('sub-field-sport');
+  const fieldDays = document.getElementById('sub-field-days');
+  const fieldTime = document.getElementById('sub-field-time');
+  const fieldFee = document.getElementById('sub-field-fee');
+
+  if (fieldSport) fieldSport.value = config.sportName;
+  if (fieldDays) fieldDays.value = config.coachingDays;
+  if (fieldTime) fieldTime.value = config.coachingTime;
+  if (fieldFee) fieldFee.value = `₹${config.monthlyFee.toLocaleString('en-IN')} / Month`;
+
+  modal.classList.add('open');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSubModal() {
+  const modal = document.getElementById('coaching-sub-modal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function showSubStep(stepNum) {
+  const s1 = document.getElementById('sub-step-1');
+  const s2 = document.getElementById('sub-step-2');
+  const s3 = document.getElementById('sub-step-3');
+
+  if (s1) s1.style.display = stepNum === 1 ? 'block' : 'none';
+  if (s2) s2.style.display = stepNum === 2 ? 'block' : 'none';
+  if (s3) s3.style.display = stepNum === 3 ? 'block' : 'none';
+}
+
+function goToSubStep2() {
+  const name = (document.getElementById('sub-student-name')?.value || '').trim();
+  const age = (document.getElementById('sub-student-age')?.value || '').trim();
+  const phone = (document.getElementById('sub-student-phone')?.value || '').trim();
+  const email = (document.getElementById('sub-student-email')?.value || '').trim();
+
+  if (!name) {
+    alert('Please enter Student / Player Name.');
+    document.getElementById('sub-student-name')?.focus();
+    return;
+  }
+  if (!age || isNaN(age) || age <= 0) {
+    alert('Please enter a valid Age.');
+    document.getElementById('sub-student-age')?.focus();
+    return;
+  }
+  if (!phone || phone.length < 10) {
+    alert('Please enter a valid 10-digit mobile number.');
+    document.getElementById('sub-student-phone')?.focus();
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address.');
+    document.getElementById('sub-student-email')?.focus();
+    return;
+  }
+
+  // Populate Step 2 Summary
+  const config = currentSubConfig;
+  const sumSport = document.getElementById('sub-sum-sport');
+  const sumDays = document.getElementById('sub-sum-days');
+  const sumTime = document.getElementById('sub-sum-time');
+  const sumStudent = document.getElementById('sub-sum-student');
+  const sumPhone = document.getElementById('sub-sum-phone');
+  const sumFee = document.getElementById('sub-sum-fee');
+  const sumTotal = document.getElementById('sub-sum-total');
+
+  if (sumSport) sumSport.innerText = config.sportName;
+  if (sumDays) sumDays.innerText = config.coachingDays;
+  if (sumTime) sumTime.innerText = config.coachingTime;
+  if (sumStudent) sumStudent.innerText = name;
+  if (sumPhone) sumPhone.innerText = phone;
+  if (sumFee) sumFee.innerText = `₹${config.monthlyFee.toLocaleString('en-IN')}`;
+  if (sumTotal) sumTotal.innerText = `₹${config.monthlyFee.toLocaleString('en-IN')}`;
+
+  showSubStep(2);
+}
+
+function processSubPayment() {
+  const config = currentSubConfig;
+  const name = (document.getElementById('sub-student-name')?.value || '').trim();
+  const age = parseInt(document.getElementById('sub-student-age')?.value || '0', 10);
+  const gender = document.getElementById('sub-student-gender')?.value || 'Male';
+  const parentName = (document.getElementById('sub-parent-name')?.value || '').trim() || 'N/A';
+  const phone = (document.getElementById('sub-student-phone')?.value || '').trim();
+  const email = (document.getElementById('sub-student-email')?.value || '').trim();
+
+  const btn = document.getElementById('btn-sub-proceed-pay');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Initializing Payment...';
+  }
+
+  const subPayload = {
+    amount: config.monthlyFee,
+    studentName: name,
+    age,
+    gender,
+    parentName,
+    phone,
+    email,
+    sportName: config.sportName,
+    coachingDays: config.coachingDays,
+    coachingTime: config.coachingTime,
+    monthlyFee: config.monthlyFee
+  };
+
+  fetch('/api/subscribe/create-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: config.monthlyFee })
+  })
+    .then(res => res.json())
+    .then(orderRes => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = 'Proceed to Payment →';
+      }
+
+      if (!orderRes.success) {
+        alert(orderRes.error || 'Failed to create subscription order.');
+        return;
+      }
+
+      // Check if test / mock mode
+      if (orderRes.mock || !orderRes.key_id || orderRes.key_id === 'rzp_test_placeholder_key_id') {
+        const proceedMock = confirm(`[Razorpay Test Mode / Simulation]\n\nMonthly Fee: ₹${config.monthlyFee}\nSport: ${config.sportName}\nStudent: ${name}\n\nClick OK to simulate successful Razorpay payment, or Cancel.`);
+        if (proceedMock) {
+          verifySubPayment({
+            razorpay_payment_id: `pay_sub_mock_${Date.now()}`,
+            razorpay_order_id: orderRes.order_id,
+            razorpay_signature: 'mock_signature'
+          }, subPayload, true);
+        }
+        return;
+      }
+
+      // Open Razorpay Standard Checkout
+      const options = {
+        key: orderRes.key_id,
+        amount: orderRes.amount * 100,
+        currency: 'INR',
+        name: 'Apex Sports Academy',
+        description: `${config.sportName} Monthly Coaching Subscription`,
+        image: '/logo.jpeg',
+        order_id: orderRes.order_id,
+        handler: function (response) {
+          verifySubPayment(response, subPayload, false);
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone
+        },
+        theme: {
+          color: '#16a34a'
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    })
+    .catch(err => {
+      console.error('Error creating subscription order:', err);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = 'Proceed to Payment →';
+      }
+      alert('Unable to connect to payment gateway server.');
+    });
+}
+
+function verifySubPayment(rzpResponse, subPayload, isMock) {
+  fetch('/api/subscribe/verify-payment', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      razorpay_payment_id: rzpResponse.razorpay_payment_id,
+      razorpay_order_id: rzpResponse.razorpay_order_id,
+      razorpay_signature: rzpResponse.razorpay_signature,
+      subscription_data: subPayload,
+      is_mock: isMock
+    })
+  })
+    .then(res => res.json())
+    .then(verifyRes => {
+      if (!verifyRes.success) {
+        alert(verifyRes.error || 'Payment signature verification failed.');
+        return;
+      }
+
+      showSubConfirmation(verifyRes.subscription);
+    })
+    .catch(err => {
+      console.error('Subscription verification error:', err);
+      alert('Error verifying subscription payment.');
+    });
+}
+
+function showSubConfirmation(sub) {
+  const modal = document.getElementById('coaching-sub-modal');
+  if (modal) {
+    modal.classList.add('open');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  showSubStep(3);
+
+  const succId = document.getElementById('sub-succ-id');
+  const succSport = document.getElementById('sub-succ-sport');
+  const succStudent = document.getElementById('sub-succ-student');
+  const succFee = document.getElementById('sub-succ-fee');
+  const succDates = document.getElementById('sub-succ-dates');
+  const succTxn = document.getElementById('sub-succ-txn');
+
+  if (succId) succId.innerText = sub.id || 'ASA-SUB-XXXXXX';
+  if (succSport) succSport.innerText = sub.sportName;
+  if (succStudent) succStudent.innerText = sub.studentName;
+  if (succFee) succFee.innerText = `₹${(sub.monthlyFee || 0).toLocaleString('en-IN')}`;
+  if (succDates) succDates.innerText = `${sub.startDate} to ${sub.endDate}`;
+  if (succTxn) succTxn.innerText = sub.razorpayPaymentId;
+}
+
+function triggerDirectRazorpay(sportKey) {
+  const config = COACHING_SPORTS_CONFIG[sportKey] || COACHING_SPORTS_CONFIG.volleyball;
+  currentSubConfig = config;
+
+  const name = (document.getElementById('direct-sub-name')?.value || '').trim();
+  const dob = (document.getElementById('direct-sub-dob')?.value || '').trim();
+  const gender = document.getElementById('direct-sub-gender')?.value || '';
+  const phone = (document.getElementById('direct-sub-phone')?.value || '').trim();
+  const email = (document.getElementById('direct-sub-email')?.value || '').trim();
+  const group = document.getElementById('direct-sub-group')?.value || 'Beginner Camp';
+  const agree = document.getElementById('direct-sub-agree')?.checked;
+
+  if (!name) {
+    alert('Please enter Full Name.');
+    document.getElementById('direct-sub-name')?.focus();
+    return;
+  }
+  if (!dob) {
+    alert('Please select Date of Birth.');
+    document.getElementById('direct-sub-dob')?.focus();
+    return;
+  }
+  if (!gender) {
+    alert('Please select Gender.');
+    document.getElementById('direct-sub-gender')?.focus();
+    return;
+  }
+  if (!phone || phone.length < 10) {
+    alert('Please enter a valid 10-digit Contact Phone.');
+    document.getElementById('direct-sub-phone')?.focus();
+    return;
+  }
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid Email Address.');
+    document.getElementById('direct-sub-email')?.focus();
+    return;
+  }
+  if (!agree) {
+    alert('Please accept the agreement checkbox to proceed.');
+    return;
+  }
+
+  let age = 15;
+  try {
+    const birthYear = new Date(dob).getFullYear();
+    const currentYear = new Date().getFullYear();
+    if (birthYear && birthYear > 1900) age = currentYear - birthYear;
+  } catch (e) {}
+
+  const btn = document.getElementById('btn-direct-pay');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = 'Connecting to Razorpay...';
+  }
+
+  const subPayload = {
+    amount: config.monthlyFee,
+    studentName: name,
+    dob,
+    age,
+    gender,
+    parentName: group,
+    phone,
+    email,
+    sportName: config.sportName,
+    coachingDays: config.coachingDays,
+    coachingTime: config.coachingTime,
+    monthlyFee: config.monthlyFee
+  };
+
+  fetch('/api/subscribe/create-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: config.monthlyFee })
+  })
+    .then(res => res.json())
+    .then(orderRes => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = `Proceed to Payment (₹${config.monthlyFee.toLocaleString('en-IN')}) →`;
+      }
+
+      if (!orderRes.success) {
+        alert(orderRes.error || 'Failed to create subscription order.');
+        return;
+      }
+
+      if (orderRes.mock || !orderRes.key_id || orderRes.key_id === 'rzp_test_placeholder_key_id') {
+        const proceedMock = confirm(`[Razorpay Direct Checkout]\n\nSport: ${config.sportName}\nStudent: ${name}\nCoaching Group: ${group}\nMonthly Fee: ₹${config.monthlyFee}\n\nClick OK to open Razorpay payment.`);
+        if (proceedMock) {
+          verifySubPayment({
+            razorpay_payment_id: `pay_sub_direct_${Date.now()}`,
+            razorpay_order_id: orderRes.order_id,
+            razorpay_signature: 'mock_signature'
+          }, subPayload, true);
+        }
+        return;
+      }
+
+      const options = {
+        key: orderRes.key_id,
+        amount: orderRes.amount * 100,
+        currency: 'INR',
+        name: 'Apex Sports Academy',
+        description: `${config.sportName} (${group}) - ₹${config.monthlyFee}/mo`,
+        image: '/logo.jpeg',
+        order_id: orderRes.order_id,
+        handler: function (response) {
+          verifySubPayment(response, subPayload, false);
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone
+        },
+        theme: {
+          color: '#2563eb'
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    })
+    .catch(err => {
+      console.error('Error opening Razorpay checkout:', err);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = `Proceed to Payment (₹${config.monthlyFee.toLocaleString('en-IN')}) →`;
+      }
+      alert('Unable to connect to Razorpay server.');
+    });
+}
+
 
 

@@ -604,70 +604,7 @@
       </div>
   </section>
 
-  <!-- --- Why Play Volleyball Section --- -->
-  <section id="why-volleyball" class="section-padding">
-    <!-- Background decorations -->
-    <div class="wv-bg-decorations" aria-hidden="true">
-      <!-- Volleyball player silhouette (right side) -->
-      <svg class="wv-silhouette" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
-        <!-- Head -->
-        <ellipse cx="150" cy="42" rx="28" ry="30" fill="currentColor" />
-        <!-- Body / torso -->
-        <path d="M118 72 C108 90 100 130 105 170 L145 175 L145 130 L155 130 L155 175 L195 170 C200 130 192 90 182 72 Z"
-          fill="currentColor" />
-        <!-- Left arm raised up -->
-        <path d="M118 80 C100 65 70 40 55 18 C52 12 58 6 63 10 C78 30 108 56 122 78 Z" fill="currentColor" />
-        <!-- Right arm out -->
-        <path d="M182 80 C200 95 225 110 240 118 C246 121 246 129 240 130 C224 122 198 108 180 90 Z"
-          fill="currentColor" />
-        <!-- Left leg -->
-        <path d="M125 172 C120 210 115 255 110 300 L130 302 L145 240 L148 172 Z" fill="currentColor" />
-        <!-- Right leg -->
-        <path d="M175 172 C180 210 185 255 190 300 L170 302 L155 240 L152 172 Z" fill="currentColor" />
-        <!-- Lower left leg bent back -->
-        <path d="M110 300 C105 330 100 355 108 370 L120 362 C114 350 118 328 130 302 Z" fill="currentColor" />
-        <!-- Lower right leg -->
-        <path d="M190 300 C195 330 196 355 188 370 L176 362 C182 350 178 328 170 302 Z" fill="currentColor" />
-        <!-- Volleyball above left hand -->
-        <circle cx="48" cy="10" r="22" fill="currentColor" opacity="0.7" />
-        <path d="M28 8 Q48 -14 68 8" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" />
-        <path d="M48 -12 Q62 10 48 32" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" />
-      </svg>
-      <!-- Volleyball circle watermark (upper right) -->
-      <svg class="wv-ball-watermark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="3" />
-        <path d="M10 60 Q35 20 60 60 Q85 100 110 60" fill="none" stroke="currentColor" stroke-width="2.5" />
-        <path d="M60 4 Q100 35 60 60 Q20 85 60 116" fill="none" stroke="currentColor" stroke-width="2.5" />
-        <path d="M30 12 Q60 40 90 12" fill="none" stroke="currentColor" stroke-width="2" />
-        <path d="M8 80 Q35 65 60 80 Q85 95 112 80" fill="none" stroke="currentColor" stroke-width="2" />
-      </svg>
-    </div>
 
-    <div class="container">
-      <div class="why-volleyball-grid">
-        <!-- Left Side: Action Photo -->
-        <div class="why-volleyball-media">
-          <div class="why-volleyball-gif-wrapper">
-            <img src="tournament-player-spike.jpg"
-              alt="Professional Volleyball Player #7 Jump Spike at Championship Stadium" class="why-volleyball-gif">
-          </div>
-        </div>
-
-        <!-- Right Side: Content -->
-        <div class="why-volleyball-content">
-          <h2 class="section-title text-left">Why Play Volleyball?</h2>
-          <div class="title-underline text-left"></div>
-
-          <p class="why-volleyball-p-simple">
-            Volleyball is a great and entertaining team sport that builds agility, coordination, speed, and balance
-            due to its quick changes of pace and direction. It burns calories and fat, tones and shapes the body by
-            strengthening the upper body, arms, shoulders, and lower body muscles. It has found immense popularity
-            globally as well as in the rural regions of India, making power, height, and agility vital components.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- --- Coaching & Highlights Section --- -->
   <section id="programs" class="section-padding programs-section">
@@ -686,9 +623,104 @@
     </div>
 
     <div class="container">
-      <div class="section-title-area">
-        <span class="section-subtitle">Develop Your Skills</span>
-        <h2 class="section-title">Coaching Programs</h2>
+      <!-- --- Sports Programs Horizontal Carousel --- -->
+      <div class="sports-carousel-header">
+        <span class="section-subtitle">Explore Our Disciplines</span>
+        <h2 class="section-title">GET SPORTS PROGRAMS MEMBERSHIP</h2>
+        <div class="title-underline"></div>
+
+      </div>
+
+      <div class="sports-carousel-wrapper">
+        <button class="carousel-scroll-btn prev-btn" id="sports-carousel-prev" aria-label="Scroll sports carousel left">
+          <svg viewBox="0 0 24 24">
+            <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+          </svg>
+        </button>
+
+        <div class="sports-carousel-track" id="sports-carousel-track">
+          <!-- 🏐 Volleyball -->
+          <a href="/sport/volleyball" class="sport-card-item" aria-label="View Volleyball Coaching details">
+            <div class="sport-card-img-wrap">
+              <img src="photos/horserat-FcuE1a_pOA0-unsplash.jpg" alt="Volleyball Coaching at Apex Sports Academy">
+              <div class="sport-card-overlay">
+                <span class="sport-card-btn-text">View Sport Details →</span>
+              </div>
+            </div>
+            <div class="sport-card-footer">
+              <span class="sport-card-icon">🏐</span>
+              <div class="sport-card-info">
+                <h3 class="sport-card-title">Volleyball</h3>
+                <span class="sport-card-tag">Elite Coaching</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- 🥎 Throwball -->
+          <a href="/sport/throwball" class="sport-card-item" aria-label="View Throwball Coaching details">
+            <div class="sport-card-img-wrap">
+              <img src="photos/throwball.jpg" alt="Throwball Coaching at Apex Sports Academy">
+              <div class="sport-card-overlay">
+                <span class="sport-card-btn-text">View Sport Details →</span>
+              </div>
+            </div>
+            <div class="sport-card-footer">
+              <span class="sport-card-icon">🥎</span>
+              <div class="sport-card-info">
+                <h3 class="sport-card-title">Throwball</h3>
+                <span class="sport-card-tag">Specialized Batches</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- ⚽ Football -->
+          <a href="/sport/football" class="sport-card-item" aria-label="View Football Coaching details">
+            <div class="sport-card-img-wrap">
+              <img src="photos/football.jpg" alt="Football Coaching at Apex Sports Academy">
+              <div class="sport-card-overlay">
+                <span class="sport-card-btn-text">View Sport Details →</span>
+              </div>
+            </div>
+            <div class="sport-card-footer">
+              <span class="sport-card-icon">⚽</span>
+              <div class="sport-card-info">
+                <h3 class="sport-card-title">Football</h3>
+                <span class="sport-card-tag">Grassroots &amp; Academy</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- 🏃 Kho Kho -->
+          <a href="/sport/khokho" class="sport-card-item" aria-label="View Kho Kho Training details">
+            <div class="sport-card-img-wrap">
+              <img src="photos/khokho.jpg" alt="Kho Kho Training at Apex Sports Academy">
+              <div class="sport-card-overlay">
+                <span class="sport-card-btn-text">View Sport Details →</span>
+              </div>
+            </div>
+            <div class="sport-card-footer">
+              <span class="sport-card-icon">🏃</span>
+              <div class="sport-card-info">
+                <h3 class="sport-card-title">Kho Kho</h3>
+                <span class="sport-card-tag">Speed &amp; Tactics</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <button class="carousel-scroll-btn next-btn" id="sports-carousel-next"
+          aria-label="Scroll sports carousel right">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+          </svg>
+        </button>
+      </div>
+
+
+
+      <div class="section-title-area" style="margin-top: 50px;">
+        <span class="section-subtitle">Membership &amp; Batches</span>
+        <h2 class="section-title">Coaching Programs &amp; Pricing</h2>
         <div class="title-underline"></div>
       </div>
 
@@ -1006,7 +1038,8 @@
         <div class="tournament-ref-media">
           <!-- Dynamic Soft Motion Waves SVG Background -->
           <div class="tournament-hero-waves-bg" aria-hidden="true">
-            <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid meet">
               <defs>
                 <linearGradient id="tournamentWaveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7" />
@@ -1030,9 +1063,12 @@
               </defs>
 
               <!-- Soft Motion Waves Arching Behind Player -->
-              <path d="M-30,260 C110,370 330,330 530,160" stroke="url(#tournamentWaveGrad1)" stroke-width="32" stroke-linecap="round" />
-              <path d="M-50,300 C90,400 350,360 550,200" stroke="url(#tournamentWaveGrad2)" stroke-width="16" stroke-linecap="round" />
-              <path d="M10,210 C170,320 370,260 530,100" stroke="url(#tournamentWaveGrad1)" stroke-width="8" stroke-linecap="round" opacity="0.6" />
+              <path d="M-30,260 C110,370 330,330 530,160" stroke="url(#tournamentWaveGrad1)" stroke-width="32"
+                stroke-linecap="round" />
+              <path d="M-50,300 C90,400 350,360 550,200" stroke="url(#tournamentWaveGrad2)" stroke-width="16"
+                stroke-linecap="round" />
+              <path d="M10,210 C170,320 370,260 530,100" stroke="url(#tournamentWaveGrad1)" stroke-width="8"
+                stroke-linecap="round" opacity="0.6" />
 
               <!-- Dot Matrix Soft Glow Background -->
               <rect x="0" y="0" width="500" height="400" fill="url(#dotMatrixPattern)" mask="url(#dotMatrixMask)" />
@@ -2347,6 +2383,94 @@
         <button type="button" class="btn-portal-logout" onclick="handleUserLogout()">
           Sign Out
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- SPORT DETAILS MODAL / POPUP OVERLAY        -->
+  <!-- ========================================== -->
+  <div id="sport-details-modal" class="sport-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="modal-sport-title">
+    <div class="sport-modal-backdrop" id="sport-modal-backdrop"></div>
+    <div class="sport-modal-container">
+      <button class="sport-modal-close" id="sport-modal-close" aria-label="Close details popup">&times;</button>
+
+      <div class="sport-modal-grid">
+        <!-- Left Side: Sport Image -->
+        <div class="sport-modal-image-col">
+          <div class="sport-modal-img-wrapper">
+            <img id="modal-sport-img" src="" alt="Sport Image" class="sport-modal-img">
+            <span class="sport-modal-badge" id="modal-sport-badge">🏐 Academy Featured</span>
+          </div>
+        </div>
+
+        <!-- Right Side: Sport Content & Details -->
+        <div class="sport-modal-info-col">
+          <div class="sport-modal-header">
+            <h2 id="modal-sport-title" class="sport-modal-title">Volleyball Coaching</h2>
+            <p id="modal-sport-subtitle" class="sport-modal-subtitle">Apex Sports Academy • Bangalore</p>
+          </div>
+
+          <div class="sport-modal-section">
+            <h3 class="sport-section-heading">About the Program</h3>
+            <p id="modal-sport-about" class="sport-modal-desc"></p>
+          </div>
+
+          <div class="sport-modal-section">
+            <h3 class="sport-section-heading">Training Information</h3>
+            <div class="sport-info-grid">
+              <div class="sport-info-pill">
+                <span class="info-label">Training Level</span>
+                <span id="modal-sport-level" class="info-val">Beginner / Intermediate / Advanced</span>
+              </div>
+              <div class="sport-info-pill">
+                <span class="info-label">Age Group</span>
+                <span id="modal-sport-age" class="info-val">8 – 25 Years</span>
+              </div>
+              <div class="sport-info-pill">
+                <span class="info-label">Training Type</span>
+                <span id="modal-sport-type" class="info-val">Group Coaching &amp; Drills</span>
+              </div>
+              <div class="sport-info-pill">
+                <span class="info-label">Duration</span>
+                <span id="modal-sport-duration" class="info-val">1 / 2 / 3 Months</span>
+              </div>
+            </div>
+            <div class="sport-location-line">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5Z" />
+              </svg>
+              <span><strong>Location:</strong> <span id="modal-sport-location">Apex Sports Academy, Electronic City,
+                  Bangalore</span></span>
+            </div>
+          </div>
+
+          <div class="sport-modal-section">
+            <h3 class="sport-section-heading">What You Will Learn</h3>
+            <ul class="sport-skills-list" id="modal-sport-skills">
+              <!-- Dynamically populated skills -->
+            </ul>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="sport-modal-actions">
+            <button class="sport-btn sport-btn-primary" id="modal-btn-enquire">
+              <svg viewBox="0 0 24 24">
+                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+              </svg>
+              JOIN / ENQUIRE NOW
+            </button>
+            <button class="sport-btn sport-btn-secondary" id="modal-btn-contact">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+              </svg>
+              CONTACT US
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

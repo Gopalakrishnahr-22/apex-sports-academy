@@ -7701,3 +7701,874 @@ input[type="email"],
 select {
   min-height: 44px;
 }
+
+/* ==========================================================================
+   SPORTS PROGRAMS HORIZONTAL CAROUSEL & SPORT DETAILS POPUP STYLES
+   ========================================================================== */
+
+.sports-carousel-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.sports-carousel-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  font-family: var(--font-body);
+}
+
+.sports-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.sports-carousel-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 14px 8px;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.sports-carousel-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.sports-carousel-track::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+.carousel-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: var(--transition-smooth);
+}
+
+.carousel-scroll-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.carousel-scroll-btn:hover {
+  background: var(--primary);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.carousel-scroll-btn.prev-btn {
+  left: -20px;
+}
+
+.carousel-scroll-btn.next-btn {
+  right: -20px;
+}
+
+/* Sports Carousel Dots Pagination (Disabled) */
+.sports-carousel-dots {
+  display: none !important;
+}
+
+/* Mobile & Tablet Responsive Sports Carousel Overrides */
+@media (max-width: 768px) {
+  .sports-carousel-wrapper {
+    padding: 0;
+  }
+  .sports-carousel-track {
+    gap: 0;
+    padding: 12px 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .sports-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .sport-card-item {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    box-sizing: border-box;
+    border-radius: 18px;
+  }
+  .sport-card-img-wrap {
+    height: 240px;
+  }
+  .carousel-scroll-btn {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sports-carousel-track {
+    gap: 18px;
+    scroll-snap-type: x mandatory;
+  }
+  .sport-card-item {
+    flex: 0 0 calc(50% - 9px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Individual Sport Card */
+.sport-card-item {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sport-card-item:hover,
+.sport-card-item:focus-visible {
+  transform: translateY(-8px);
+  border-color: var(--primary);
+  box-shadow: 0 16px 36px var(--primary-glow);
+  outline: none;
+}
+
+.sport-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.sport-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.sport-card-item:hover .sport-card-img-wrap img {
+  transform: scale(1.08);
+}
+
+.sport-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.85) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sport-card-item:hover .sport-card-overlay {
+  opacity: 1;
+}
+
+.sport-card-btn-text {
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.5px;
+  background: var(--primary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 150, 199, 0.5);
+}
+
+.sport-card-footer {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg-card);
+}
+
+.sport-card-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.sport-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sport-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.sport-card-tag {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   SPORT DETAILS MODAL / POPUP OVERLAY STYLES
+   ========================================================================== */
+
+.sport-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+}
+
+.sport-modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sport-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.sport-modal-container {
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  border-radius: 24px;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: thin;
+}
+
+.sport-modal-overlay.active .sport-modal-container {
+  transform: scale(1) translateY(0);
+}
+
+.sport-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #334155;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sport-modal-close:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* Modal Desktop Grid */
+.sport-modal-grid {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  min-height: 540px;
+}
+
+.sport-modal-image-col {
+  position: relative;
+  background: #0f172a;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  overflow: hidden;
+  display: flex;
+}
+
+.sport-modal-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sport-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sport-modal-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid var(--border-color);
+}
+
+/* Modal Info Content */
+.sport-modal-info-col {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sport-modal-header {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 14px;
+}
+
+.sport-modal-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.sport-modal-subtitle {
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.sport-section-heading {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sport-section-heading::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.sport-modal-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.sport-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.sport-info-pill {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sport-info-pill .info-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sport-info-pill .info-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.sport-location-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  background: rgba(0, 150, 199, 0.08);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px dashed rgba(0, 150, 199, 0.3);
+}
+
+.sport-location-line svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--primary);
+  flex-shrink: 0;
+}
+
+.sport-skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.sport-skills-list li {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.sport-skills-list li span.check-mark {
+  color: #16a34a;
+  font-weight: 900;
+}
+
+.sport-modal-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.sport-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border: none;
+}
+
+.sport-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.sport-btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #0077b6 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 18px var(--primary-glow);
+}
+
+.sport-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px var(--primary-glow);
+  background: linear-gradient(135deg, #0077b6 0%, #03045e 100%);
+}
+
+.sport-btn-secondary {
+  background: #f8fafc;
+  color: var(--text-primary);
+  border: 2px solid #cbd5e1;
+}
+
+.sport-btn-secondary:hover {
+  background: #e2e8f0;
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+/* Responsive Modal Styling for Mobile */
+@media (max-width: 768px) {
+  .carousel-scroll-btn {
+    display: none; /* Mobile uses native touch horizontal swipe */
+  }
+
+  .sport-card-item {
+    flex: 0 0 240px;
+  }
+
+  .sport-modal-overlay {
+    padding: 12px;
+  }
+
+  .sport-modal-container {
+    max-height: 95vh;
+    border-radius: 20px;
+  }
+
+  .sport-modal-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .sport-modal-image-col {
+    height: 220px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .sport-modal-info-col {
+    padding: 24px 20px;
+    gap: 18px;
+  }
+
+  .sport-modal-title {
+    font-size: 1.5rem;
+  }
+
+  .sport-info-grid,
+  .sport-skills-list {
+    grid-template-columns: 1fr;
+  }
+
+  .sport-modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sport-modal-close {
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ==========================================================================
+   COACHING SUBSCRIPTION & MONTHLY MEMBERSHIP SECTION & MODAL STYLES
+   ========================================================================== */
+
+.coaching-sub-card-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 32px;
+  margin-top: 36px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
+}
+
+.coaching-sub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.coaching-sub-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coaching-sub-title::before {
+  content: '';
+  width: 5px;
+  height: 22px;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.coaching-sub-price-badge {
+  background: linear-gradient(135deg, rgba(0, 150, 199, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+  border: 1px dashed var(--primary);
+  padding: 8px 18px;
+  border-radius: 30px;
+}
+
+.coaching-sub-price-val {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.coaching-sub-price-period {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.coaching-schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.coaching-sched-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.coaching-sched-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(0, 150, 199, 0.12);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coaching-sched-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.coaching-sched-info span.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.coaching-sched-info span.val {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+  display: block;
+}
+
+.coaching-sub-btn-join {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 16px 28px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.35);
+  transition: var(--transition-smooth);
+}
+
+.coaching-sub-btn-join:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(22, 163, 74, 0.45);
+}
+
+/* Subscription Form & Summary Modal */
+.sub-modal-container {
+  max-width: 580px;
+  padding: 32px;
+}
+
+.sub-modal-step-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.sub-modal-step-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.sub-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.sub-form-full {
+  grid-column: span 2;
+}
+
+.sub-field-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.sub-field-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
+  background: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.sub-field-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.sub-field-input[readonly] {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Summary Card */
+.sub-summary-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.sub-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #cbd5e1;
+  font-size: 0.92rem;
+}
+
+.sub-summary-row:last-child {
+  border-bottom: none;
+}
+
+.sub-summary-row .key {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.sub-summary-row .val {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sub-total-box {
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.sub-total-box .total-label {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sub-total-box .total-amount {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #38bdf8;
+}
+
+/* Status Badges in Admin Panel */
+.sub-badge-active {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.sub-badge-expired {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-block;
+}

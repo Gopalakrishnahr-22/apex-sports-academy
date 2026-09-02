@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why Play Football? Learn about football coaching and benefits at Apex Sports Academy Bangalore.">
+  <title>Why Play Football? | Apex Sports Academy</title>
+  <link rel="icon" type="image/jpeg" href="/logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=28.0">
+  <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+  <style>
+    /* Angled Banner */
+    .why-play-hero-banner {
+      position: relative;
+      width: 100%;
+      padding: 100px 0 110px 0;
+      background: linear-gradient(105deg, #1e1b4b 0%, #4c1d95 30%, #be123c 70%, #e11d48 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .why-play-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .why-play-hero-content {
+      max-width: 800px;
+    }
+
+    .why-play-title {
+      font-family: var(--font-heading);
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+
+    .why-play-desc {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 30px;
+    }
+
+    .why-play-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .why-play-btn-enroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #1e1b4b;
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      border: none;
+      cursor: pointer;
+    }
+
+    .why-play-btn-enroll:hover {
+      transform: translateY(-3px);
+      background: #f8fafc;
+    }
+
+    .why-play-btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: var(--transition-smooth);
+    }
+
+    .why-play-hero-image {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .why-play-hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Form Section Matching Reference Image Exactly */
+    .coaching-form-card-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .form-group-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #334155;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-group-label span.req {
+      color: #ef4444;
+    }
+
+    .input-with-icon-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .input-icon-svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .form-custom-input {
+      width: 100%;
+      padding: 14px 16px 14px 42px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 0.98rem;
+      color: #0f172a;
+      transition: all 0.2s ease;
+    }
+
+    .form-custom-input:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .form-custom-select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 0.98rem;
+      color: #0f172a;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%25232563eb'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .form-custom-select:focus {
+      outline: none;
+      background-color: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .form-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .form-agree-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 24px 0 28px 0;
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .form-agree-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2563eb;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .btn-direct-razorpay {
+      width: 100%;
+      background: #2563eb;
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding: 16px 28px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-direct-razorpay:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+    }
+
+    .secure-checkout-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .why-play-hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .why-play-hero-image {
+        height: 240px;
+      }
+      .form-two-col {
+        grid-template-columns: 1fr;
+      }
+      .coaching-form-card-container {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- --- Sticky Navigation Bar --- -->
+  <header id="header">
+    <div class="container nav-container">
+      <a href="/" class="logo-wrapper">
+        <img src="/logo.jpeg" alt="Apex Sports Academy Logo" class="logo-img">
+        <span class="logo-text">Apex <span>Sports</span></span>
+      </a>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#venue-booking" class="nav-venue-btn">Book a Venue</a></li>
+          <li><a href="/#programs" class="active">Coaching</a></li>
+          <li><a href="/#tournament">Tournaments</a></li>
+          <li><a href="/#gallery">Gallery</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="javascript:void(0)" class="nav-login-link" id="nav-auth-link"
+              onclick="handleNavAuthClick()">Login</a></li>
+          <li><button class="nav-btn" onclick="location.href='/#register'">Register Now</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+
+  <!-- --- Angled Gradient Banner --- -->
+  <section class="why-play-hero-banner">
+    <div class="container">
+      <div class="why-play-hero-grid">
+        <div class="why-play-hero-content">
+          <h1 class="why-play-title">WHY PLAY FOOTBALL?</h1>
+          <p class="why-play-desc">
+            Football is a dynamic team sport that builds endurance, speed, agility, coordination, and overall physical fitness through constant running and movement. It strengthens the legs and core while improving balance, reflexes, and cardiovascular health. Football also develops teamwork, communication, discipline, decision-making, and strategic thinking, making it one of the world's most popular sports.
+          </p>
+          <div class="why-play-actions">
+            <button class="why-play-btn-enroll" onclick="document.getElementById('coaching-booking-form').scrollIntoView({behavior:'smooth'})">Enroll in Football →</button>
+            <a href="/#programs" class="why-play-btn-back">← Back to Programs</a>
+          </div>
+        </div>
+
+        <div class="why-play-hero-image">
+          <img src="/photos/football.jpg" alt="Football Turf Field">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Direct Coaching Booking Form (Matching User Reference Photo 1:1) --- -->
+  <section id="coaching-booking-form" style="padding: 60px 0 90px 0; background: var(--bg-main);">
+    <div class="container">
+      <div class="coaching-form-card-container">
+        
+        <div style="margin-bottom: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Football Coaching Registration</h3>
+            <p style="font-size: 0.9rem; color: #64748b;">Schedule: Wednesday, Thursday &amp; Friday (4:00 PM – 6:00 PM)</p>
+          </div>
+          <div style="background: #eff6ff; color: #2563eb; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; padding: 6px 14px; border-radius: 20px; border: 1px solid #bfdbfe;">
+            ₹1,600 / mo
+          </div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); triggerDirectRazorpay('football');">
+          
+          <!-- Full Name -->
+          <div style="margin-bottom: 20px;">
+            <label class="form-group-label">FULL NAME <span class="req">*</span></label>
+            <div class="input-with-icon-wrap">
+              <svg class="input-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              <input type="text" id="direct-sub-name" class="form-custom-input" placeholder="Enter full name" required>
+            </div>
+          </div>
+
+          <!-- DOB & Gender -->
+          <div class="form-two-col">
+            <div>
+              <label class="form-group-label">DATE OF BIRTH <span class="req">*</span></label>
+              <div class="input-with-icon-wrap">
+                <input type="date" id="direct-sub-dob" class="form-custom-input" style="padding-left: 16px;" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="form-group-label">GENDER <span class="req">*</span></label>
+              <select id="direct-sub-gender" class="form-custom-select" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Phone & Email -->
+          <div class="form-two-col">
+            <div>
+              <label class="form-group-label">CONTACT PHONE <span class="req">*</span></label>
+              <div class="input-with-icon-wrap">
+                <svg class="input-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" id="direct-sub-phone" class="form-custom-input" placeholder="10-digit number" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="form-group-label">EMAIL ADDRESS <span class="req">*</span></label>
+              <div class="input-with-icon-wrap">
+                <svg class="input-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" id="direct-sub-email" class="form-custom-input" placeholder="email@address.com" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coaching Group -->
+          <div style="margin-bottom: 20px;">
+            <label class="form-group-label">COACHING GROUP <span class="req">*</span></label>
+            <select id="direct-sub-group" class="form-custom-select" required>
+              <option value="Beginner Camp">Beginner Camp</option>
+              <option value="Intermediate Batch">Intermediate Batch</option>
+              <option value="Elite Academy">Elite Academy</option>
+            </select>
+          </div>
+
+          <!-- Agreement Checkbox -->
+          <div class="form-agree-wrap">
+            <input type="checkbox" id="direct-sub-agree" required checked>
+            <label for="direct-sub-agree">I agree to verify ID cards at the tournament arena. I understand registration fee is non-refundable.</label>
+          </div>
+
+          <!-- Direct Payment Button -->
+          <button type="submit" id="btn-direct-pay" class="btn-direct-razorpay">
+            Proceed to Payment (₹1,600) →
+          </button>
+
+          <div class="secure-checkout-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            Secure checkout powered by trusted partners
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- Subscription Successful Confirmation Modal --- -->
+  <div id="coaching-sub-modal" class="sport-modal-overlay" style="display: none;">
+    <div class="sport-modal-container sub-modal-container">
+      <button class="sport-modal-close" onclick="closeSubModal()" aria-label="Close modal">&times;</button>
+      <div id="sub-step-3" style="text-align: center; padding: 20px 0;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; color: #166534; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px auto;">✓</div>
+        <h3 class="sub-modal-step-title" style="color: #166534;">Subscription Successful!</h3>
+        <p class="sub-modal-step-desc">Welcome to Apex Sports Academy Coaching Batch.</p>
+
+        <div class="sub-summary-card" style="text-align: left; margin: 20px 0;">
+          <div class="sub-summary-row"><span class="key">Subscription ID:</span><span class="val" id="sub-succ-id" style="color: #0284c7; font-family: monospace;">—</span></div>
+          <div class="sub-summary-row"><span class="key">Sport:</span><span class="val" id="sub-succ-sport">—</span></div>
+          <div class="sub-summary-row"><span class="key">Student:</span><span class="val" id="sub-succ-student">—</span></div>
+          <div class="sub-summary-row"><span class="key">Monthly Fee Paid:</span><span class="val" id="sub-succ-fee">—</span></div>
+          <div class="sub-summary-row"><span class="key">Validity Period:</span><span class="val" id="sub-succ-dates">—</span></div>
+          <div class="sub-summary-row"><span class="key">Razorpay Payment ID:</span><span class="val" id="sub-succ-txn" style="font-family: monospace;">—</span></div>
+        </div>
+
+        <button class="sport-btn-primary" style="width: 100%;" onclick="closeSubModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- Footer --- -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo-wrapper" style="margin-bottom: 20px;">
+          <img src="/logo.jpeg" alt="Apex Sports Logo" class="logo-img">
+          <span class="logo-text footer-logo-text">APEX <span>SPORTS</span></span>
+        </a>
+        <p>Apex Sports Academy commits to unlocking the full potential of volleyball athletes in Bangalore. Push your
+          limit to know your limits!</p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Academy Links</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home Base</a></li>
+          <li><a href="/#programs">Coaching Camp</a></li>
+          <li><a href="/#tournament">Tournament Center</a></li>
+          <li><a href="/#gallery">Poster Gallery</a></li>
+          <li><a href="/#contact">Academy Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Training Hours</h4>
+        <ul class="footer-links" style="color: var(--text-secondary); font-size: 0.9rem;">
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Morning Batch:</strong><br>6:00 AM – 8:30 AM</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Evening Batch:</strong><br>4:30 PM – 7:30 PM</li>
+          <li style="margin-bottom: 8px;"><strong style="color: #fff;">Weekends Elite:</strong><br>7:00 AM – 10:30 AM
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Newsletter Info</h4>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px;">Receive schedules, camp dates,
+          and tournament updates directly in your inbox.</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Your Email Address" required
+            autocomplete="email">
+          <button type="submit" id="newsletter-btn" class="newsletter-btn" aria-label="Subscribe">
+            <svg viewBox="0 0 24 24">
+              <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
+          </button>
+        </form>
+        <div id="newsletter-status" class="newsletter-status" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="footer-copyright-block">
+        <p class="footer-copyright-text">
+          &copy; 2026 Apex Sports Academy. All rights reserved.<br class="footer-mobile-break"> Bangalore, Karnataka.
+        </p>
+      </div>
+      <div class="footer-slogan-block">
+        <p class="footer-slogan-text">
+          Made for Athletes | Slogan: Push Your Limit To Know Your Limits.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/app.js?v=28.0"></script>
+</body>
+
+</html>
