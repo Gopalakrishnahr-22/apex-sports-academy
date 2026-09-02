@@ -3335,5 +3335,511 @@ function triggerDirectRazorpay(sportKey) {
     });
 }
 
+// ============================================================
+// ASA STUDENT REGISTRATION & UNDERTAKING AGREEMENT CLIENT CONTROLLER
+// ============================================================
+
+let isStudentCanvasSigned = false;
+let isParentCanvasSigned = false;
+let studentSigCanvas, studentSigCtx;
+let parentSigCanvas, parentSigCtx;
+
+// Open Undertaking Modal
+function openAsaUndertakingModal() {
+  const modal = document.getElementById('asa-undertaking-modal');
+  if (!modal) return;
+  
+  // Lock body scroll
+  document.body.classList.add('modal-open');
+
+  // Show form view & hide success view
+  document.getElementById('asa-undertaking-form-view').style.display = 'block';
+  document.getElementById('asa-undertaking-success-view').style.display = 'none';
+
+  modal.style.display = 'flex';
+  
+  // Initialize signature canvases & date defaults
+  setTimeout(() => {
+    initSignatureCanvases();
+    setDefaultDates();
+  }, 100);
+}
+
+// Close Undertaking Modal
+function closeAsaUndertakingModal() {
+  const modal = document.getElementById('asa-undertaking-modal');
+  if (modal) modal.style.display = 'none';
+  document.body.classList.remove('modal-open');
+}
+
+// Set Today's Date in Signature Date fields
+function setDefaultDates() {
+  const today = new Date().toISOString().split('T')[0];
+  const sDate = document.getElementById('asa-sig-student-date');
+  const pDate = document.getElementById('asa-sig-parent-date');
+
+  if (sDate && !sDate.value) sDate.value = today;
+  if (pDate && !pDate.value) pDate.value = today;
+
+  // Sync Student Name on typing
+  const nameInput = document.getElementById('asa-reg-name');
+  const sigNameInput = document.getElementById('asa-sig-student-name');
+  if (nameInput && sigNameInput) {
+    sigNameInput.value = nameInput.value;
+    nameInput.oninput = function() {
+      sigNameInput.value = nameInput.value;
+    };
+  }
+}
+
+// Initialize HTML5 Canvas Signature Pads with Mouse & Touch support
+function initSignatureCanvases() {
+  studentSigCanvas = document.getElementById('canvas-student-sig');
+  parentSigCanvas = document.getElementById('canvas-parent-sig');
+
+  if (studentSigCanvas) {
+    setupCanvasDrawing(studentSigCanvas, 'student');
+  }
+  if (parentSigCanvas) {
+    setupCanvasDrawing(parentSigCanvas, 'parent');
+  }
+}
+
+function setupCanvasDrawing(canvas, type) {
+  const ctx = canvas.getContext('2d');
+  
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width > 0) {
+      canvas.width = rect.width;
+      canvas.height = 130;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#000000';
+    }
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    let clientX = e.clientX;
+    let clientY = e.clientY;
+
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    }
+
+    return {
+      x: (clientX - r.left) * (canvas.width / r.width),
+      y: (clientY - r.top) * (canvas.height / r.height)
+    };
+  }
+
+  function startDraw(e) {
+    isDrawing = true;
+    const pos = getPos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+
+    if (type === 'student') isStudentCanvasSigned = true;
+    if (type === 'parent') isParentCanvasSigned = true;
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    if (e.cancelable) e.preventDefault();
+    const pos = getPos(e);
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+
+    lastX = pos.x;
+    lastY = pos.y;
+  }
+
+  function stopDraw() {
+    isDrawing = false;
+  }
+
+  // Mouse Events
+  canvas.onmousedown = startDraw;
+  canvas.onmousemove = draw;
+  canvas.onmouseup = stopDraw;
+  canvas.onmouseleave = stopDraw;
+
+  // Touch Events for Mobile / Tablet
+  canvas.ontouchstart = startDraw;
+  canvas.ontouchmove = draw;
+  canvas.ontouchend = stopDraw;
+  canvas.ontouchcancel = stopDraw;
+}
+
+// Clear Signature Canvas
+function clearSignature(type) {
+  if (type === 'student' && studentSigCanvas) {
+    const ctx = studentSigCanvas.getContext('2d');
+    ctx.clearRect(0, 0, studentSigCanvas.width, studentSigCanvas.height);
+    isStudentCanvasSigned = false;
+  }
+  if (type === 'parent' && parentSigCanvas) {
+    const ctx = parentSigCanvas.getContext('2d');
+    ctx.clearRect(0, 0, parentSigCanvas.width, parentSigCanvas.height);
+    isParentCanvasSigned = false;
+  }
+}
+
+// Check if Canvas is blank
+function isCanvasBlank(canvas) {
+  if (!canvas) return true;
+  const ctx = canvas.getContext('2d');
+  const pixelBuffer = new Uint32Array(
+    ctx.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  );
+  return !pixelBuffer.some(color => color !== 0);
+}
+
+let lastSubmittedRegistration = null;
+let selectedStudentPhotoBase64 = null;
+
+// Photo Upload Preview Handler
+function handleDocPhotoPreview(input) {
+  const file = input.files[0];
+  const label = document.getElementById('doc-photo-name-label');
+  const img = document.getElementById('doc-photo-preview-img');
+  const placeholder = document.getElementById('doc-photo-placeholder');
+
+  if (!file) {
+    selectedStudentPhotoBase64 = null;
+    if (img) img.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+    if (label) label.innerText = 'Max 5MB (JPG, PNG, WebP)';
+    return;
+  }
+
+  // Size Check (5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('❌ Image file size must be less than 5MB.');
+    input.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    selectedStudentPhotoBase64 = e.target.result;
+    if (img) {
+      img.src = selectedStudentPhotoBase64;
+      img.style.display = 'block';
+    }
+    if (placeholder) placeholder.style.display = 'none';
+    if (label) label.innerText = file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Handle Form Submission
+function handleAsaUndertakingSubmit(event) {
+  event.preventDefault();
+  
+  const errDiv = document.getElementById('asa-form-error');
+  const submitBtn = document.getElementById('asa-submit-btn');
+
+  if (errDiv) errDiv.style.display = 'none';
+
+  // Read Form Fields
+  const name = document.getElementById('asa-reg-name').value.trim();
+  const dob = document.getElementById('asa-reg-dob').value;
+  const address = document.getElementById('asa-reg-address').value.trim();
+  const fatherName = document.getElementById('asa-reg-father').value.trim();
+  const motherName = document.getElementById('asa-reg-mother').value.trim();
+  const parentsOccupation = document.getElementById('asa-reg-occupation').value.trim();
+  const phoneNumber = document.getElementById('asa-reg-phone').value.trim();
+  const institution = document.getElementById('asa-reg-institution').value.trim();
+  const sportsEnrolled = document.getElementById('asa-reg-sport').value;
+  const batch = document.getElementById('asa-reg-batch').value;
+
+  const mediaConsent = document.getElementById('asa-chk-media').checked;
+  const declaration = document.getElementById('asa-chk-declaration').checked;
+
+  const studentSignatureName = document.getElementById('asa-sig-student-name').value.trim();
+  const studentSignatureDate = document.getElementById('asa-sig-student-date').value;
+
+  const parentSignatureName = document.getElementById('asa-sig-parent-name').value.trim();
+  const parentSignatureDate = document.getElementById('asa-sig-parent-date').value;
+
+  // 1. Validations
+  if (!name) return showUndertakingError(errDiv, '❌ Please enter Student Name.');
+  if (!dob) return showUndertakingError(errDiv, '❌ Please select Date of Birth.');
+  if (!address) return showUndertakingError(errDiv, '❌ Please enter Residential Address.');
+  if (!fatherName) return showUndertakingError(errDiv, '❌ Please enter Father Name.');
+  if (!motherName) return showUndertakingError(errDiv, '❌ Please enter Mother Name.');
+  if (!parentsOccupation) return showUndertakingError(errDiv, '❌ Please enter Parents Occupation.');
+  if (!selectedStudentPhotoBase64) return showUndertakingError(errDiv, '❌ Mandatory: Please upload Student Passport Photo.');
+
+  const phoneClean = phoneNumber.replace(/\D/g, '');
+  if (!phoneClean || phoneClean.length !== 10) {
+    return showUndertakingError(errDiv, '❌ Phone Number must be exactly 10 digits.');
+  }
+
+  if (!institution) return showUndertakingError(errDiv, '❌ Please enter Institution / School / College.');
+  if (!sportsEnrolled) return showUndertakingError(errDiv, '❌ Please select Sports Enrolled.');
+  if (!batch) return showUndertakingError(errDiv, '❌ Please select Batch.');
+
+  // 2. Checkboxes Validation
+  if (!mediaConsent) {
+    return showUndertakingError(errDiv, '❌ Mandatory: You must check and agree to the Media Consent.');
+  }
+  if (!declaration) {
+    return showUndertakingError(errDiv, '❌ Mandatory: You must check and agree to the Declaration undertaking.');
+  }
+
+  // 3. Digital Signatures Validation
+  if (!isStudentCanvasSigned || isCanvasBlank(studentSigCanvas)) {
+    return showUndertakingError(errDiv, '❌ Digital Signature of Student is required. Please draw signature in the box.');
+  }
+  if (!isParentCanvasSigned || isCanvasBlank(parentSigCanvas)) {
+    return showUndertakingError(errDiv, '❌ Digital Signature of Parent/Guardian is required. Please draw signature in the box.');
+  }
+  if (!parentSignatureName) {
+    return showUndertakingError(errDiv, '❌ Parent/Guardian Name is required under signature.');
+  }
+
+  // Export Signature PNG Data URLs
+  const studentSigDataUrl = studentSigCanvas.toDataURL('image/png');
+  const parentSigDataUrl = parentSigCanvas.toDataURL('image/png');
+
+  // Payload Construction
+  const payload = {
+    name,
+    dob,
+    address,
+    fatherName,
+    motherName,
+    parentsOccupation,
+    phoneNumber: phoneClean,
+    institution,
+    sportsEnrolled,
+    batch,
+    studentPhoto: selectedStudentPhotoBase64,
+    mediaConsent,
+    declaration,
+    studentSignature: studentSigDataUrl,
+    studentSignatureName: studentSignatureName || name,
+    studentSignatureDate: studentSignatureDate || new Date().toISOString().split('T')[0],
+    parentSignature: parentSigDataUrl,
+    parentSignatureName,
+    parentSignatureDate: parentSignatureDate || new Date().toISOString().split('T')[0]
+  };
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Submitting Registration & Saving Record...';
+  }
+
+  fetch('/api/asa-student-registrations', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'SUBMIT REGISTRATION';
+      }
+
+      if (!data.success) {
+        showUndertakingError(errDiv, data.message || '❌ Submission failed.');
+        return;
+      }
+
+      // Store submitted registration details for printing PDF
+      lastSubmittedRegistration = {
+        ...payload,
+        registrationId: data.registrationId
+      };
+
+      // SUCCESS!
+      document.getElementById('asa-success-reg-id').innerText = data.registrationId;
+      document.getElementById('asa-undertaking-form-view').style.display = 'none';
+      document.getElementById('asa-undertaking-success-view').style.display = 'block';
+
+      // Reset Form & Photo Preview
+      document.getElementById('asa-undertaking-form').reset();
+      selectedStudentPhotoBase64 = null;
+      const pImg = document.getElementById('doc-photo-preview-img');
+      const pHolder = document.getElementById('doc-photo-placeholder');
+      const pLabel = document.getElementById('doc-photo-name-label');
+      if (pImg) pImg.style.display = 'none';
+      if (pHolder) pHolder.style.display = 'flex';
+      if (pLabel) pLabel.innerText = 'Max 5MB (JPG, PNG, WebP)';
+      
+      clearSignature('student');
+      clearSignature('parent');
+    })
+    .catch(err => {
+      console.error('Error submitting ASA undertaking:', err);
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'SUBMIT REGISTRATION';
+      }
+      showUndertakingError(errDiv, '❌ Server error submitting registration. Please try again.');
+    });
+}
+
+function showUndertakingError(container, msg) {
+  if (!container) return;
+  container.innerText = msg;
+  container.style.display = 'block';
+  container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Print Completed Student Registration Document as PDF
+function printSubmittedStudentDocument() {
+  if (!lastSubmittedRegistration) {
+    window.print();
+    return;
+  }
+  const r = lastSubmittedRegistration;
+  const photoSrc = r.studentPhoto || '/logo.jpeg';
+
+  const printHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>APEX SPORTS ACADEMY - Registration ${r.registrationId}</title>
+      <style>
+        body { font-family: 'Arial', sans-serif; color: #000; background: #fff; padding: 20px; margin: 0; line-height: 1.4; }
+        .hdr { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+        .hdr-logo { width: 80px; height: 80px; object-fit: contain; }
+        .hdr-photo { width: 85px; height: 95px; border: 1.5px solid #000; object-fit: cover; border-radius: 4px; }
+        .hdr-titles { flex: 1; text-align: center; }
+        .hdr-titles h1 { font-size: 24px; font-weight: 900; margin: 0 0 6px 0; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
+        .pill { background: #000; color: #fff; font-size: 13px; font-weight: bold; padding: 5px 18px; border-radius: 16px; display: inline-block; text-transform: uppercase; }
+        .pill-center { background: #000; color: #fff; font-size: 13px; font-weight: bold; padding: 5px 18px; border-radius: 16px; display: table; margin: 0 auto 12px auto; text-transform: uppercase; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .field { display: flex; margin-bottom: 10px; font-size: 13px; }
+        .field label { font-weight: bold; width: 140px; text-transform: uppercase; }
+        .field .val { flex: 1; border-bottom: 1px solid #000; padding-bottom: 2px; }
+        .conduct-item { margin-bottom: 10px; font-size: 12px; }
+        .conduct-item h4 { margin: 0 0 2px 0; font-size: 12px; font-weight: bold; }
+        .conduct-item p { margin: 0; color: #333; }
+        .consent-box { text-align: center; font-size: 12px; margin-bottom: 16px; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .sig-box { border: 1px solid #000; border-radius: 6px; padding: 12px; text-align: center; }
+        .sig-box img { max-height: 80px; max-width: 100%; object-fit: contain; }
+        .note-box { border: 1.5px solid #000; border-radius: 6px; padding: 8px 12px; font-weight: bold; font-size: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .note-pill { background: #000; color: #fff; padding: 3px 10px; border-radius: 10px; font-size: 11px; }
+        .academy-box { border: 1.5px solid #000; border-radius: 6px; padding: 12px; }
+        @media print { body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <div class="hdr">
+        <img src="/logo.jpeg" alt="Logo" class="hdr-logo">
+        <div class="hdr-titles">
+          <h1>APEX SPORTS ACADEMY</h1>
+          <div class="pill">STUDENT REGISTRATION & UNDERTAKING AGREEMENT</div>
+        </div>
+        <img src="${photoSrc}" alt="Student Photo" class="hdr-photo">
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="field"><label>NAME :</label><div class="val">${r.name || ''}</div></div>
+          <div class="field"><label>DATE OF BIRTH:</label><div class="val">${r.dob || ''}</div></div>
+          <div class="field"><label>ADDRESS:</label><div class="val">${r.address || ''}</div></div>
+          <div class="field"><label>FATHER NAME :</label><div class="val">${r.fatherName || ''}</div></div>
+          <div class="field"><label>MOTHER NAME :</label><div class="val">${r.motherName || ''}</div></div>
+          <div class="field"><label>PARENTS OCCUPATION :</label><div class="val">${r.parentsOccupation || ''}</div></div>
+        </div>
+        <div>
+          <div class="field"><label>PHONE NUMBER :</label><div class="val">${r.phoneNumber || ''}</div></div>
+          <div class="field"><label>INSTITUTIONS :</label><div class="val">${r.institution || ''}</div></div>
+          <div class="field"><label>SPORTS ENROLLED :</label><div class="val">${r.sportsEnrolled || ''}</div></div>
+          <div class="field"><label>BATCH :</label><div class="val">${r.batch || ''}</div></div>
+          <div class="field"><label>REGISTRATION ID :</label><div class="val"><strong>${r.registrationId}</strong></div></div>
+        </div>
+      </div>
+
+      <div class="pill-center">CODE OF CONDUCT & DISCIPLINE</div>
+      <div class="conduct-item">
+        <h4>1. BEHAVIOR</h4>
+        <p>The student shall maintain discipline, respect coaches, staff members, fellow students, officials, and opponents at all times.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>2. ATTENDANCE & PUNCTUALITY</h4>
+        <p>The student must attend all scheduled practice sessions regularly.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>3. EQUIPMENT & PROPERTY</h4>
+        <p>The student is responsible for the proper use and care of academy equipment.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>4. PROHIBITED ITEMS</h4>
+        <p>Tobacco, alcohol, performance-enhancing drugs, and narcotics are strictly prohibited.</p>
+      </div>
+
+      <div class="pill-center" style="margin-top:16px;">MEDIA CONSENT & DECLARATION</div>
+      <div class="consent-box">
+        <p>✅ Media Consent Accepted &nbsp;|&nbsp; ✅ Declaration Accepted (v1.0)</p>
+      </div>
+
+      <div class="sig-grid">
+        <div class="sig-box">
+          <div class="pill" style="font-size:11px; padding:3px 12px; margin-bottom:8px;">SIGNATURE OF STUDENT</div>
+          <div><img src="${r.studentSignature}" alt="Student Signature"></div>
+          <div style="font-size:11px; margin-top:4px;"><strong>Name:</strong> ${r.studentSignatureName || r.name} | <strong>Date:</strong> ${r.studentSignatureDate || ''}</div>
+        </div>
+        <div class="sig-box">
+          <div class="pill" style="font-size:11px; padding:3px 12px; margin-bottom:8px;">SIGNATURE OF PARENT/GUARDIAN</div>
+          <div><img src="${r.parentSignature}" alt="Parent Signature"></div>
+          <div style="font-size:11px; margin-top:4px;"><strong>Name:</strong> ${r.parentSignatureName || ''} | <strong>Date:</strong> ${r.parentSignatureDate || ''}</div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <span class="note-pill">NOTE :</span>
+        <span>PLAYER SHOULD NOT PLAY FOR ANY OTHER CLUB OR TEAM ONCE THEY SIGN THE CONTRACT.</span>
+      </div>
+
+      <div class="academy-box">
+        <div class="pill-center" style="font-size:11px; padding:3px 14px; margin-bottom:10px;">FOR ACADEMY USE ONLY</div>
+        <div class="grid-2" style="margin-bottom:0; font-size:12px;">
+          <div><strong>Admission No.:</strong> ______________________</div>
+          <div><strong>Coach Signature:</strong> ______________________</div>
+          <div><strong>Registration Date:</strong> ______________________</div>
+          <div><strong>Academy Seal:</strong> ______________________</div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const printWin = window.open('', '_blank', 'width=900,height=800');
+  printWin.document.write(printHtml);
+  printWin.document.close();
+  printWin.focus();
+  setTimeout(() => {
+    printWin.print();
+  }, 500);
+}
+
+// Auto-open modal if URL route is /asa-student or parameter ?asa_student=true
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.location.pathname === '/asa-student' || window.location.search.includes('asa_student=true')) {
+    openAsaUndertakingModal();
+  }
+});
+
 
 

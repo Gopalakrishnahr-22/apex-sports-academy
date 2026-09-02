@@ -8,7 +8,41 @@ const Razorpay = require('razorpay');
 const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcryptjs');
 const rateLimit = require('express-rate-limit');
+const multer = require('multer');
 require('dotenv').config();
+
+// Configure Multer for ASA Student Profile Photo Uploads
+const studentPhotoDir = path.join(__dirname, 'photos', 'students');
+if (!fs.existsSync(studentPhotoDir)) {
+  fs.mkdirSync(studentPhotoDir, { recursive: true });
+}
+
+const studentPhotoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, studentPhotoDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    const uniqueName = `student-photo-${Date.now()}-${crypto.randomBytes(4).toString('hex')}${ext}`;
+    cb(null, uniqueName);
+  }
+});
+
+const uploadStudentPhoto = multer({
+  storage: studentPhotoStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const allowedExts = ['.jpg', '.jpeg', '.png', '.webp'];
+    const ext = path.extname(file.originalname).toLowerCase();
+
+    if (allowedMimeTypes.includes(file.mimetype) && allowedExts.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid profile photo format. Only JPG, JPEG, PNG, and WebP images are allowed.'));
+    }
+  }
+});
 
 const compression = require('compression');
 const app = express();
@@ -211,7 +245,7 @@ function getSupabaseClient() {
 // Local Database (database.json)
 function loadDbLocal() {
   if (!fs.existsSync(DATABASE_FILE)) {
-    return { venues: [], venue_pricing: {}, bookings: [], blocked_slots: [], registrations: [], enquiries: [], users: [], newsletter_subscribers: [] };
+    return { venues: [], venue_pricing: {}, bookings: [], blocked_slots: [], registrations: [], enquiries: [], users: [], newsletter_subscribers: [], asa_students: [], pending_asa_students: [], student_payments: [], asa_student_registrations: [] };
   }
   try {
     const raw = JSON.parse(fs.readFileSync(DATABASE_FILE, 'utf8'));
@@ -224,10 +258,14 @@ function loadDbLocal() {
       coachingSubscriptions: raw.coachingSubscriptions || [],
       enquiries: raw.enquiries || [],
       users: raw.users || [],
-      newsletter_subscribers: raw.newsletter_subscribers || []
+      newsletter_subscribers: raw.newsletter_subscribers || [],
+      asa_students: raw.asa_students || [],
+      pending_asa_students: raw.pending_asa_students || [],
+      student_payments: raw.student_payments || [],
+      asa_student_registrations: raw.asa_student_registrations || []
     };
   } catch (e) {
-    return { venues: [], venue_pricing: {}, bookings: [], blocked_slots: [], registrations: [], enquiries: [], users: [], newsletter_subscribers: [] };
+    return { venues: [], venue_pricing: {}, bookings: [], blocked_slots: [], registrations: [], enquiries: [], users: [], newsletter_subscribers: [], asa_students: [], pending_asa_students: [], student_payments: [], asa_student_registrations: [] };
   }
 }
 
@@ -3273,6 +3311,361 @@ app.post('/api/logout', (req, res) => {
     return res.status(400).json({ success: false, error: e.message });
   }
 });
+
+// ============================================================
+// ASA STUDENT REGISTRATION & UNDERTAKING AGREEMENT ENDPOINTS
+// ============================================================
+
+// Serve signatures folder statically
+app.use('/photos/signatures', express.static(path.join(__dirname, 'photos', 'signatures')));
+
+// Page Route: /asa-student
+app.get('/asa-student', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Helper: Generate Unique Registration ID (Format: ASA-REG-YYYY-XXXX)
+function generateAsaRegId(db) {
+  const currentYear = new Date().getFullYear();
+  const prefix = `ASA-REG-${currentYear}-`;
+  
+  const existingIds = (db.asa_student_registrations || [])
+    .map(r => r.registrationId || r.registration_id)
+    .filter(id => id && typeof id === 'string' && id.startsWith(prefix));
+
+  let maxSeq = 0;
+  existingIds.forEach(id => {
+    const seqStr = id.replace(prefix, '');
+    const seq = parseInt(seqStr, 10);
+    if (!isNaN(seq) && seq > maxSeq) {
+      maxSeq = seq;
+    }
+  });
+
+  const nextSeq = (maxSeq + 1).toString().padStart(4, '0');
+  return `${prefix}${nextSeq}`;
+}
+
+// Helper: Save Base64 Signature Image to Disk
+function saveBase64Signature(base64Data, filenamePrefix) {
+  if (!base64Data || typeof base64Data !== 'string') return null;
+  
+  // Extract base64 payload
+  const matches = base64Data.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+  if (!matches || matches.length !== 3) return null;
+
+  const ext = matches[1] === 'jpeg' ? 'jpg' : matches[1];
+  const dataBuffer = Buffer.from(matches[2], 'base64');
+
+  const signaturesDir = path.join(__dirname, 'photos', 'signatures');
+  if (!fs.existsSync(signaturesDir)) {
+    fs.mkdirSync(signaturesDir, { recursive: true });
+  }
+
+  const filename = `${filenamePrefix}_${Date.now()}_${crypto.randomBytes(3).toString('hex')}.${ext}`;
+  const filepath = path.join(signaturesDir, filename);
+
+  fs.writeFileSync(filepath, dataBuffer);
+  return `/photos/signatures/${filename}`;
+}
+
+// Helper: Save Base64 Student Photo to Disk
+function saveBase64StudentPhoto(base64Data) {
+  if (!base64Data || typeof base64Data !== 'string') return null;
+  
+  const matches = base64Data.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+  if (!matches || matches.length !== 3) return null;
+
+  const ext = matches[1] === 'jpeg' ? 'jpg' : matches[1];
+  const dataBuffer = Buffer.from(matches[2], 'base64');
+
+  const studentsDir = path.join(__dirname, 'photos', 'students');
+  if (!fs.existsSync(studentsDir)) {
+    fs.mkdirSync(studentsDir, { recursive: true });
+  }
+
+  const filename = `student_photo_${Date.now()}_${crypto.randomBytes(3).toString('hex')}.${ext}`;
+  const filepath = path.join(studentsDir, filename);
+
+  fs.writeFileSync(filepath, dataBuffer);
+  return `/photos/students/${filename}`;
+}
+
+// 1. Submit ASA Student Registration & Undertaking
+app.post('/api/asa-student-registrations', async (req, res) => {
+  try {
+    const {
+      name,
+      dob,
+      address,
+      fatherName,
+      motherName,
+      parentsOccupation,
+      phoneNumber,
+      institution,
+      sportsEnrolled,
+      batch,
+      studentPhoto,
+      mediaConsent,
+      declaration,
+      studentSignature,
+      studentSignatureName,
+      studentSignatureDate,
+      parentSignature,
+      parentSignatureName,
+      parentSignatureDate
+    } = req.body;
+
+    // Field Validation
+    if (!name || !name.trim()) return res.status(400).json({ success: false, message: '❌ Student Name is required.' });
+    if (!dob) return res.status(400).json({ success: false, message: '❌ Date of Birth is required.' });
+    if (!address || !address.trim()) return res.status(400).json({ success: false, message: '❌ Address is required.' });
+    if (!fatherName || !fatherName.trim()) return res.status(400).json({ success: false, message: '❌ Father Name is required.' });
+    if (!motherName || !motherName.trim()) return res.status(400).json({ success: false, message: '❌ Mother Name is required.' });
+    if (!parentsOccupation || !parentsOccupation.trim()) return res.status(400).json({ success: false, message: '❌ Parents Occupation is required.' });
+
+    const cleanPhone = (phoneNumber || '').trim().replace(/\D/g, '');
+    if (!cleanPhone || cleanPhone.length < 10) return res.status(400).json({ success: false, message: '❌ Valid 10-digit Phone Number is required.' });
+
+    if (!institution || !institution.trim()) return res.status(400).json({ success: false, message: '❌ Institution / School / College is required.' });
+    if (!sportsEnrolled || !sportsEnrolled.trim()) return res.status(400).json({ success: false, message: '❌ Sports Enrolled is required.' });
+    if (!batch || !batch.trim()) return res.status(400).json({ success: false, message: '❌ Batch is required.' });
+
+    // Checkbox Agreement Validation
+    if (mediaConsent !== true && mediaConsent !== 'true') {
+      return res.status(400).json({ success: false, message: '❌ You must accept the Media Consent to proceed.' });
+    }
+    if (declaration !== true && declaration !== 'true') {
+      return res.status(400).json({ success: false, message: '❌ You must accept the Declaration undertaking to proceed.' });
+    }
+
+    // Digital Signature Validation
+    if (!studentSignature || typeof studentSignature !== 'string' || studentSignature.length < 100) {
+      return res.status(400).json({ success: false, message: '❌ Digital Signature of Student is required.' });
+    }
+    if (!parentSignature || typeof parentSignature !== 'string' || parentSignature.length < 100) {
+      return res.status(400).json({ success: false, message: '❌ Digital Signature of Parent/Guardian is required.' });
+    }
+
+    const db = loadDbLocal();
+    db.asa_student_registrations = db.asa_student_registrations || [];
+
+    // Prevent Duplicate Submissions (Same Name + Phone + DOB)
+    const isDuplicate = db.asa_student_registrations.some(r =>
+      (r.name || '').toLowerCase() === name.trim().toLowerCase() &&
+      (r.phoneNumber || r.phone_number || '') === cleanPhone &&
+      r.dob === dob
+    );
+
+    if (isDuplicate) {
+      return res.status(409).json({
+        success: false,
+        message: '⚠️ A registration with this Student Name, Phone Number, and Date of Birth has already been submitted.'
+      });
+    }
+
+    // Save Signature & Student Passport Photo Images
+    const studentSigUrl = saveBase64Signature(studentSignature, 'sig_student');
+    const parentSigUrl = saveBase64Signature(parentSignature, 'sig_parent');
+    const photoUrl = studentPhoto ? saveBase64StudentPhoto(studentPhoto) : '/logo.jpeg';
+
+    if (!studentSigUrl || !parentSigUrl) {
+      return res.status(400).json({ success: false, message: '❌ Failed to process digital signature images. Please sign clearly and try again.' });
+    }
+
+    const registrationId = generateAsaRegId(db);
+    const nowIso = new Date().toISOString();
+
+    const newRecord = {
+      id: `REG_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`,
+      registrationId: registrationId,
+      name: name.trim(),
+      dob: dob,
+      address: address.trim(),
+      fatherName: fatherName.trim(),
+      motherName: motherName.trim(),
+      parentsOccupation: parentsOccupation.trim(),
+      phoneNumber: cleanPhone,
+      institution: institution.trim(),
+      sportsEnrolled: sportsEnrolled.trim(),
+      batch: batch.trim(),
+      studentPhotoUrl: photoUrl,
+      
+      // Agreements
+      mediaConsentAccepted: true,
+      mediaConsentAcceptedAt: nowIso,
+      declarationAccepted: true,
+      declarationAcceptedAt: nowIso,
+      agreementVersion: "v1.0",
+
+      // Signatures
+      studentSignatureUrl: studentSigUrl,
+      studentSignatureName: (studentSignatureName || name).trim(),
+      studentSignatureDate: studentSignatureDate || nowIso.split('T')[0],
+      
+      parentSignatureUrl: parentSigUrl,
+      parentSignatureName: (parentSignatureName || fatherName || motherName).trim(),
+      parentSignatureDate: parentSignatureDate || nowIso.split('T')[0],
+
+      // Academy Use Only (Admin fields - initially null/empty)
+      academyUseOnly: {
+        admissionNo: '',
+        registrationDate: '',
+        coachSignature: '',
+        academySeal: ''
+      },
+
+      // System Metadata
+      status: 'Pending',
+      submittedAt: nowIso,
+      createdAt: nowIso,
+      updatedAt: nowIso
+    };
+
+    db.asa_student_registrations.push(newRecord);
+    saveDbLocal(db);
+    saveAsaBackupLocal(db);
+
+    auditLog('ASA_REGISTRATION_SUBMIT', `regId=${registrationId}, name=${newRecord.name}`);
+
+    return res.json({
+      success: true,
+      message: '🎉 Student Registration & Undertaking Agreement submitted successfully!',
+      registrationId: registrationId,
+      submittedAt: nowIso
+    });
+
+  } catch (e) {
+    console.error('Error submitting ASA Student Registration:', e);
+    return res.status(500).json({ success: false, message: '❌ Server error submitting registration: ' + e.message });
+  }
+});
+
+// 2. Admin: Get All ASA Student Registrations (Protected)
+app.get('/api/admin/asa-student-registrations', requireAdmin, (req, res) => {
+  try {
+    const db = loadDbLocal();
+    let records = (db.asa_student_registrations || []).map(r => ({
+      id: r.id,
+      registrationId: r.registrationId,
+      name: r.name,
+      dob: r.dob,
+      phoneNumber: r.phoneNumber,
+      sportsEnrolled: r.sportsEnrolled,
+      batch: r.batch,
+      institution: r.institution,
+      status: r.status || 'Pending',
+      submittedAt: r.submittedAt,
+      studentPhotoUrl: r.studentPhotoUrl || '/logo.jpeg',
+      studentSignatureUrl: r.studentSignatureUrl,
+      parentSignatureUrl: r.parentSignatureUrl
+    }));
+
+    const { q, status } = req.query;
+
+    // Search Filter
+    if (q && q.trim()) {
+      const term = q.trim().toLowerCase();
+      records = records.filter(r =>
+        (r.registrationId || '').toLowerCase().includes(term) ||
+        (r.name || '').toLowerCase().includes(term) ||
+        (r.phoneNumber || '').toLowerCase().includes(term) ||
+        (r.sportsEnrolled || '').toLowerCase().includes(term) ||
+        (r.batch || '').toLowerCase().includes(term)
+      );
+    }
+
+    // Status Filter
+    if (status && status !== 'all') {
+      records = records.filter(r => r.status === status);
+    }
+
+    // Sort by submittedAt descending
+    records.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+    return res.json({
+      success: true,
+      total: records.length,
+      registrations: records
+    });
+  } catch (e) {
+    console.error('Error fetching admin registrations:', e);
+    return res.status(500).json({ success: false, message: 'Server error fetching registrations.' });
+  }
+});
+
+// 3. Admin: Get Single ASA Student Registration Details (Protected)
+app.get('/api/admin/asa-student-registrations/:id', requireAdmin, (req, res) => {
+  try {
+    const db = loadDbLocal();
+    const record = (db.asa_student_registrations || []).find(r => r.id === req.params.id || r.registrationId === req.params.id);
+
+    if (!record) {
+      return res.status(404).json({ success: false, message: 'Registration record not found.' });
+    }
+
+    return res.json({
+      success: true,
+      registration: record
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, message: 'Server error fetching registration detail.' });
+  }
+});
+
+// 4. Admin: Update Status & Academy Use Only Fields (Protected)
+app.patch('/api/admin/asa-student-registrations/:id', requireAdmin, (req, res) => {
+  try {
+    const { status, admissionNo, registrationDate, coachSignature, academySeal } = req.body;
+
+    const db = loadDbLocal();
+    const index = (db.asa_student_registrations || []).findIndex(r => r.id === req.params.id || r.registrationId === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ success: false, message: 'Registration record not found.' });
+    }
+
+    const rec = db.asa_student_registrations[index];
+
+    if (status && ['Pending', 'Under Review', 'Approved', 'Rejected'].includes(status)) {
+      rec.status = status;
+    }
+
+    rec.academyUseOnly = rec.academyUseOnly || {};
+    if (admissionNo !== undefined) rec.academyUseOnly.admissionNo = admissionNo;
+    if (registrationDate !== undefined) rec.academyUseOnly.registrationDate = registrationDate;
+    if (coachSignature !== undefined) rec.academyUseOnly.coachSignature = coachSignature;
+    if (academySeal !== undefined) rec.academyUseOnly.academySeal = academySeal;
+
+    rec.updatedAt = new Date().toISOString();
+
+    saveDbLocal(db);
+    saveAsaBackupLocal(db);
+
+    auditLog('ADMIN_ASA_REGISTRATION_UPDATE', `id=${rec.id}, status=${rec.status}`);
+
+    return res.json({
+      success: true,
+      message: 'Registration record & Academy Use Only fields updated successfully.',
+      registration: rec
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, message: 'Server error updating registration.' });
+  }
+});
+
+// Helper: Backup Registration Data
+function saveAsaBackupLocal(db) {
+  try {
+    const backupDir = path.join(__dirname, 'backups');
+    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+    
+    const backupFile = path.join(backupDir, 'asa_registrations_backup.json');
+    fs.writeFileSync(backupFile, JSON.stringify(db.asa_student_registrations || [], null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error creating registration backup:', err.message);
+  }
+}
 
 // ============================================================
 // SPORT DEDICATED PAGES ROUTES & ASSETS

@@ -8603,3 +8603,1268 @@ select {
   font-weight: 700;
   display: inline-block;
 }
+
+/* ============================================================
+   ASA STUDENT PORTAL & DIGITAL ID CARD STYLES
+   ============================================================ */
+
+/* Navbar ASA Student Link */
+.nav-asa-link {
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  background: rgba(14, 165, 233, 0.12) !important;
+  border: 1px solid rgba(14, 165, 233, 0.3) !important;
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  transition: all 0.25s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.nav-asa-link:hover {
+  background: #0ea5e9 !important;
+  color: #ffffff !important;
+  border-color: #0ea5e9 !important;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3) !important;
+}
+
+/* Modal Overlay */
+.asa-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.asa-modal-container {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  animation: asaModalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 28px 32px;
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes asaModalPop {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.asa-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  background: #f1f5f9;
+  border: none;
+  font-size: 1.6rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 2;
+}
+
+.asa-modal-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Landing View */
+.asa-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.asa-landing-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.asa-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 4px 0 8px 0;
+}
+
+.asa-subtitle {
+  font-size: 0.92rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.asa-landing-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+@media (max-width: 580px) {
+  .asa-landing-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.asa-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: #fafafa;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.asa-card:hover {
+  border-color: #0ea5e9;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.15);
+}
+
+.asa-card-primary {
+  background: linear-gradient(145deg, #ffffff, #f0f9ff);
+  border-color: #38bdf8;
+}
+
+.asa-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: #0ea5e9;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.asa-card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.asa-card h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.asa-card p {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+}
+
+.asa-fee-pill {
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+/* Forms & Inputs */
+.asa-view-header {
+  margin-bottom: 18px;
+}
+
+.asa-view-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 8px 0 4px 0;
+}
+
+.asa-view-header p {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.asa-back-btn {
+  background: none;
+  border: none;
+  color: #0ea5e9;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.asa-fee-banner {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.asa-fee-banner span {
+  font-size: 1rem;
+}
+
+.asa-fee-banner small {
+  opacity: 0.9;
+  font-size: 0.78rem;
+}
+
+.asa-alert {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.asa-alert.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.asa-alert.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+/* Photo Upload Box */
+.photo-upload-group {
+  margin-bottom: 18px;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 2px 0 8px 0;
+}
+
+.photo-upload-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.photo-preview-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #0ea5e9;
+  flex-shrink: 0;
+}
+
+.photo-preview-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+.photo-placeholder span {
+  font-size: 1.4rem;
+}
+
+.photo-input-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.photo-filename-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  word-break: break-all;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 580px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.form-group label .req {
+  color: #ef4444;
+}
+
+.form-group input {
+  padding: 11px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+  background: #ffffff;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+.asa-register-summary {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 14px 0;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.summary-line:last-child {
+  margin-bottom: 0;
+}
+
+.asa-view-footer {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.88rem;
+  color: #64748b;
+}
+
+.asa-view-footer a {
+  color: #0ea5e9;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.asa-view-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Digital ID Card Styling */
+.digital-id-card-wrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.digital-id-card {
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 20px;
+  padding: 20px;
+  color: #ffffff;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(56, 189, 248, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.digital-id-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 140px;
+  height: 140px;
+  background: rgba(14, 165, 233, 0.15);
+  border-radius: 50%;
+}
+
+.id-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.id-card-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+  object-fit: cover;
+}
+
+.id-card-header h4 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.id-card-header span {
+  font-size: 0.68rem;
+  color: #38bdf8;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.id-card-body {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 440px) {
+  .id-card-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.id-photo-frame {
+  width: 100px;
+  height: 110px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 3px solid #38bdf8;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.id-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.id-details {
+  flex: 1;
+}
+
+.id-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.id-number-pill {
+  display: inline-block;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 900;
+  font-family: monospace;
+  font-size: 0.92rem;
+  padding: 3px 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.id-field-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.id-field {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.id-field .lbl {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.id-field .val {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.id-field .val.highlight {
+  color: #4ade80;
+}
+
+.id-card-footer {
+  margin-top: 16px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-top: 10px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   ASA STUDENT UNDERTAKING AGREEMENT — RESPONSIVE DESIGN SYSTEM
+   ============================================================ */
+
+body.modal-open {
+  overflow: hidden !important;
+}
+
+.asa-undertaking-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+.asa-undertaking-paper {
+  background: #ffffff;
+  color: #1e293b;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  position: relative;
+  margin: 20px auto;
+  font-family: var(--font-main, 'Inter', sans-serif);
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+.asa-undertaking-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-size: 1.8rem;
+  color: #64748b;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 20;
+}
+
+.asa-undertaking-close:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+/* Document Header */
+.asa-doc-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.asa-header-left {
+  flex-shrink: 0;
+}
+
+.asa-doc-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.asa-header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.asa-doc-main-title {
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #000000;
+  margin: 0 0 8px 0;
+  font-family: 'Arial Black', var(--font-heading, sans-serif);
+  text-transform: uppercase;
+}
+
+/* Black Pill Titles */
+.asa-pill-header {
+  background: #000000;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: clamp(0.75rem, 3.2vw, 1rem);
+  letter-spacing: 0.8px;
+  padding: 6px 24px;
+  border-radius: 20px;
+  display: inline-block;
+  text-transform: uppercase;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.35;
+}
+
+.asa-pill-center {
+  background: #000000;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: clamp(0.8rem, 3.2vw, 0.95rem);
+  letter-spacing: 0.8px;
+  padding: 6px 22px;
+  border-radius: 20px;
+  display: table;
+  margin: 0 auto 16px auto;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.35;
+}
+
+.asa-pill-header-sm {
+  background: #000000;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: 4px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.asa-doc-divider {
+  border: none;
+  border-top: 1px solid #cbd5e1;
+  margin: 24px 0;
+}
+
+/* Section Title */
+.asa-doc-section {
+  margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Desktop Grid Layout for Student Info (2 Columns) */
+.asa-doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field-name       { grid-column: 1; grid-row: 1; }
+.field-dob        { grid-column: 1; grid-row: 2; }
+.field-address    { grid-column: 1; grid-row: 3; }
+.field-father     { grid-column: 1; grid-row: 4; }
+.field-mother     { grid-column: 1; grid-row: 5; }
+.field-occupation { grid-column: 1; grid-row: 6; }
+
+.field-photo      { grid-column: 2; grid-row: 1; }
+.field-phone      { grid-column: 2; grid-row: 2; }
+.field-institution{ grid-column: 2; grid-row: 3; }
+.field-sport      { grid-column: 2; grid-row: 4; }
+.field-batch      { grid-column: 2; grid-row: 5; }
+
+.asa-doc-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.asa-doc-field label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.asa-doc-field label .req {
+  color: #ef4444;
+}
+
+.asa-doc-input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid #000000;
+  background: transparent;
+  padding: 6px 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  border-radius: 0;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.asa-doc-input:focus {
+  border-bottom-color: #0284c7;
+  background: rgba(2, 132, 199, 0.04);
+}
+
+textarea.asa-doc-input {
+  resize: vertical;
+  min-height: 44px;
+}
+
+/* Passport Photo Upload Box */
+.doc-photo-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.doc-photo-box {
+  width: 90px;
+  height: 100px;
+  border: 2px dashed #0f172a;
+  border-radius: 6px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.doc-photo-box:hover {
+  background: #f0f9ff;
+  border-color: #0284c7;
+}
+
+.doc-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#doc-photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4px;
+}
+
+/* Code of Conduct Section */
+.asa-doc-conduct-box {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.conduct-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.conduct-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.conduct-icon-circle svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.conduct-content {
+  flex: 1;
+}
+
+.conduct-content h4 {
+  margin: 0 0 3px 0;
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: 0.3px;
+}
+
+.conduct-content p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+/* Media Consent & Declaration */
+.asa-doc-consent-box {
+  background: #ffffff;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.asa-doc-consent-box p {
+  margin: 0 auto 12px auto;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #1e293b;
+  max-width: 800px;
+}
+
+.asa-chk-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #000000;
+  user-select: none;
+  line-height: 1.4;
+  text-align: left;
+  min-height: 44px;
+}
+
+.asa-chk-label input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: #000000;
+  cursor: pointer;
+}
+
+/* Digital Signature Pads */
+.asa-sig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.asa-sig-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.asa-sig-header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.canvas-wrapper {
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background: #fafafa;
+  overflow: hidden;
+  touch-action: none;
+  position: relative;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.canvas-wrapper canvas {
+  width: 100%;
+  height: 130px;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.asa-sig-meta-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sig-meta-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+}
+
+.sig-meta-field label {
+  width: 70px;
+  font-weight: 800;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.sig-meta-field input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  padding: 4px 6px;
+  font-size: 0.88rem;
+  color: #0f172a;
+  outline: none;
+}
+
+/* Note Section */
+.asa-doc-note-box {
+  border: 1.5px solid #000000;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note-pill {
+  background: #000000;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.note-txt {
+  color: #000000;
+  font-weight: 900;
+  font-size: 0.84rem;
+  letter-spacing: 0.3px;
+  line-height: 1.45;
+}
+
+/* Academy Use Only */
+.asa-doc-academy-use {
+  border: 1.5px solid #000000;
+  border-radius: 6px;
+  padding: 16px;
+  background: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.academy-use-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.use-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.use-field label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.use-field input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  padding: 4px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Alerts & Submit Wrapper */
+.asa-doc-alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.asa-doc-alert.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.asa-doc-submit-wrap {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.asa-doc-submit-wrap button {
+  width: 100%;
+  min-height: 52px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS (Mobile, Tablet, Desktop)
+   ============================================================ */
+
+/* Tablet (768px – 1023px) */
+@media (max-width: 1023px) {
+  .asa-undertaking-paper {
+    padding: 30px 24px;
+    max-width: 100%;
+  }
+
+  .asa-doc-grid {
+    gap: 16px 20px;
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .asa-undertaking-overlay {
+    padding: 10px 8px;
+  }
+
+  .asa-undertaking-paper {
+    padding: 20px 16px;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+
+  .asa-undertaking-close {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+
+  .asa-doc-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .asa-doc-logo {
+    width: 75px;
+    height: 75px;
+  }
+
+  .asa-doc-main-title {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  /* Single Column Layout & Explicit Order on Mobile */
+  .asa-doc-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field-name       { order: 1; }
+  .field-dob        { order: 2; }
+  .field-phone      { order: 3; }
+  .field-address    { order: 4; }
+  .field-institution{ order: 5; }
+  .field-father     { order: 6; }
+  .field-mother     { order: 7; }
+  .field-occupation { order: 8; }
+  .field-sport      { order: 9; }
+  .field-batch      { order: 10; }
+  .field-photo      { order: 11; }
+
+  .asa-doc-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .asa-doc-field label {
+    white-space: normal;
+    font-size: 0.8rem;
+  }
+
+  .asa-doc-input {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.95rem;
+    padding: 8px 6px;
+  }
+
+  .asa-sig-grid,
+  .academy-use-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .sig-meta-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .sig-meta-field label {
+    width: 100%;
+  }
+
+  .sig-meta-field input {
+    min-height: 40px;
+  }
+
+  .asa-doc-note-box {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .use-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .use-field label {
+    white-space: normal;
+  }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 480px) {
+  .asa-undertaking-paper {
+    padding: 16px 12px;
+  }
+
+  .conduct-item {
+    gap: 10px;
+  }
+
+  .conduct-icon-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .conduct-icon-circle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .asa-chk-label {
+    align-items: flex-start;
+  }
+}

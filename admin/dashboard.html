@@ -46,6 +46,10 @@
       </div>
 
       <div class="nav-group-label">Management</div>
+      <div class="nav-item" onclick="showSection('asa_registrations',this)" data-section="asa_registrations">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        ASA Student Registrations
+      </div>
       <div class="nav-item" onclick="showSection('subscriptions',this)" data-section="subscriptions">
         <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
         Coaching Registrations
@@ -601,6 +605,54 @@
           </div>
           <div class="table-footer"><span id="enq-count">0 records</span></div>
         </div>
+      <!-- ===== ASA STUDENT REGISTRATIONS SECTION ===== -->
+      <section class="admin-section" id="section-asa_registrations">
+        <div class="section-hdr">
+          <div>
+            <div class="section-label">Membership &amp; Agreements</div>
+            <h2 class="section-title">📋 ASA Student Registrations</h2>
+          </div>
+          <div class="section-hdr-actions">
+            <button class="btn btn-primary btn-sm" onclick="loadAsaRegistrationsData()">Refresh</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <!-- Filter & Search Bar -->
+          <div style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="asa-reg-search" class="form-input" style="max-width: 300px;" placeholder="Search Registration ID, Name, Phone, Sport, Batch..." oninput="loadAsaRegistrationsData()">
+            
+            <select id="asa-reg-status-filter" class="form-select" style="max-width: 180px;" onchange="loadAsaRegistrationsData()">
+              <option value="all">Status: All</option>
+              <option value="Pending">Pending</option>
+              <option value="Under Review">Under Review</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+          <!-- Data Table -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Reg ID</th>
+                  <th>Student Name</th>
+                  <th>Phone</th>
+                  <th>Sport</th>
+                  <th>Batch</th>
+                  <th>Submitted Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="asa-reg-tbody">
+                <tr><td colspan="8" style="text-align: center; padding: 24px;">Loading registrations...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="asa-reg-count">0 records</span></div>
+        </div>
       </section>
 
       <!-- ===== COACHING REGISTRATIONS ===== -->
@@ -988,7 +1040,7 @@ function downloadCSV(rows, headers, filename) {
 // SIDEBAR / NAVIGATION
 // ============================================================
 const SECTION_TITLES = {
-  overview:'Overview', subscriptions:'Coaching Registrations', venueslots:'Venue & Slots', registrations:'Registrations', payments:'Payments',
+  overview:'Overview', asa_registrations:'📋 ASA Student Registrations', subscriptions:'Coaching Registrations', venueslots:'Venue & Slots', registrations:'Registrations', payments:'Payments',
   receipts:'Receipts', tournament:'Programs', content:'Website Content',
   settings:'Settings', enquiries:'Enquiries'
 };
@@ -1003,6 +1055,7 @@ function showSection(id, el) {
 
   const loaders = {
     overview: loadOverview,
+    asa_registrations: loadAsaRegistrationsData,
     subscriptions: loadSubscriptionsData,
     venueslots: loadVenueSlots,
     registrations: loadRegistrations,
@@ -2451,6 +2504,427 @@ window.addEventListener('resize', () => {
 });
 
 loadOverview();
+
+// ============================================================
+// ASA STUDENT REGISTRATIONS ADMIN CONTROLLER
+// ============================================================
+
+let currentSelectedAdminReg = null;
+
+async function loadAsaRegistrationsData() {
+  const q = document.getElementById('asa-reg-search')?.value || '';
+  const status = document.getElementById('asa-reg-status-filter')?.value || 'all';
+
+  const tbody = document.getElementById('asa-reg-tbody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px;">Loading registration records...</td></tr>';
+
+  try {
+    const params = new URLSearchParams({ q, status });
+    const res = await api('GET', `/api/admin/asa-student-registrations?${params.toString()}`);
+
+    if (!res.success) {
+      if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Error: ${res.message || 'Failed to fetch'}</td></tr>`;
+      return;
+    }
+
+    const records = res.registrations || [];
+    const countEl = document.getElementById('asa-reg-count');
+    if (countEl) countEl.innerText = `${res.total || records.length} registration(s)`;
+
+    if (records.length === 0) {
+      if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #64748b;">No ASA Student Registrations found matching criteria.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = records.map(r => {
+      const subDate = new Date(r.submittedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const statusClass = r.status === 'Approved' ? 'sub-badge-active' : (r.status === 'Rejected' ? 'sub-badge-expired' : 'badge-info');
+
+      return `
+        <tr>
+          <td><strong style="font-family: monospace; color: #0284c7;">${r.registrationId}</strong></td>
+          <td><strong>${esc(r.name)}</strong></td>
+          <td>📞 ${esc(r.phoneNumber)}</td>
+          <td><span class="badge badge-coaching">${esc(r.sportsEnrolled)}</span></td>
+          <td>${esc(r.batch)}</td>
+          <td>${subDate}</td>
+          <td><span class="badge ${statusClass}">${esc(r.status)}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="viewAdminRegistrationDetail('${r.id}')">View Form &amp; Signatures</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+  } catch (e) {
+    console.error('Error loading ASA registrations:', e);
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red;">Network error loading records.</td></tr>`;
+  }
+}
+
+async function viewAdminRegistrationDetail(id) {
+  try {
+    const res = await api('GET', `/api/admin/asa-student-registrations/${id}`);
+    if (!res.success) {
+      alert(res.message || 'Could not fetch registration details.');
+      return;
+    }
+
+    const r = res.registration;
+    currentSelectedAdminReg = r;
+
+    document.getElementById('admin-reg-id-display').innerText = r.registrationId;
+    document.getElementById('admin-reg-status-select').value = r.status || 'Pending';
+
+    // Student Info Display
+    document.getElementById('admin-reg-name').innerText = r.name || '—';
+    document.getElementById('admin-reg-dob').innerText = r.dob || '—';
+    document.getElementById('admin-reg-address').innerText = r.address || '—';
+    document.getElementById('admin-reg-father').innerText = r.fatherName || '—';
+    document.getElementById('admin-reg-mother').innerText = r.motherName || '—';
+    document.getElementById('admin-reg-occupation').innerText = r.parentsOccupation || '—';
+    document.getElementById('admin-reg-phone').innerText = r.phoneNumber || '—';
+    document.getElementById('admin-reg-institution').innerText = r.institution || '—';
+    document.getElementById('admin-reg-sport').innerText = r.sportsEnrolled || '—';
+    document.getElementById('admin-reg-batch').innerText = r.batch || '—';
+
+    // Student Photo Display
+    const photoImg = document.getElementById('admin-reg-student-photo-img');
+    if (photoImg) photoImg.src = r.studentPhotoUrl || '/logo.jpeg';
+
+    // Signatures Display
+    const studentSigImg = document.getElementById('admin-reg-student-sig-img');
+    const parentSigImg = document.getElementById('admin-reg-parent-sig-img');
+
+    if (studentSigImg) studentSigImg.src = r.studentSignatureUrl || '';
+    if (parentSigImg) parentSigImg.src = r.parentSignatureUrl || '';
+
+    document.getElementById('admin-reg-student-sig-name').innerText = r.studentSignatureName || r.name;
+    document.getElementById('admin-reg-student-sig-date').innerText = r.studentSignatureDate || '—';
+
+    document.getElementById('admin-reg-parent-sig-name').innerText = r.parentSignatureName || '—';
+    document.getElementById('admin-reg-parent-sig-date').innerText = r.parentSignatureDate || '—';
+
+    // Admin Academy Use Only Inputs
+    const use = r.academyUseOnly || {};
+    document.getElementById('admin-reg-use-admission').value = use.admissionNo || '';
+    document.getElementById('admin-reg-use-date').value = use.registrationDate || '';
+    document.getElementById('admin-reg-use-coach').value = use.coachSignature || '';
+    document.getElementById('admin-reg-use-seal').value = use.academySeal || '';
+
+    document.getElementById('admin-reg-modal').style.display = 'flex';
+  } catch (e) {
+    console.error('Error viewing registration detail:', e);
+    alert('Server error fetching registration detail.');
+  }
+}
+
+function closeAdminRegModal() {
+  document.getElementById('admin-reg-modal').style.display = 'none';
+  currentSelectedAdminReg = null;
+}
+
+async function saveAdminAcademyUse() {
+  if (!currentSelectedAdminReg) return;
+
+  const status = document.getElementById('admin-reg-status-select').value;
+  const admissionNo = document.getElementById('admin-reg-use-admission').value.trim();
+  const registrationDate = document.getElementById('admin-reg-use-date').value;
+  const coachSignature = document.getElementById('admin-reg-use-coach').value.trim();
+  const academySeal = document.getElementById('admin-reg-use-seal').value.trim();
+
+  try {
+    const res = await api('PATCH', `/api/admin/asa-student-registrations/${currentSelectedAdminReg.id}`, {
+      status,
+      admissionNo,
+      registrationDate,
+      coachSignature,
+      academySeal
+    });
+
+    if (!res.success) {
+      alert(res.message || 'Failed to update record.');
+      return;
+    }
+
+    toast('Registration status and Academy Use fields updated successfully! ✓', 'success');
+    closeAdminRegModal();
+    loadAsaRegistrationsData();
+  } catch (e) {
+    alert('Server error saving registration updates.');
+  }
+}
+</script>
+
+<!-- ============================================================ -->
+<!-- ADMIN VIEW SUBMITTED REGISTRATION & DIGITAL SIGNATURES MODAL -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="admin-reg-modal" style="display: none;">
+  <div class="modal-card" style="max-width: 850px; max-height: 90vh; overflow-y: auto;">
+    <button class="modal-close" onclick="closeAdminRegModal()">&times;</button>
+    
+    <div style="border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <span class="badge" style="background: #e0f2fe; color: #0369a1;">OFFICIAL UNDERTAKING RECORD</span>
+        <h3 style="margin: 4px 0 0 0; color: #0f172a;">Student Registration &amp; Agreement Form</h3>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 0.8rem; color: #64748b;">REGISTRATION ID</span>
+        <div id="admin-reg-id-display" style="font-family: monospace; font-size: 1.3rem; font-weight: 800; color: #0284c7;">ASA-REG-2026-0000</div>
+      </div>
+    </div>
+
+    <!-- STATUS UPDATER -->
+    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+      <div>
+        <strong style="color: #0f172a; font-size: 0.9rem;">Registration Processing Status:</strong>
+        <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #64748b;">Update decision status for official academy records.</p>
+      </div>
+      <select id="admin-reg-status-select" class="form-select" style="max-width: 180px; font-weight: 700;">
+        <option value="Pending">Pending</option>
+        <option value="Under Review">Under Review</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+
+    <!-- STUDENT INFORMATION SUMMARY -->
+    <div style="margin-bottom: 20px;">
+      <h4 style="background: #0f172a; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <span>STUDENT INFORMATION</span>
+        <span style="font-weight: normal; font-size: 0.78rem; opacity: 0.8;">Apex Sports Academy Record</span>
+      </h4>
+      <div style="display: flex; gap: 16px; align-items: flex-start; background: #fafafa; padding: 14px; border-radius: 6px; border: 1px solid #e2e8f0;">
+        <div style="flex-shrink: 0; text-align: center;">
+          <img id="admin-reg-student-photo-img" src="/logo.jpeg" alt="Student Passport Photo" style="width: 100px; height: 115px; object-fit: cover; border: 2px solid #0f172a; border-radius: 6px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+          <div style="font-size: 0.7rem; font-weight: bold; color: #64748b; margin-top: 4px;">PASSPORT PHOTO</div>
+        </div>
+        <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.88rem;">
+          <div><strong>Student Name:</strong> <span id="admin-reg-name">—</span></div>
+          <div><strong>Phone Number:</strong> <span id="admin-reg-phone">—</span></div>
+          <div><strong>Date of Birth:</strong> <span id="admin-reg-dob">—</span></div>
+          <div><strong>Institution:</strong> <span id="admin-reg-institution">—</span></div>
+          <div><strong>Father Name:</strong> <span id="admin-reg-father">—</span></div>
+          <div><strong>Sports Enrolled:</strong> <span id="admin-reg-sport">—</span></div>
+          <div><strong>Mother Name:</strong> <span id="admin-reg-mother">—</span></div>
+          <div><strong>Batch:</strong> <span id="admin-reg-batch">—</span></div>
+          <div><strong>Parents Occupation:</strong> <span id="admin-reg-occupation">—</span></div>
+          <div style="grid-column: span 2;"><strong>Residential Address:</strong> <span id="admin-reg-address">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGREEMENTS ACCEPTANCE STATUS -->
+    <div style="margin-bottom: 20px;">
+      <h4 style="background: #0f172a; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 12px;">AGREEMENT UNDERTAKINGS</h4>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span class="sub-badge-active">✅ Code of Conduct Accepted</span>
+        <span class="sub-badge-active">✅ Media Consent Accepted</span>
+        <span class="sub-badge-active">✅ Declaration Accepted (v1.0)</span>
+      </div>
+    </div>
+
+    <!-- DIGITAL SIGNATURES VIEW -->
+    <div style="margin-bottom: 20px;">
+      <h4 style="background: #0f172a; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 12px;">VERIFIED DIGITAL SIGNATURES</h4>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        
+        <!-- Student Signature -->
+        <div style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; background: #fff;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">SIGNATURE OF STUDENT</div>
+          <div style="border: 1px dashed #94a3b8; background: #fafafa; border-radius: 4px; text-align: center; padding: 8px; margin-bottom: 8px;">
+            <img id="admin-reg-student-sig-img" src="" alt="Student Signature" style="max-height: 100px; max-width: 100%; object-fit: contain;">
+          </div>
+          <div style="font-size: 0.8rem; color: #475569;">
+            <div><strong>Name:</strong> <span id="admin-reg-student-sig-name">—</span></div>
+            <div><strong>Date:</strong> <span id="admin-reg-student-sig-date">—</span></div>
+          </div>
+        </div>
+
+        <!-- Parent Signature -->
+        <div style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; background: #fff;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">SIGNATURE OF PARENT / GUARDIAN</div>
+          <div style="border: 1px dashed #94a3b8; background: #fafafa; border-radius: 4px; text-align: center; padding: 8px; margin-bottom: 8px;">
+            <img id="admin-reg-parent-sig-img" src="" alt="Parent Signature" style="max-height: 100px; max-width: 100%; object-fit: contain;">
+          </div>
+          <div style="font-size: 0.8rem; color: #475569;">
+            <div><strong>Name:</strong> <span id="admin-reg-parent-sig-name">—</span></div>
+            <div><strong>Date:</strong> <span id="admin-reg-parent-sig-date">—</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOR ACADEMY USE ONLY (EDITABLE BY ADMIN) -->
+    <div style="background: #f1f5f9; border: 2px dashed #0284c7; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+      <h4 style="margin: 0 0 4px 0; color: #0369a1; font-size: 0.9rem;">🏢 FOR ACADEMY USE ONLY (ADMIN EDITABLE)</h4>
+      <p style="margin: 0 0 12px 0; font-size: 0.78rem; color: #64748b;">Fill in official academy admission details and verification approvals below.</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Admission No.:</label>
+          <input type="text" id="admin-reg-use-admission" class="form-input" placeholder="e.g. ASA-2026-ADM-042">
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Registration Date:</label>
+          <input type="date" id="admin-reg-use-date" class="form-input">
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Coach Signature Ref / Approval:</label>
+          <input type="text" id="admin-reg-use-coach" class="form-input" placeholder="e.g. Coach Head Approval">
+        </div>
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: #334155;">Academy Seal / Remarks:</label>
+          <input type="text" id="admin-reg-use-seal" class="form-input" placeholder="e.g. Verified &amp; Stamped">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+      <button class="btn btn-secondary btn-sm" onclick="printAdminRegistrationDocument()">🖨️ Print / Save as PDF</button>
+      <button class="btn btn-primary btn-sm" onclick="saveAdminAcademyUse()">💾 Save Record &amp; Status</button>
+      <button class="btn btn-outline btn-sm" onclick="closeAdminRegModal()">Close</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function printAdminRegistrationDocument() {
+  if (!currentSelectedAdminReg) return;
+  const r = currentSelectedAdminReg;
+  const photoSrc = r.studentPhotoUrl || '/logo.jpeg';
+
+  const admNo = document.getElementById('admin-reg-use-admission').value || '______________________';
+  const regDate = document.getElementById('admin-reg-use-date').value || '______________________';
+  const coachSig = document.getElementById('admin-reg-use-coach').value || '______________________';
+  const seal = document.getElementById('admin-reg-use-seal').value || '______________________';
+
+  const printHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>APEX SPORTS ACADEMY - Registration ${r.registrationId}</title>
+      <style>
+        body { font-family: 'Arial', sans-serif; color: #000; background: #fff; padding: 20px; margin: 0; line-height: 1.4; }
+        .hdr { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+        .hdr-logo { width: 80px; height: 80px; object-fit: contain; }
+        .hdr-photo { width: 85px; height: 95px; border: 1.5px solid #000; object-fit: cover; border-radius: 4px; }
+        .hdr-titles { flex: 1; text-align: center; }
+        .hdr-titles h1 { font-size: 24px; font-weight: 900; margin: 0 0 6px 0; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
+        .pill { background: #000; color: #fff; font-size: 13px; font-weight: bold; padding: 5px 18px; border-radius: 16px; display: inline-block; text-transform: uppercase; }
+        .pill-center { background: #000; color: #fff; font-size: 13px; font-weight: bold; padding: 5px 18px; border-radius: 16px; display: table; margin: 0 auto 12px auto; text-transform: uppercase; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .field { display: flex; margin-bottom: 10px; font-size: 13px; }
+        .field label { font-weight: bold; width: 140px; text-transform: uppercase; }
+        .field .val { flex: 1; border-bottom: 1px solid #000; padding-bottom: 2px; }
+        .conduct-item { margin-bottom: 10px; font-size: 12px; }
+        .conduct-item h4 { margin: 0 0 2px 0; font-size: 12px; font-weight: bold; }
+        .conduct-item p { margin: 0; color: #333; }
+        .consent-box { text-align: center; font-size: 12px; margin-bottom: 16px; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .sig-box { border: 1px solid #000; border-radius: 6px; padding: 12px; text-align: center; }
+        .sig-box img { max-height: 80px; max-width: 100%; object-fit: contain; }
+        .note-box { border: 1.5px solid #000; border-radius: 6px; padding: 8px 12px; font-weight: bold; font-size: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .note-pill { background: #000; color: #fff; padding: 3px 10px; border-radius: 10px; font-size: 11px; }
+        .academy-box { border: 1.5px solid #000; border-radius: 6px; padding: 12px; }
+        @media print { body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <div class="hdr">
+        <img src="/logo.jpeg" alt="Logo" class="hdr-logo">
+        <div class="hdr-titles">
+          <h1>APEX SPORTS ACADEMY</h1>
+          <div class="pill">STUDENT REGISTRATION & UNDERTAKING AGREEMENT</div>
+        </div>
+        <img src="${photoSrc}" alt="Student Photo" class="hdr-photo">
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="field"><label>NAME :</label><div class="val">${r.name || ''}</div></div>
+          <div class="field"><label>DATE OF BIRTH:</label><div class="val">${r.dob || ''}</div></div>
+          <div class="field"><label>ADDRESS:</label><div class="val">${r.address || ''}</div></div>
+          <div class="field"><label>FATHER NAME :</label><div class="val">${r.fatherName || ''}</div></div>
+          <div class="field"><label>MOTHER NAME :</label><div class="val">${r.motherName || ''}</div></div>
+          <div class="field"><label>PARENTS OCCUPATION :</label><div class="val">${r.parentsOccupation || ''}</div></div>
+        </div>
+        <div>
+          <div class="field"><label>PHONE NUMBER :</label><div class="val">${r.phoneNumber || ''}</div></div>
+          <div class="field"><label>INSTITUTIONS :</label><div class="val">${r.institution || ''}</div></div>
+          <div class="field"><label>SPORTS ENROLLED :</label><div class="val">${r.sportsEnrolled || ''}</div></div>
+          <div class="field"><label>BATCH :</label><div class="val">${r.batch || ''}</div></div>
+          <div class="field"><label>REGISTRATION ID :</label><div class="val"><strong>${r.registrationId}</strong></div></div>
+          <div class="field"><label>STATUS :</label><div class="val"><strong>${r.status || 'Pending'}</strong></div></div>
+        </div>
+      </div>
+
+      <div class="pill-center">CODE OF CONDUCT & DISCIPLINE</div>
+      <div class="conduct-item">
+        <h4>1. BEHAVIOR</h4>
+        <p>The student shall maintain discipline, respect coaches, staff members, fellow students, officials, and opponents at all times.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>2. ATTENDANCE & PUNCTUALITY</h4>
+        <p>The student must attend all scheduled practice sessions regularly.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>3. EQUIPMENT & PROPERTY</h4>
+        <p>The student is responsible for the proper use and care of academy equipment.</p>
+      </div>
+      <div class="conduct-item">
+        <h4>4. PROHIBITED ITEMS</h4>
+        <p>Tobacco, alcohol, performance-enhancing drugs, and narcotics are strictly prohibited.</p>
+      </div>
+
+      <div class="pill-center" style="margin-top:16px;">MEDIA CONSENT & DECLARATION</div>
+      <div class="consent-box">
+        <p>✅ Media Consent Accepted &nbsp;|&nbsp; ✅ Declaration Accepted (v1.0)</p>
+      </div>
+
+      <div class="sig-grid">
+        <div class="sig-box">
+          <div class="pill" style="font-size:11px; padding:3px 12px; margin-bottom:8px;">SIGNATURE OF STUDENT</div>
+          <div><img src="${r.studentSignatureUrl}" alt="Student Signature"></div>
+          <div style="font-size:11px; margin-top:4px;"><strong>Name:</strong> ${r.studentSignatureName || r.name} | <strong>Date:</strong> ${r.studentSignatureDate || ''}</div>
+        </div>
+        <div class="sig-box">
+          <div class="pill" style="font-size:11px; padding:3px 12px; margin-bottom:8px;">SIGNATURE OF PARENT/GUARDIAN</div>
+          <div><img src="${r.parentSignatureUrl}" alt="Parent Signature"></div>
+          <div style="font-size:11px; margin-top:4px;"><strong>Name:</strong> ${r.parentSignatureName || ''} | <strong>Date:</strong> ${r.parentSignatureDate || ''}</div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <span class="note-pill">NOTE :</span>
+        <span>PLAYER SHOULD NOT PLAY FOR ANY OTHER CLUB OR TEAM ONCE THEY SIGN THE CONTRACT.</span>
+      </div>
+
+      <div class="academy-box">
+        <div class="pill-center" style="font-size:11px; padding:3px 14px; margin-bottom:10px;">FOR ACADEMY USE ONLY</div>
+        <div class="grid-2" style="margin-bottom:0; font-size:12px;">
+          <div><strong>Admission No.:</strong> ${admNo}</div>
+          <div><strong>Coach Signature:</strong> ${coachSig}</div>
+          <div><strong>Registration Date:</strong> ${regDate}</div>
+          <div><strong>Academy Seal:</strong> ${seal}</div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const printWin = window.open('', '_blank', 'width=900,height=800');
+  printWin.document.write(printHtml);
+  printWin.document.close();
+  printWin.focus();
+  setTimeout(() => {
+    printWin.print();
+  }, 500);
+}
 </script>
 </body>
 </html>

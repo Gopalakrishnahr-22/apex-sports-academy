@@ -51,6 +51,7 @@
           <li><a href="#tournament">Tournaments</a></li>
           <li><a href="#gallery">Gallery</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="javascript:void(0)" id="nav-asa-link" onclick="openAsaUndertakingModal()">Student Registration</a></li>
           <li><a href="javascript:void(0)" class="nav-login-link" id="nav-auth-link"
               onclick="handleNavAuthClick()">Login</a></li>
           <li><button class="nav-btn" onclick="scrollToRegister('tournament')">Register Now</button></li>
@@ -1079,7 +1080,8 @@
         <div class="form-card">
           <!-- Segmented Header — Tournament Registration -->
           <div class="form-tabs" style="justify-content: flex-start;">
-            <button class="form-tab-btn active" id="tab-tournament-btn" type="button" style="width: 100%; cursor: default;">
+            <button class="form-tab-btn active" id="tab-tournament-btn" type="button"
+              style="width: 100%; cursor: default;">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12,3L2,12H5V20H11V14H13V20H19V12H22L12,3Z" />
               </svg>
@@ -2201,6 +2203,355 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ASA STUDENT REGISTRATION & UNDERTAKING AGREEMENT MODAL -->
+  <!-- ============================================================ -->
+  <div class="asa-undertaking-overlay" id="asa-undertaking-modal" style="display: none;">
+    <div class="asa-undertaking-paper">
+      <button class="asa-undertaking-close" onclick="closeAsaUndertakingModal()"
+        aria-label="Close Registration Form">&times;</button>
+
+      <!-- FORM CONTENT VIEW -->
+      <div id="asa-undertaking-form-view">
+        <!-- 1. FORM HEADER -->
+        <div class="asa-doc-header">
+          <div class="asa-header-left">
+            <img src="logo.jpeg" alt="Apex Sports Academy Logo" class="asa-doc-logo">
+          </div>
+          <div class="asa-header-center">
+            <h1 class="asa-doc-main-title">APEX SPORTS ACADEMY</h1>
+            <div class="asa-pill-header">STUDENT REGISTRATION &amp; UNDERTAKING AGREEMENT</div>
+          </div>
+        </div>
+
+        <form id="asa-undertaking-form" onsubmit="handleAsaUndertakingSubmit(event)" novalidate>
+
+          <!-- 2. STUDENT INFORMATION SECTION -->
+          <div class="asa-doc-section">
+            <div class="asa-doc-grid">
+              
+              <div class="asa-doc-field field-name">
+                <label for="asa-reg-name">NAME : <span class="req">*</span></label>
+                <input type="text" id="asa-reg-name" class="asa-doc-input" placeholder="Enter Full Name" required>
+              </div>
+
+              <div class="asa-doc-field field-dob">
+                <label for="asa-reg-dob">DATE OF BIRTH: <span class="req">*</span></label>
+                <input type="date" id="asa-reg-dob" class="asa-doc-input" required>
+              </div>
+
+              <div class="asa-doc-field field-address">
+                <label for="asa-reg-address">ADDRESS: <span class="req">*</span></label>
+                <textarea id="asa-reg-address" class="asa-doc-input" rows="2" placeholder="Full Residential Address"
+                  required></textarea>
+              </div>
+
+              <div class="asa-doc-field field-father">
+                <label for="asa-reg-father">FATHER NAME : <span class="req">*</span></label>
+                <input type="text" id="asa-reg-father" class="asa-doc-input" placeholder="Father's Full Name"
+                  required>
+              </div>
+
+              <div class="asa-doc-field field-mother">
+                <label for="asa-reg-mother">MOTHER NAME : <span class="req">*</span></label>
+                <input type="text" id="asa-reg-mother" class="asa-doc-input" placeholder="Mother's Full Name"
+                  required>
+              </div>
+
+              <div class="asa-doc-field field-occupation">
+                <label for="asa-reg-occupation">PARENTS OCCUPATION : <span class="req">*</span></label>
+                <input type="text" id="asa-reg-occupation" class="asa-doc-input"
+                  placeholder="e.g. Business / Engineer / Service" required>
+              </div>
+
+              <div class="asa-doc-field field-photo">
+                <label>PASSPORT PHOTO : <span class="req">*</span></label>
+                <div class="doc-photo-upload-container">
+                  <div class="doc-photo-box" onclick="document.getElementById('asa-doc-photo-file').click()" title="Click to upload student photo">
+                    <img id="doc-photo-preview-img" src="" alt="Passport Photo" style="display: none;">
+                    <div id="doc-photo-placeholder">
+                      <span style="font-size: 1.4rem;">📷</span>
+                      <small style="font-weight: 700; color: #0284c7;">Upload Photo</small>
+                    </div>
+                  </div>
+                  <input type="file" id="asa-doc-photo-file" accept="image/jpeg,image/png,image/webp" onchange="handleDocPhotoPreview(this)" required style="display: none;">
+                  <span id="doc-photo-name-label" style="font-size: 0.75rem; color: #64748b;">Max 5MB (JPG, PNG, WebP)</span>
+                </div>
+              </div>
+
+              <div class="asa-doc-field field-phone">
+                <label for="asa-reg-phone">PHONE NUMBER : <span class="req">*</span></label>
+                <input type="tel" id="asa-reg-phone" class="asa-doc-input" placeholder="10-digit Mobile Number"
+                  pattern="[0-9]{10}" maxlength="10" required>
+              </div>
+
+              <div class="asa-doc-field field-institution">
+                <label for="asa-reg-institution">INSTITUTIONS : <span class="req">*</span></label>
+                <input type="text" id="asa-reg-institution" class="asa-doc-input" placeholder="School or College Name"
+                  required>
+              </div>
+
+              <div class="asa-doc-field field-sport">
+                <label for="asa-reg-sport">SPORTS ENROLLED : <span class="req">*</span></label>
+                <select id="asa-reg-sport" class="asa-doc-input" required>
+                  <option value="">-- Select Sport --</option>
+                  <option value="Volleyball">Volleyball</option>
+                  <option value="Throwball">Throwball</option>
+                  <option value="Football">Football</option>
+                  <option value="Kho Kho">Kho Kho</option>
+                  <option value="Cricket">Cricket</option>
+                  <option value="Badminton">Badminton</option>
+                  <option value="Multi-Sport Training">Multi-Sport Training</option>
+                </select>
+              </div>
+
+              <div class="asa-doc-field field-batch">
+                <label for="asa-reg-batch">BATCH : <span class="req">*</span></label>
+                <select id="asa-reg-batch" class="asa-doc-input" required>
+                  <option value="">-- Select Batch --</option>
+                  <option value="Morning Batch (6:00 AM - 8:00 AM)">Morning Batch (6:00 AM - 8:00 AM)</option>
+                  <option value="Evening Batch (4:30 PM - 6:30 PM)">Evening Batch (4:30 PM - 6:30 PM)</option>
+                  <option value="Weekend Special Camp (Sat &amp; Sun)">Weekend Special Camp (Sat &amp; Sun)</option>
+                  <option value="Advanced Competitive Batch">Advanced Competitive Batch</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          <hr class="asa-doc-divider">
+
+          <!-- 3. CODE OF CONDUCT & DISCIPLINE -->
+          <div class="asa-doc-section">
+            <div class="asa-pill-center">CODE OF CONDUCT &amp; DISCIPLINE</div>
+            <div class="asa-doc-conduct-box">
+
+              <div class="conduct-item">
+                <div class="conduct-icon-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                  </svg>
+                </div>
+                <div class="conduct-content">
+                  <h4>1. BEHAVIOR</h4>
+                  <p>The student shall maintain discipline, respect coaches, staff members, fellow students, officials,
+                    and opponents at all times. Any form of misconduct, abusive language, bullying, or inappropriate
+                    behavior may result in disciplinary action.</p>
+                </div>
+              </div>
+
+              <div class="conduct-item">
+                <div class="conduct-icon-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+                  </svg>
+                </div>
+                <div class="conduct-content">
+                  <h4>2. ATTENDANCE &amp; PUNCTUALITY</h4>
+                  <p>The student must attend all scheduled practice sessions and training programs regularly. In case of
+                    unavoidable absence, the student or parent/guardian must inform the coach in advance. Repeated
+                    absenteeism or late attendance may affect participation in academy activities.</p>
+                </div>
+              </div>
+
+              <div class="conduct-item">
+                <div class="conduct-icon-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                  </svg>
+                </div>
+                <div class="conduct-content">
+                  <h4>3. EQUIPMENT &amp; PROPERTY</h4>
+                  <p>The student is responsible for the proper use and care of academy equipment, facilities, and
+                    training materials. Any willful damage to academy property will result in financial compensation for
+                    repair or replacement costs.</p>
+                </div>
+              </div>
+
+              <div class="conduct-item">
+                <div class="conduct-icon-circle">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm5.31-3.1L6.1 5.69C7.45 4.63 9.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z" />
+                  </svg>
+                </div>
+                <div class="conduct-content">
+                  <h4>4. PROHIBITED ITEMS</h4>
+                  <p>The use, possession, or distribution of tobacco products, alcohol, performance-enhancing drugs,
+                    narcotics, or any illegal substances is strictly prohibited. Violation of this rule will result in
+                    immediate termination of academy membership without refund.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <hr class="asa-doc-divider">
+
+          <!-- 4. MEDIA CONSENT -->
+          <div class="asa-doc-section">
+            <div class="asa-pill-center">MEDIA CONSENT</div>
+            <div class="asa-doc-consent-box">
+              <p>I/We hereby grant permission to Apex Sports Academy to use photographs, videos, and interviews of the
+                student taken during training sessions, competitions, camps, and academy events for promotional and
+                educational purposes, including social media, website, brochures, posters, and other academy
+                publications.</p>
+              <label class="asa-chk-label">
+                <input type="checkbox" id="asa-chk-media" required>
+                <span>I/We agree to the Media Consent</span>
+              </label>
+            </div>
+          </div>
+
+          <hr class="asa-doc-divider">
+
+          <!-- 5. DECLARATION -->
+          <div class="asa-doc-section">
+            <div class="asa-pill-center">DECLARATION</div>
+            <div class="asa-doc-consent-box">
+              <p>I/We have read, understood, and voluntarily accepted all the terms and conditions stated in this
+                undertaking. I/We agree to abide by the rules, regulations, and decisions of Apex Sports Academy and
+                understand that failure to comply may result in disciplinary action as determined by the academy
+                management.</p>
+              <label class="asa-chk-label">
+                <input type="checkbox" id="asa-chk-declaration" required>
+                <span>I/We have read and agree to the Declaration</span>
+              </label>
+            </div>
+          </div>
+
+          <hr class="asa-doc-divider">
+
+          <!-- 6. DIGITAL SIGNATURES -->
+          <div class="asa-doc-section">
+            <div class="asa-sig-grid">
+
+              <!-- Student Signature Box -->
+              <div class="asa-sig-box">
+                <div class="asa-pill-header-sm">SIGNATURE OF STUDENT</div>
+                <div class="asa-sig-header-meta">
+                  <span class="req-note">Sign digitally below <span class="req">*</span></span>
+                  <button type="button" class="btn-clear-sig" onclick="clearSignature('student')">Clear
+                    Signature</button>
+                </div>
+                <div class="canvas-wrapper">
+                  <canvas id="canvas-student-sig" width="450" height="130"></canvas>
+                </div>
+                <div class="asa-sig-meta-grid">
+                  <div class="sig-meta-field">
+                    <label>Name:</label>
+                    <input type="text" id="asa-sig-student-name" placeholder="Student Name" required readonly>
+                  </div>
+                  <div class="sig-meta-field">
+                    <label>Date:</label>
+                    <input type="date" id="asa-sig-student-date" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Parent/Guardian Signature Box -->
+              <div class="asa-sig-box">
+                <div class="asa-pill-header-sm">SIGNATURE OF PARENT/GUARDIAN</div>
+                <div class="asa-sig-header-meta">
+                  <span class="req-note">Sign digitally below <span class="req">*</span></span>
+                  <button type="button" class="btn-clear-sig" onclick="clearSignature('parent')">Clear
+                    Signature</button>
+                </div>
+                <div class="canvas-wrapper">
+                  <canvas id="canvas-parent-sig" width="450" height="130"></canvas>
+                </div>
+                <div class="asa-sig-meta-grid">
+                  <div class="sig-meta-field">
+                    <label>Name:</label>
+                    <input type="text" id="asa-sig-parent-name" placeholder="Parent / Guardian Name" required>
+                  </div>
+                  <div class="sig-meta-field">
+                    <label>Date:</label>
+                    <input type="date" id="asa-sig-parent-date" required>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 7. NOTE SECTION -->
+          <div class="asa-doc-note-box">
+            <div class="note-pill">NOTE :</div>
+            <div class="note-txt">PLAYER SHOULD NOT PLAY FOR ANY OTHER CLUB OR TEAM ONCE THEY SIGN THE CONTRACT.</div>
+          </div>
+
+          <!-- 8. FOR ACADEMY USE ONLY -->
+          <div class="asa-doc-section asa-doc-academy-use">
+            <div class="asa-pill-center">FOR ACADEMY USE ONLY</div>
+            <p class="field-hint" style="text-align: center; color: #64748b; font-size: 0.8rem; margin: -6px 0 16px 0;">
+              (To be completed by Apex Sports Academy Administrative Staff)</p>
+            <div class="academy-use-grid">
+              <div class="use-field">
+                <label>Admission No.:</label>
+                <input type="text" disabled placeholder="______________________">
+              </div>
+              <div class="use-field">
+                <label>Coach Signature:</label>
+                <input type="text" disabled placeholder="______________________">
+              </div>
+              <div class="use-field">
+                <label>Registration Date:</label>
+                <input type="text" disabled placeholder="______________________">
+              </div>
+              <div class="use-field">
+                <label>Academy Seal:</label>
+                <input type="text" disabled placeholder="______________________">
+              </div>
+            </div>
+          </div>
+
+          <!-- Alert Container -->
+          <div class="asa-doc-alert error" id="asa-form-error" style="display: none;"></div>
+
+          <!-- 9. SUBMIT BUTTON -->
+          <div class="asa-doc-submit-wrap">
+            <button type="submit" id="asa-submit-btn" class="btn btn-primary btn-lg full-width">
+              SUBMIT REGISTRATION
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SUCCESS SCREEN VIEW -->
+      <div id="asa-undertaking-success-view" style="display: none; text-align: center; padding: 40px 20px;">
+        <div class="success-icon" style="font-size: 3.5rem; margin-bottom: 16px;">🎉</div>
+        <h2 style="color: #0f172a; margin-bottom: 8px;">REGISTRATION SUBMITTED SUCCESSFULLY</h2>
+        <p style="color: #475569; max-width: 500px; margin: 0 auto 24px auto;">Your Student Registration &amp;
+          Undertaking Agreement has been successfully submitted and stored at Apex Sports Academy.</p>
+
+        <div
+          style="background: #f0f9ff; border: 2px dashed #0284c7; border-radius: 12px; padding: 20px; max-width: 400px; margin: 0 auto 24px auto;">
+          <span
+            style="font-size: 0.85rem; color: #0369a1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">YOUR
+            UNIQUE REGISTRATION ID</span>
+          <div id="asa-success-reg-id"
+            style="font-family: monospace; font-size: 1.8rem; font-weight: 800; color: #0284c7; margin-top: 6px;">
+            ASA-REG-2026-0000</div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-secondary" onclick="printSubmittedStudentDocument()">
+            🖨️ Print / Download Form PDF
+          </button>
+          <button type="button" class="btn btn-primary" onclick="closeAsaUndertakingModal()">
+            Close &amp; Return to Home
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
