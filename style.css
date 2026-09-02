@@ -2193,12 +2193,18 @@ nav a.active::after {
   padding-bottom: 64px;
 }
 
-/* --- Two-column layout --- */
+/* --- Centered Single Card Layout --- */
 .register-layout {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 32px;
-  align-items: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.register-layout .form-card {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 /* ---- LEFT CARD — Choose Program ---- */

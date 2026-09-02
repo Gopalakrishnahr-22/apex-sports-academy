@@ -1016,67 +1016,7 @@
 
       <div class="register-layout">
 
-        <!-- ===== LEFT CARD — Choose Program ===== -->
-        <div class="register-info-panel">
-          <div class="info-header">
-            <!-- Calendar icon top-right -->
-            <div class="info-header-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.9 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
-              </svg>
-            </div>
-            <h3>Choose Program</h3>
-            <p>Select the program/event you want to sign up for. Filling details and processing payment registers you
-              instantly.</p>
-          </div>
-
-          <div class="program-selection-form">
-
-            <!-- Row 1: Tournament — BLUE -->
-            <div class="program-select-row active" id="row-tournament" onclick="activateProgram('tournament')">
-              <div class="program-radio-col">
-                <input type="radio" name="active-program" id="radio-tournament" value="tournament" checked>
-              </div>
-              <div class="prog-row-icon prog-row-icon--blue" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path
-                    d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M12,14A2,2 0 0,0 10,16A2,2 0 0,0 12,18A2,2 0 0,0 14,16A2,2 0 0,0 12,14Z" />
-                </svg>
-              </div>
-              <div class="program-select-col">
-                <label class="prog-cat-label prog-cat-label--blue" for="tournament-select">Tournament Program</label>
-                <select id="tournament-select" class="form-input" onchange="onTournamentSelectChange(this.value)">
-                  <option value="tournament">ASA Cup Season 1 Entry</option>
-                </select>
-                <span class="prog-price-tag prog-price-tag--blue">₹1,200</span>
-              </div>
-              <div class="prog-row-chevron" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                </svg>
-              </div>
-            </div>
-
-          </div><!-- end .program-selection-form -->
-
-          <!-- Security trust badge -->
-          <div class="reg-trust-badge">
-            <div class="reg-trust-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,15.97 6,15.43C6,13.82 8.71,12.5 12,12.5C15.29,12.5 18,13.82 18,15.43C17.76,15.97 17.47,16.5 17.13,17Z" />
-              </svg>
-            </div>
-            <div class="reg-trust-text">
-              <strong>Secure payments. Instant confirmation.</strong>
-              <span>Your data is safe with us.</span>
-            </div>
-          </div>
-
-        </div><!-- end .register-info-panel -->
-
-        <!-- ===== RIGHT CARD — Registration Form ===== -->
+        <!-- ===== TOURNAMENT REGISTRATION FORM CARD ===== -->
         <div class="form-card">
           <!-- Segmented Header — Tournament Registration -->
           <div class="form-tabs" style="justify-content: flex-start;">
