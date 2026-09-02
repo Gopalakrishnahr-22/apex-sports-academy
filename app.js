@@ -167,128 +167,43 @@ function selectCoachingTier(tierId, price) {
   });
 
   const selectedCard = document.getElementById(`tier-${tierId}`);
-  if (selectedCard) {
-    selectedCard.classList.add('active');
-  }
-
-  // Synchronize new dropdowns and radio buttons UI if elements exist
   const tournamentRadio = document.getElementById('radio-tournament');
-  const weekdayRadio = document.getElementById('radio-weekday');
-  const weekendRadio = document.getElementById('radio-weekend');
-
   const tournamentRow = document.getElementById('row-tournament');
-  const weekdayRow = document.getElementById('row-weekday');
-  const weekendRow = document.getElementById('row-weekend');
 
-  const weekdaySelect = document.getElementById('weekday-select');
-  const weekendSelect = document.getElementById('weekend-select');
+  if (tournamentRadio) tournamentRadio.checked = true;
+  if (tournamentRow) tournamentRow.classList.add('active');
 
-  // Remove active from all rows
-  [tournamentRow, weekdayRow, weekendRow].forEach(row => {
-    if (row) row.classList.remove('active');
-  });
-
-  if (tierId === 'tournament') {
-    if (tournamentRadio) tournamentRadio.checked = true;
-    if (tournamentRow) tournamentRow.classList.add('active');
-  } else if (tierId.startsWith('weekday')) {
-    if (weekdayRadio) weekdayRadio.checked = true;
-    if (weekdayRow) weekdayRow.classList.add('active');
-    if (weekdaySelect) weekdaySelect.value = tierId;
-  } else if (tierId.startsWith('weekend')) {
-    if (weekendRadio) weekendRadio.checked = true;
-    if (weekendRow) weekendRow.classList.add('active');
-    if (weekendSelect) weekendSelect.value = tierId;
-  }
-
-  let finalPrice = price;
-  let finalTierName = tierId;
-
-  const weekdayPriceTag = document.getElementById('weekday-price-tag');
-  const weekendPriceTag = document.getElementById('weekend-price-tag');
-
-  if (tierId === 'tournament') {
-    finalTierName = 'ASA Cup Tournament Entry';
-    finalPrice = 1200;
-  } else if (tierId === 'weekday-1') {
-    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 1 Month)';
-    finalPrice = 1600;
-    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹1,600';
-  } else if (tierId === 'weekday-2') {
-    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 2 Month)';
-    finalPrice = 2500;
-    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹2,500';
-  } else if (tierId === 'weekday-3') {
-    finalTierName = 'Weekday Coaching (Tue, Wed & Thu - 3 Month)';
-    finalPrice = 4000;
-    if (weekdayPriceTag) weekdayPriceTag.innerText = '₹4,000';
-  } else if (tierId === 'weekend-1') {
-    finalTierName = 'Weekend Coaching (Batch 2 - 1 Month(s))';
-    finalPrice = 1600;
-    if (weekendPriceTag) weekendPriceTag.innerText = '₹1,600';
-  } else if (tierId === 'weekend-2') {
-    finalTierName = 'Weekend Coaching (Batch 2 - 2 Month(s))';
-    finalPrice = 2500;
-    if (weekendPriceTag) weekendPriceTag.innerText = '₹2,500';
-  } else if (tierId === 'weekend-3') {
-    finalTierName = 'Weekend Coaching (Batch 2 - 3 Month(s))';
-    finalPrice = 4000;
-    if (weekendPriceTag) weekendPriceTag.innerText = '₹4,000';
-  }
+  const finalTierName = 'ASA Cup Tournament Entry';
+  const finalPrice = 1200;
 
   // Update hidden inputs
-  document.getElementById('selected-tier').value = finalTierName;
-  document.getElementById('selected-price').value = finalPrice;
+  const selectedTierInput = document.getElementById('selected-tier');
+  const selectedPriceInput = document.getElementById('selected-price');
+  const priceDisplay = document.getElementById('btn-price-display');
 
-  // Format price output
-  const formattedPrice = `₹${finalPrice.toLocaleString('en-IN')}`;
-  document.getElementById('btn-price-display').innerText = formattedPrice;
+  if (selectedTierInput) selectedTierInput.value = finalTierName;
+  if (selectedPriceInput) selectedPriceInput.value = finalPrice;
+  if (priceDisplay) priceDisplay.innerText = `₹${finalPrice.toLocaleString('en-IN')}`;
 
-  // Toggle active fields tab automatically
-  if (tierId.startsWith('weekday') || tierId.startsWith('weekend')) {
-    toggleFormType('coaching');
-  } else {
-    toggleFormType('tournament');
-  }
+  toggleFormType('tournament');
 }
 
-// Handlers for the 3 separate select dropdowns
 function activateProgram(category) {
-  const radio = document.getElementById(`radio-${category}`);
+  const radio = document.getElementById('radio-tournament');
   if (radio) radio.checked = true;
 
-  document.querySelectorAll('.program-select-row').forEach(row => {
-    row.classList.remove('active');
-  });
-  const activeRow = document.getElementById(`row-${category}`);
+  const activeRow = document.getElementById('row-tournament');
   if (activeRow) activeRow.classList.add('active');
 
-  if (category === 'tournament') {
-    selectCoachingTier('tournament', 1200);
-  } else if (category === 'weekday') {
-    const val = document.getElementById('weekday-select').value;
-    selectCoachingTier(val);
-  } else if (category === 'weekend') {
-    const val = document.getElementById('weekend-select').value;
-    selectCoachingTier(val);
-  }
+  selectCoachingTier('tournament', 1200);
 }
 
 function onTournamentSelectChange(val) {
   activateProgram('tournament');
 }
 
-function onWeekdaySelectChange(val) {
-  activateProgram('weekday');
-}
-
-function onWeekendSelectChange(val) {
-  activateProgram('weekend');
-}
-
-// Helper to scroll to register section and auto-select a tier
 function scrollToRegisterAndSelect(tierId) {
-  selectCoachingTier(tierId);
+  selectCoachingTier('tournament');
   const regSection = document.getElementById('register');
   if (regSection) {
     regSection.scrollIntoView({ behavior: 'smooth' });

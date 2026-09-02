@@ -121,7 +121,7 @@ function loadCredentials() {
       console.error('Error reading credentials.json:', e.message);
     }
   }
-  return { username: 'admin', password: 'Gopala@2026', passwordHash: '' };
+  return { username: 'apexsportsacademy', password: 'Asa08@2026', passwordHash: '' };
 }
 
 function readConfigFile() {

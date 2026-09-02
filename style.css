@@ -7833,6 +7833,37 @@ select {
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
+  .carousel-scroll-btn.prev-btn {
+    left: -16px;
+  }
+  .carousel-scroll-btn.next-btn {
+    right: -16px;
+  }
+}
+
+/* Desktop & Laptop Grid (1025px+) */
+@media (min-width: 1025px) {
+  .sports-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sports-carousel-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    overflow: visible;
+    padding: 16px 4px 24px 4px;
+    width: 100%;
+  }
+  .sport-card-item {
+    flex: initial;
+    width: 100%;
+    max-width: 100%;
+  }
+  .carousel-scroll-btn {
+    display: none;
+  }
 }
 
 /* Individual Sport Card */
