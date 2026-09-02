@@ -99,13 +99,14 @@ function loadCredentials() {
   const envUser = process.env.ADMIN_USERNAME;
   const envPass = process.env.ADMIN_PASSWORD;
   const envHash = process.env.ADMIN_PASSWORD_HASH;
-  if (envUser) {
+
+  if (envUser && envUser.trim().toLowerCase() !== 'admin') {
     return { username: envUser.trim(), password: (envPass || '').trim(), passwordHash: (envHash || '').trim() };
   }
 
   // Check config.json for saved hash
   const configData = readConfigFile();
-  if (configData.ADMIN_USERNAME) {
+  if (configData.ADMIN_USERNAME && configData.ADMIN_USERNAME.toLowerCase() !== 'admin') {
     return {
       username: configData.ADMIN_USERNAME,
       password: configData.ADMIN_PASSWORD || '',
@@ -116,7 +117,9 @@ function loadCredentials() {
   if (fs.existsSync(CREDENTIALS_FILE)) {
     try {
       const data = JSON.parse(fs.readFileSync(CREDENTIALS_FILE, 'utf8'));
-      return data;
+      if (data && data.username && data.username.toLowerCase() !== 'admin') {
+        return data;
+      }
     } catch (e) {
       console.error('Error reading credentials.json:', e.message);
     }
